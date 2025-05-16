@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-   output   = "app/generated/prisma/client"
+  output   = "app/generated/prisma/client"
 }
 
 datasource db {
@@ -15,17 +15,29 @@ datasource db {
 }
 
 model User {
-  id                    String     @unique     @default(uuid())
-  username              String
-  email                 String     @unique
-  password              String
-  gender                String
-  date_of_birth         DateTime              
-  bio                   String 
-  location               String
-  created_at            DateTime               @default(now())               
-  last_active           DateTime
-  profile_pic           String
+  id            String   @id @default(uuid())
+  username      String
+  email         String   @unique
+  password      String
+  gender        String
+  date_of_birth DateTime
+  bio           String
+  location      String
+  created_at    DateTime @default(now())
+  last_active   DateTime
+  profile_pic   String
+
+  matches_user1 Matches[] @relation("UserMatches1")
+  matches_user2 Matches[] @relation("UserMatches2")
 }
 
-
+model Matches {
+  id            String    @id @default(uuid())
+  user1_id      String
+  user2_id      String
+  is_matched_at DateTime
+  is_blocked    Boolean
+  unmatched_at  DateTime?
+  user1         User      @relation("UserMatches1", fields: [user1_id], references: [id])
+  user2         User      @relation("UserMatches2", fields: [user2_id], references: [id])
+}

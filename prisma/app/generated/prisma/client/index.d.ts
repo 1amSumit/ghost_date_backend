@@ -18,6 +18,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Matches
+ * 
+ */
+export type Matches = $Result.DefaultSelection<Prisma.$MatchesPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -153,6 +158,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.matches`: Exposes CRUD operations for the **Matches** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Matches
+    * const matches = await prisma.matches.findMany()
+    * ```
+    */
+  get matches(): Prisma.MatchesDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -593,7 +608,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    User: 'User'
+    User: 'User',
+    Matches: 'Matches'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -612,7 +628,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user"
+      modelProps: "user" | "matches"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -687,6 +703,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Matches: {
+        payload: Prisma.$MatchesPayload<ExtArgs>
+        fields: Prisma.MatchesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MatchesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MatchesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>
+          }
+          findFirst: {
+            args: Prisma.MatchesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MatchesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>
+          }
+          findMany: {
+            args: Prisma.MatchesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>[]
+          }
+          create: {
+            args: Prisma.MatchesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>
+          }
+          createMany: {
+            args: Prisma.MatchesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MatchesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>[]
+          }
+          delete: {
+            args: Prisma.MatchesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>
+          }
+          update: {
+            args: Prisma.MatchesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>
+          }
+          deleteMany: {
+            args: Prisma.MatchesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MatchesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MatchesUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>[]
+          }
+          upsert: {
+            args: Prisma.MatchesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MatchesPayload>
+          }
+          aggregate: {
+            args: Prisma.MatchesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMatches>
+          }
+          groupBy: {
+            args: Prisma.MatchesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MatchesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MatchesCountArgs<ExtArgs>
+            result: $Utils.Optional<MatchesCountAggregateOutputType> | number
           }
         }
       }
@@ -775,6 +865,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    matches?: MatchesOmit
   }
 
   /* Types for Logging */
@@ -863,6 +954,45 @@ export namespace Prisma {
    * Count Types
    */
 
+
+  /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    matches_user1: number
+    matches_user2: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    matches_user1?: boolean | UserCountOutputTypeCountMatches_user1Args
+    matches_user2?: boolean | UserCountOutputTypeCountMatches_user2Args
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMatches_user1Args<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchesWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMatches_user2Args<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchesWhereInput
+  }
 
 
   /**
@@ -1081,6 +1211,9 @@ export namespace Prisma {
     created_at?: boolean
     last_active?: boolean
     profile_pic?: boolean
+    matches_user1?: boolean | User$matches_user1Args<ExtArgs>
+    matches_user2?: boolean | User$matches_user2Args<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1126,10 +1259,20 @@ export namespace Prisma {
   }
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "gender" | "date_of_birth" | "bio" | "location" | "created_at" | "last_active" | "profile_pic", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    matches_user1?: boolean | User$matches_user1Args<ExtArgs>
+    matches_user2?: boolean | User$matches_user2Args<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
-    objects: {}
+    objects: {
+      matches_user1: Prisma.$MatchesPayload<ExtArgs>[]
+      matches_user2: Prisma.$MatchesPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       username: string
@@ -1536,6 +1679,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    matches_user1<T extends User$matches_user1Args<ExtArgs> = {}>(args?: Subset<T, User$matches_user1Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    matches_user2<T extends User$matches_user2Args<ExtArgs> = {}>(args?: Subset<T, User$matches_user2Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1593,6 +1738,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1611,6 +1760,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1628,6 +1781,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which User to fetch.
      */
@@ -1677,6 +1834,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -1725,6 +1886,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -1767,6 +1932,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to create a User.
      */
@@ -1815,6 +1984,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to update a User.
      */
@@ -1882,6 +2055,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -1908,6 +2085,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -1928,6 +2109,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.matches_user1
+   */
+  export type User$matches_user1Args<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    where?: MatchesWhereInput
+    orderBy?: MatchesOrderByWithRelationInput | MatchesOrderByWithRelationInput[]
+    cursor?: MatchesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchesScalarFieldEnum | MatchesScalarFieldEnum[]
+  }
+
+  /**
+   * User.matches_user2
+   */
+  export type User$matches_user2Args<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    where?: MatchesWhereInput
+    orderBy?: MatchesOrderByWithRelationInput | MatchesOrderByWithRelationInput[]
+    cursor?: MatchesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchesScalarFieldEnum | MatchesScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1939,6 +2168,1089 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Matches
+   */
+
+  export type AggregateMatches = {
+    _count: MatchesCountAggregateOutputType | null
+    _min: MatchesMinAggregateOutputType | null
+    _max: MatchesMaxAggregateOutputType | null
+  }
+
+  export type MatchesMinAggregateOutputType = {
+    id: string | null
+    user1_id: string | null
+    user2_id: string | null
+    is_matched_at: Date | null
+    is_blocked: boolean | null
+    unmatched_at: Date | null
+  }
+
+  export type MatchesMaxAggregateOutputType = {
+    id: string | null
+    user1_id: string | null
+    user2_id: string | null
+    is_matched_at: Date | null
+    is_blocked: boolean | null
+    unmatched_at: Date | null
+  }
+
+  export type MatchesCountAggregateOutputType = {
+    id: number
+    user1_id: number
+    user2_id: number
+    is_matched_at: number
+    is_blocked: number
+    unmatched_at: number
+    _all: number
+  }
+
+
+  export type MatchesMinAggregateInputType = {
+    id?: true
+    user1_id?: true
+    user2_id?: true
+    is_matched_at?: true
+    is_blocked?: true
+    unmatched_at?: true
+  }
+
+  export type MatchesMaxAggregateInputType = {
+    id?: true
+    user1_id?: true
+    user2_id?: true
+    is_matched_at?: true
+    is_blocked?: true
+    unmatched_at?: true
+  }
+
+  export type MatchesCountAggregateInputType = {
+    id?: true
+    user1_id?: true
+    user2_id?: true
+    is_matched_at?: true
+    is_blocked?: true
+    unmatched_at?: true
+    _all?: true
+  }
+
+  export type MatchesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Matches to aggregate.
+     */
+    where?: MatchesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Matches to fetch.
+     */
+    orderBy?: MatchesOrderByWithRelationInput | MatchesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MatchesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Matches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Matches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Matches
+    **/
+    _count?: true | MatchesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MatchesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MatchesMaxAggregateInputType
+  }
+
+  export type GetMatchesAggregateType<T extends MatchesAggregateArgs> = {
+        [P in keyof T & keyof AggregateMatches]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMatches[P]>
+      : GetScalarType<T[P], AggregateMatches[P]>
+  }
+
+
+
+
+  export type MatchesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchesWhereInput
+    orderBy?: MatchesOrderByWithAggregationInput | MatchesOrderByWithAggregationInput[]
+    by: MatchesScalarFieldEnum[] | MatchesScalarFieldEnum
+    having?: MatchesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MatchesCountAggregateInputType | true
+    _min?: MatchesMinAggregateInputType
+    _max?: MatchesMaxAggregateInputType
+  }
+
+  export type MatchesGroupByOutputType = {
+    id: string
+    user1_id: string
+    user2_id: string
+    is_matched_at: Date
+    is_blocked: boolean
+    unmatched_at: Date | null
+    _count: MatchesCountAggregateOutputType | null
+    _min: MatchesMinAggregateOutputType | null
+    _max: MatchesMaxAggregateOutputType | null
+  }
+
+  type GetMatchesGroupByPayload<T extends MatchesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MatchesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MatchesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MatchesGroupByOutputType[P]>
+            : GetScalarType<T[P], MatchesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MatchesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user1_id?: boolean
+    user2_id?: boolean
+    is_matched_at?: boolean
+    is_blocked?: boolean
+    unmatched_at?: boolean
+    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["matches"]>
+
+  export type MatchesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user1_id?: boolean
+    user2_id?: boolean
+    is_matched_at?: boolean
+    is_blocked?: boolean
+    unmatched_at?: boolean
+    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["matches"]>
+
+  export type MatchesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user1_id?: boolean
+    user2_id?: boolean
+    is_matched_at?: boolean
+    is_blocked?: boolean
+    unmatched_at?: boolean
+    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["matches"]>
+
+  export type MatchesSelectScalar = {
+    id?: boolean
+    user1_id?: boolean
+    user2_id?: boolean
+    is_matched_at?: boolean
+    is_blocked?: boolean
+    unmatched_at?: boolean
+  }
+
+  export type MatchesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user1_id" | "user2_id" | "is_matched_at" | "is_blocked" | "unmatched_at", ExtArgs["result"]["matches"]>
+  export type MatchesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MatchesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MatchesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MatchesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Matches"
+    objects: {
+      user1: Prisma.$UserPayload<ExtArgs>
+      user2: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      user1_id: string
+      user2_id: string
+      is_matched_at: Date
+      is_blocked: boolean
+      unmatched_at: Date | null
+    }, ExtArgs["result"]["matches"]>
+    composites: {}
+  }
+
+  type MatchesGetPayload<S extends boolean | null | undefined | MatchesDefaultArgs> = $Result.GetResult<Prisma.$MatchesPayload, S>
+
+  type MatchesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MatchesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MatchesCountAggregateInputType | true
+    }
+
+  export interface MatchesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Matches'], meta: { name: 'Matches' } }
+    /**
+     * Find zero or one Matches that matches the filter.
+     * @param {MatchesFindUniqueArgs} args - Arguments to find a Matches
+     * @example
+     * // Get one Matches
+     * const matches = await prisma.matches.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MatchesFindUniqueArgs>(args: SelectSubset<T, MatchesFindUniqueArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Matches that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MatchesFindUniqueOrThrowArgs} args - Arguments to find a Matches
+     * @example
+     * // Get one Matches
+     * const matches = await prisma.matches.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MatchesFindUniqueOrThrowArgs>(args: SelectSubset<T, MatchesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Matches that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MatchesFindFirstArgs} args - Arguments to find a Matches
+     * @example
+     * // Get one Matches
+     * const matches = await prisma.matches.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MatchesFindFirstArgs>(args?: SelectSubset<T, MatchesFindFirstArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Matches that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MatchesFindFirstOrThrowArgs} args - Arguments to find a Matches
+     * @example
+     * // Get one Matches
+     * const matches = await prisma.matches.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MatchesFindFirstOrThrowArgs>(args?: SelectSubset<T, MatchesFindFirstOrThrowArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Matches that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MatchesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Matches
+     * const matches = await prisma.matches.findMany()
+     * 
+     * // Get first 10 Matches
+     * const matches = await prisma.matches.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const matchesWithIdOnly = await prisma.matches.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MatchesFindManyArgs>(args?: SelectSubset<T, MatchesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Matches.
+     * @param {MatchesCreateArgs} args - Arguments to create a Matches.
+     * @example
+     * // Create one Matches
+     * const Matches = await prisma.matches.create({
+     *   data: {
+     *     // ... data to create a Matches
+     *   }
+     * })
+     * 
+     */
+    create<T extends MatchesCreateArgs>(args: SelectSubset<T, MatchesCreateArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Matches.
+     * @param {MatchesCreateManyArgs} args - Arguments to create many Matches.
+     * @example
+     * // Create many Matches
+     * const matches = await prisma.matches.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MatchesCreateManyArgs>(args?: SelectSubset<T, MatchesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Matches and returns the data saved in the database.
+     * @param {MatchesCreateManyAndReturnArgs} args - Arguments to create many Matches.
+     * @example
+     * // Create many Matches
+     * const matches = await prisma.matches.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Matches and only return the `id`
+     * const matchesWithIdOnly = await prisma.matches.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MatchesCreateManyAndReturnArgs>(args?: SelectSubset<T, MatchesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Matches.
+     * @param {MatchesDeleteArgs} args - Arguments to delete one Matches.
+     * @example
+     * // Delete one Matches
+     * const Matches = await prisma.matches.delete({
+     *   where: {
+     *     // ... filter to delete one Matches
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MatchesDeleteArgs>(args: SelectSubset<T, MatchesDeleteArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Matches.
+     * @param {MatchesUpdateArgs} args - Arguments to update one Matches.
+     * @example
+     * // Update one Matches
+     * const matches = await prisma.matches.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MatchesUpdateArgs>(args: SelectSubset<T, MatchesUpdateArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Matches.
+     * @param {MatchesDeleteManyArgs} args - Arguments to filter Matches to delete.
+     * @example
+     * // Delete a few Matches
+     * const { count } = await prisma.matches.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MatchesDeleteManyArgs>(args?: SelectSubset<T, MatchesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Matches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MatchesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Matches
+     * const matches = await prisma.matches.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MatchesUpdateManyArgs>(args: SelectSubset<T, MatchesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Matches and returns the data updated in the database.
+     * @param {MatchesUpdateManyAndReturnArgs} args - Arguments to update many Matches.
+     * @example
+     * // Update many Matches
+     * const matches = await prisma.matches.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Matches and only return the `id`
+     * const matchesWithIdOnly = await prisma.matches.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MatchesUpdateManyAndReturnArgs>(args: SelectSubset<T, MatchesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Matches.
+     * @param {MatchesUpsertArgs} args - Arguments to update or create a Matches.
+     * @example
+     * // Update or create a Matches
+     * const matches = await prisma.matches.upsert({
+     *   create: {
+     *     // ... data to create a Matches
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Matches we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MatchesUpsertArgs>(args: SelectSubset<T, MatchesUpsertArgs<ExtArgs>>): Prisma__MatchesClient<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Matches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MatchesCountArgs} args - Arguments to filter Matches to count.
+     * @example
+     * // Count the number of Matches
+     * const count = await prisma.matches.count({
+     *   where: {
+     *     // ... the filter for the Matches we want to count
+     *   }
+     * })
+    **/
+    count<T extends MatchesCountArgs>(
+      args?: Subset<T, MatchesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MatchesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Matches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MatchesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MatchesAggregateArgs>(args: Subset<T, MatchesAggregateArgs>): Prisma.PrismaPromise<GetMatchesAggregateType<T>>
+
+    /**
+     * Group by Matches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MatchesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MatchesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MatchesGroupByArgs['orderBy'] }
+        : { orderBy?: MatchesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MatchesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMatchesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Matches model
+   */
+  readonly fields: MatchesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Matches.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MatchesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user1<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user2<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Matches model
+   */
+  interface MatchesFieldRefs {
+    readonly id: FieldRef<"Matches", 'String'>
+    readonly user1_id: FieldRef<"Matches", 'String'>
+    readonly user2_id: FieldRef<"Matches", 'String'>
+    readonly is_matched_at: FieldRef<"Matches", 'DateTime'>
+    readonly is_blocked: FieldRef<"Matches", 'Boolean'>
+    readonly unmatched_at: FieldRef<"Matches", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Matches findUnique
+   */
+  export type MatchesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * Filter, which Matches to fetch.
+     */
+    where: MatchesWhereUniqueInput
+  }
+
+  /**
+   * Matches findUniqueOrThrow
+   */
+  export type MatchesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * Filter, which Matches to fetch.
+     */
+    where: MatchesWhereUniqueInput
+  }
+
+  /**
+   * Matches findFirst
+   */
+  export type MatchesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * Filter, which Matches to fetch.
+     */
+    where?: MatchesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Matches to fetch.
+     */
+    orderBy?: MatchesOrderByWithRelationInput | MatchesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Matches.
+     */
+    cursor?: MatchesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Matches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Matches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Matches.
+     */
+    distinct?: MatchesScalarFieldEnum | MatchesScalarFieldEnum[]
+  }
+
+  /**
+   * Matches findFirstOrThrow
+   */
+  export type MatchesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * Filter, which Matches to fetch.
+     */
+    where?: MatchesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Matches to fetch.
+     */
+    orderBy?: MatchesOrderByWithRelationInput | MatchesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Matches.
+     */
+    cursor?: MatchesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Matches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Matches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Matches.
+     */
+    distinct?: MatchesScalarFieldEnum | MatchesScalarFieldEnum[]
+  }
+
+  /**
+   * Matches findMany
+   */
+  export type MatchesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * Filter, which Matches to fetch.
+     */
+    where?: MatchesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Matches to fetch.
+     */
+    orderBy?: MatchesOrderByWithRelationInput | MatchesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Matches.
+     */
+    cursor?: MatchesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Matches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Matches.
+     */
+    skip?: number
+    distinct?: MatchesScalarFieldEnum | MatchesScalarFieldEnum[]
+  }
+
+  /**
+   * Matches create
+   */
+  export type MatchesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Matches.
+     */
+    data: XOR<MatchesCreateInput, MatchesUncheckedCreateInput>
+  }
+
+  /**
+   * Matches createMany
+   */
+  export type MatchesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Matches.
+     */
+    data: MatchesCreateManyInput | MatchesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Matches createManyAndReturn
+   */
+  export type MatchesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * The data used to create many Matches.
+     */
+    data: MatchesCreateManyInput | MatchesCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Matches update
+   */
+  export type MatchesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Matches.
+     */
+    data: XOR<MatchesUpdateInput, MatchesUncheckedUpdateInput>
+    /**
+     * Choose, which Matches to update.
+     */
+    where: MatchesWhereUniqueInput
+  }
+
+  /**
+   * Matches updateMany
+   */
+  export type MatchesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Matches.
+     */
+    data: XOR<MatchesUpdateManyMutationInput, MatchesUncheckedUpdateManyInput>
+    /**
+     * Filter which Matches to update
+     */
+    where?: MatchesWhereInput
+    /**
+     * Limit how many Matches to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Matches updateManyAndReturn
+   */
+  export type MatchesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * The data used to update Matches.
+     */
+    data: XOR<MatchesUpdateManyMutationInput, MatchesUncheckedUpdateManyInput>
+    /**
+     * Filter which Matches to update
+     */
+    where?: MatchesWhereInput
+    /**
+     * Limit how many Matches to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Matches upsert
+   */
+  export type MatchesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Matches to update in case it exists.
+     */
+    where: MatchesWhereUniqueInput
+    /**
+     * In case the Matches found by the `where` argument doesn't exist, create a new Matches with this data.
+     */
+    create: XOR<MatchesCreateInput, MatchesUncheckedCreateInput>
+    /**
+     * In case the Matches was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MatchesUpdateInput, MatchesUncheckedUpdateInput>
+  }
+
+  /**
+   * Matches delete
+   */
+  export type MatchesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
+    /**
+     * Filter which Matches to delete.
+     */
+    where: MatchesWhereUniqueInput
+  }
+
+  /**
+   * Matches deleteMany
+   */
+  export type MatchesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Matches to delete
+     */
+    where?: MatchesWhereInput
+    /**
+     * Limit how many Matches to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Matches without action
+   */
+  export type MatchesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Matches
+     */
+    select?: MatchesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Matches
+     */
+    omit?: MatchesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchesInclude<ExtArgs> | null
   }
 
 
@@ -1973,6 +3285,18 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const MatchesScalarFieldEnum: {
+    id: 'id',
+    user1_id: 'user1_id',
+    user2_id: 'user2_id',
+    is_matched_at: 'is_matched_at',
+    is_blocked: 'is_blocked',
+    unmatched_at: 'unmatched_at'
+  };
+
+  export type MatchesScalarFieldEnum = (typeof MatchesScalarFieldEnum)[keyof typeof MatchesScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -1987,6 +3311,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -2023,6 +3355,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2054,6 +3393,8 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"User"> | Date | string
     last_active?: DateTimeFilter<"User"> | Date | string
     profile_pic?: StringFilter<"User"> | string
+    matches_user1?: MatchesListRelationFilter
+    matches_user2?: MatchesListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -2068,6 +3409,8 @@ export namespace Prisma {
     created_at?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+    matches_user1?: MatchesOrderByRelationAggregateInput
+    matches_user2?: MatchesOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -2085,6 +3428,8 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"User"> | Date | string
     last_active?: DateTimeFilter<"User"> | Date | string
     profile_pic?: StringFilter<"User"> | string
+    matches_user1?: MatchesListRelationFilter
+    matches_user2?: MatchesListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -2121,6 +3466,69 @@ export namespace Prisma {
     profile_pic?: StringWithAggregatesFilter<"User"> | string
   }
 
+  export type MatchesWhereInput = {
+    AND?: MatchesWhereInput | MatchesWhereInput[]
+    OR?: MatchesWhereInput[]
+    NOT?: MatchesWhereInput | MatchesWhereInput[]
+    id?: StringFilter<"Matches"> | string
+    user1_id?: StringFilter<"Matches"> | string
+    user2_id?: StringFilter<"Matches"> | string
+    is_matched_at?: DateTimeFilter<"Matches"> | Date | string
+    is_blocked?: BoolFilter<"Matches"> | boolean
+    unmatched_at?: DateTimeNullableFilter<"Matches"> | Date | string | null
+    user1?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user2?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type MatchesOrderByWithRelationInput = {
+    id?: SortOrder
+    user1_id?: SortOrder
+    user2_id?: SortOrder
+    is_matched_at?: SortOrder
+    is_blocked?: SortOrder
+    unmatched_at?: SortOrderInput | SortOrder
+    user1?: UserOrderByWithRelationInput
+    user2?: UserOrderByWithRelationInput
+  }
+
+  export type MatchesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MatchesWhereInput | MatchesWhereInput[]
+    OR?: MatchesWhereInput[]
+    NOT?: MatchesWhereInput | MatchesWhereInput[]
+    user1_id?: StringFilter<"Matches"> | string
+    user2_id?: StringFilter<"Matches"> | string
+    is_matched_at?: DateTimeFilter<"Matches"> | Date | string
+    is_blocked?: BoolFilter<"Matches"> | boolean
+    unmatched_at?: DateTimeNullableFilter<"Matches"> | Date | string | null
+    user1?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user2?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type MatchesOrderByWithAggregationInput = {
+    id?: SortOrder
+    user1_id?: SortOrder
+    user2_id?: SortOrder
+    is_matched_at?: SortOrder
+    is_blocked?: SortOrder
+    unmatched_at?: SortOrderInput | SortOrder
+    _count?: MatchesCountOrderByAggregateInput
+    _max?: MatchesMaxOrderByAggregateInput
+    _min?: MatchesMinOrderByAggregateInput
+  }
+
+  export type MatchesScalarWhereWithAggregatesInput = {
+    AND?: MatchesScalarWhereWithAggregatesInput | MatchesScalarWhereWithAggregatesInput[]
+    OR?: MatchesScalarWhereWithAggregatesInput[]
+    NOT?: MatchesScalarWhereWithAggregatesInput | MatchesScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Matches"> | string
+    user1_id?: StringWithAggregatesFilter<"Matches"> | string
+    user2_id?: StringWithAggregatesFilter<"Matches"> | string
+    is_matched_at?: DateTimeWithAggregatesFilter<"Matches"> | Date | string
+    is_blocked?: BoolWithAggregatesFilter<"Matches"> | boolean
+    unmatched_at?: DateTimeNullableWithAggregatesFilter<"Matches"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -2133,6 +3541,8 @@ export namespace Prisma {
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
+    matches_user1?: MatchesCreateNestedManyWithoutUser1Input
+    matches_user2?: MatchesCreateNestedManyWithoutUser2Input
   }
 
   export type UserUncheckedCreateInput = {
@@ -2147,6 +3557,8 @@ export namespace Prisma {
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
+    matches_user1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
+    matches_user2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
   }
 
   export type UserUpdateInput = {
@@ -2161,6 +3573,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    matches_user1?: MatchesUpdateManyWithoutUser1NestedInput
+    matches_user2?: MatchesUpdateManyWithoutUser2NestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -2175,6 +3589,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    matches_user1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
+    matches_user2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
   }
 
   export type UserCreateManyInput = {
@@ -2219,6 +3635,67 @@ export namespace Prisma {
     profile_pic?: StringFieldUpdateOperationsInput | string
   }
 
+  export type MatchesCreateInput = {
+    id?: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+    user1: UserCreateNestedOneWithoutMatches_user1Input
+    user2: UserCreateNestedOneWithoutMatches_user2Input
+  }
+
+  export type MatchesUncheckedCreateInput = {
+    id?: string
+    user1_id: string
+    user2_id: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+  }
+
+  export type MatchesUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user1?: UserUpdateOneRequiredWithoutMatches_user1NestedInput
+    user2?: UserUpdateOneRequiredWithoutMatches_user2NestedInput
+  }
+
+  export type MatchesUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user1_id?: StringFieldUpdateOperationsInput | string
+    user2_id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MatchesCreateManyInput = {
+    id?: string
+    user1_id: string
+    user2_id: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+  }
+
+  export type MatchesUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MatchesUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user1_id?: StringFieldUpdateOperationsInput | string
+    user2_id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -2243,6 +3720,16 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type MatchesListRelationFilter = {
+    every?: MatchesWhereInput
+    some?: MatchesWhereInput
+    none?: MatchesWhereInput
+  }
+
+  export type MatchesOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -2319,12 +3806,207 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type MatchesCountOrderByAggregateInput = {
+    id?: SortOrder
+    user1_id?: SortOrder
+    user2_id?: SortOrder
+    is_matched_at?: SortOrder
+    is_blocked?: SortOrder
+    unmatched_at?: SortOrder
+  }
+
+  export type MatchesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user1_id?: SortOrder
+    user2_id?: SortOrder
+    is_matched_at?: SortOrder
+    is_blocked?: SortOrder
+    unmatched_at?: SortOrder
+  }
+
+  export type MatchesMinOrderByAggregateInput = {
+    id?: SortOrder
+    user1_id?: SortOrder
+    user2_id?: SortOrder
+    is_matched_at?: SortOrder
+    is_blocked?: SortOrder
+    unmatched_at?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type MatchesCreateNestedManyWithoutUser1Input = {
+    create?: XOR<MatchesCreateWithoutUser1Input, MatchesUncheckedCreateWithoutUser1Input> | MatchesCreateWithoutUser1Input[] | MatchesUncheckedCreateWithoutUser1Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser1Input | MatchesCreateOrConnectWithoutUser1Input[]
+    createMany?: MatchesCreateManyUser1InputEnvelope
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+  }
+
+  export type MatchesCreateNestedManyWithoutUser2Input = {
+    create?: XOR<MatchesCreateWithoutUser2Input, MatchesUncheckedCreateWithoutUser2Input> | MatchesCreateWithoutUser2Input[] | MatchesUncheckedCreateWithoutUser2Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser2Input | MatchesCreateOrConnectWithoutUser2Input[]
+    createMany?: MatchesCreateManyUser2InputEnvelope
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+  }
+
+  export type MatchesUncheckedCreateNestedManyWithoutUser1Input = {
+    create?: XOR<MatchesCreateWithoutUser1Input, MatchesUncheckedCreateWithoutUser1Input> | MatchesCreateWithoutUser1Input[] | MatchesUncheckedCreateWithoutUser1Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser1Input | MatchesCreateOrConnectWithoutUser1Input[]
+    createMany?: MatchesCreateManyUser1InputEnvelope
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+  }
+
+  export type MatchesUncheckedCreateNestedManyWithoutUser2Input = {
+    create?: XOR<MatchesCreateWithoutUser2Input, MatchesUncheckedCreateWithoutUser2Input> | MatchesCreateWithoutUser2Input[] | MatchesUncheckedCreateWithoutUser2Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser2Input | MatchesCreateOrConnectWithoutUser2Input[]
+    createMany?: MatchesCreateManyUser2InputEnvelope
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type MatchesUpdateManyWithoutUser1NestedInput = {
+    create?: XOR<MatchesCreateWithoutUser1Input, MatchesUncheckedCreateWithoutUser1Input> | MatchesCreateWithoutUser1Input[] | MatchesUncheckedCreateWithoutUser1Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser1Input | MatchesCreateOrConnectWithoutUser1Input[]
+    upsert?: MatchesUpsertWithWhereUniqueWithoutUser1Input | MatchesUpsertWithWhereUniqueWithoutUser1Input[]
+    createMany?: MatchesCreateManyUser1InputEnvelope
+    set?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    disconnect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    delete?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    update?: MatchesUpdateWithWhereUniqueWithoutUser1Input | MatchesUpdateWithWhereUniqueWithoutUser1Input[]
+    updateMany?: MatchesUpdateManyWithWhereWithoutUser1Input | MatchesUpdateManyWithWhereWithoutUser1Input[]
+    deleteMany?: MatchesScalarWhereInput | MatchesScalarWhereInput[]
+  }
+
+  export type MatchesUpdateManyWithoutUser2NestedInput = {
+    create?: XOR<MatchesCreateWithoutUser2Input, MatchesUncheckedCreateWithoutUser2Input> | MatchesCreateWithoutUser2Input[] | MatchesUncheckedCreateWithoutUser2Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser2Input | MatchesCreateOrConnectWithoutUser2Input[]
+    upsert?: MatchesUpsertWithWhereUniqueWithoutUser2Input | MatchesUpsertWithWhereUniqueWithoutUser2Input[]
+    createMany?: MatchesCreateManyUser2InputEnvelope
+    set?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    disconnect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    delete?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    update?: MatchesUpdateWithWhereUniqueWithoutUser2Input | MatchesUpdateWithWhereUniqueWithoutUser2Input[]
+    updateMany?: MatchesUpdateManyWithWhereWithoutUser2Input | MatchesUpdateManyWithWhereWithoutUser2Input[]
+    deleteMany?: MatchesScalarWhereInput | MatchesScalarWhereInput[]
+  }
+
+  export type MatchesUncheckedUpdateManyWithoutUser1NestedInput = {
+    create?: XOR<MatchesCreateWithoutUser1Input, MatchesUncheckedCreateWithoutUser1Input> | MatchesCreateWithoutUser1Input[] | MatchesUncheckedCreateWithoutUser1Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser1Input | MatchesCreateOrConnectWithoutUser1Input[]
+    upsert?: MatchesUpsertWithWhereUniqueWithoutUser1Input | MatchesUpsertWithWhereUniqueWithoutUser1Input[]
+    createMany?: MatchesCreateManyUser1InputEnvelope
+    set?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    disconnect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    delete?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    update?: MatchesUpdateWithWhereUniqueWithoutUser1Input | MatchesUpdateWithWhereUniqueWithoutUser1Input[]
+    updateMany?: MatchesUpdateManyWithWhereWithoutUser1Input | MatchesUpdateManyWithWhereWithoutUser1Input[]
+    deleteMany?: MatchesScalarWhereInput | MatchesScalarWhereInput[]
+  }
+
+  export type MatchesUncheckedUpdateManyWithoutUser2NestedInput = {
+    create?: XOR<MatchesCreateWithoutUser2Input, MatchesUncheckedCreateWithoutUser2Input> | MatchesCreateWithoutUser2Input[] | MatchesUncheckedCreateWithoutUser2Input[]
+    connectOrCreate?: MatchesCreateOrConnectWithoutUser2Input | MatchesCreateOrConnectWithoutUser2Input[]
+    upsert?: MatchesUpsertWithWhereUniqueWithoutUser2Input | MatchesUpsertWithWhereUniqueWithoutUser2Input[]
+    createMany?: MatchesCreateManyUser2InputEnvelope
+    set?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    disconnect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    delete?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    connect?: MatchesWhereUniqueInput | MatchesWhereUniqueInput[]
+    update?: MatchesUpdateWithWhereUniqueWithoutUser2Input | MatchesUpdateWithWhereUniqueWithoutUser2Input[]
+    updateMany?: MatchesUpdateManyWithWhereWithoutUser2Input | MatchesUpdateManyWithWhereWithoutUser2Input[]
+    deleteMany?: MatchesScalarWhereInput | MatchesScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutMatches_user1Input = {
+    create?: XOR<UserCreateWithoutMatches_user1Input, UserUncheckedCreateWithoutMatches_user1Input>
+    connectOrCreate?: UserCreateOrConnectWithoutMatches_user1Input
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMatches_user2Input = {
+    create?: XOR<UserCreateWithoutMatches_user2Input, UserUncheckedCreateWithoutMatches_user2Input>
+    connectOrCreate?: UserCreateOrConnectWithoutMatches_user2Input
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type UserUpdateOneRequiredWithoutMatches_user1NestedInput = {
+    create?: XOR<UserCreateWithoutMatches_user1Input, UserUncheckedCreateWithoutMatches_user1Input>
+    connectOrCreate?: UserCreateOrConnectWithoutMatches_user1Input
+    upsert?: UserUpsertWithoutMatches_user1Input
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMatches_user1Input, UserUpdateWithoutMatches_user1Input>, UserUncheckedUpdateWithoutMatches_user1Input>
+  }
+
+  export type UserUpdateOneRequiredWithoutMatches_user2NestedInput = {
+    create?: XOR<UserCreateWithoutMatches_user2Input, UserUncheckedCreateWithoutMatches_user2Input>
+    connectOrCreate?: UserCreateOrConnectWithoutMatches_user2Input
+    upsert?: UserUpsertWithoutMatches_user2Input
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMatches_user2Input, UserUpdateWithoutMatches_user2Input>, UserUncheckedUpdateWithoutMatches_user2Input>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2392,6 +4074,367 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type MatchesCreateWithoutUser1Input = {
+    id?: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+    user2: UserCreateNestedOneWithoutMatches_user2Input
+  }
+
+  export type MatchesUncheckedCreateWithoutUser1Input = {
+    id?: string
+    user2_id: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+  }
+
+  export type MatchesCreateOrConnectWithoutUser1Input = {
+    where: MatchesWhereUniqueInput
+    create: XOR<MatchesCreateWithoutUser1Input, MatchesUncheckedCreateWithoutUser1Input>
+  }
+
+  export type MatchesCreateManyUser1InputEnvelope = {
+    data: MatchesCreateManyUser1Input | MatchesCreateManyUser1Input[]
+    skipDuplicates?: boolean
+  }
+
+  export type MatchesCreateWithoutUser2Input = {
+    id?: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+    user1: UserCreateNestedOneWithoutMatches_user1Input
+  }
+
+  export type MatchesUncheckedCreateWithoutUser2Input = {
+    id?: string
+    user1_id: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+  }
+
+  export type MatchesCreateOrConnectWithoutUser2Input = {
+    where: MatchesWhereUniqueInput
+    create: XOR<MatchesCreateWithoutUser2Input, MatchesUncheckedCreateWithoutUser2Input>
+  }
+
+  export type MatchesCreateManyUser2InputEnvelope = {
+    data: MatchesCreateManyUser2Input | MatchesCreateManyUser2Input[]
+    skipDuplicates?: boolean
+  }
+
+  export type MatchesUpsertWithWhereUniqueWithoutUser1Input = {
+    where: MatchesWhereUniqueInput
+    update: XOR<MatchesUpdateWithoutUser1Input, MatchesUncheckedUpdateWithoutUser1Input>
+    create: XOR<MatchesCreateWithoutUser1Input, MatchesUncheckedCreateWithoutUser1Input>
+  }
+
+  export type MatchesUpdateWithWhereUniqueWithoutUser1Input = {
+    where: MatchesWhereUniqueInput
+    data: XOR<MatchesUpdateWithoutUser1Input, MatchesUncheckedUpdateWithoutUser1Input>
+  }
+
+  export type MatchesUpdateManyWithWhereWithoutUser1Input = {
+    where: MatchesScalarWhereInput
+    data: XOR<MatchesUpdateManyMutationInput, MatchesUncheckedUpdateManyWithoutUser1Input>
+  }
+
+  export type MatchesScalarWhereInput = {
+    AND?: MatchesScalarWhereInput | MatchesScalarWhereInput[]
+    OR?: MatchesScalarWhereInput[]
+    NOT?: MatchesScalarWhereInput | MatchesScalarWhereInput[]
+    id?: StringFilter<"Matches"> | string
+    user1_id?: StringFilter<"Matches"> | string
+    user2_id?: StringFilter<"Matches"> | string
+    is_matched_at?: DateTimeFilter<"Matches"> | Date | string
+    is_blocked?: BoolFilter<"Matches"> | boolean
+    unmatched_at?: DateTimeNullableFilter<"Matches"> | Date | string | null
+  }
+
+  export type MatchesUpsertWithWhereUniqueWithoutUser2Input = {
+    where: MatchesWhereUniqueInput
+    update: XOR<MatchesUpdateWithoutUser2Input, MatchesUncheckedUpdateWithoutUser2Input>
+    create: XOR<MatchesCreateWithoutUser2Input, MatchesUncheckedCreateWithoutUser2Input>
+  }
+
+  export type MatchesUpdateWithWhereUniqueWithoutUser2Input = {
+    where: MatchesWhereUniqueInput
+    data: XOR<MatchesUpdateWithoutUser2Input, MatchesUncheckedUpdateWithoutUser2Input>
+  }
+
+  export type MatchesUpdateManyWithWhereWithoutUser2Input = {
+    where: MatchesScalarWhereInput
+    data: XOR<MatchesUpdateManyMutationInput, MatchesUncheckedUpdateManyWithoutUser2Input>
+  }
+
+  export type UserCreateWithoutMatches_user1Input = {
+    id?: string
+    username: string
+    email: string
+    password: string
+    gender: string
+    date_of_birth: Date | string
+    bio: string
+    location: string
+    created_at?: Date | string
+    last_active: Date | string
+    profile_pic: string
+    matches_user2?: MatchesCreateNestedManyWithoutUser2Input
+  }
+
+  export type UserUncheckedCreateWithoutMatches_user1Input = {
+    id?: string
+    username: string
+    email: string
+    password: string
+    gender: string
+    date_of_birth: Date | string
+    bio: string
+    location: string
+    created_at?: Date | string
+    last_active: Date | string
+    profile_pic: string
+    matches_user2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
+  }
+
+  export type UserCreateOrConnectWithoutMatches_user1Input = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMatches_user1Input, UserUncheckedCreateWithoutMatches_user1Input>
+  }
+
+  export type UserCreateWithoutMatches_user2Input = {
+    id?: string
+    username: string
+    email: string
+    password: string
+    gender: string
+    date_of_birth: Date | string
+    bio: string
+    location: string
+    created_at?: Date | string
+    last_active: Date | string
+    profile_pic: string
+    matches_user1?: MatchesCreateNestedManyWithoutUser1Input
+  }
+
+  export type UserUncheckedCreateWithoutMatches_user2Input = {
+    id?: string
+    username: string
+    email: string
+    password: string
+    gender: string
+    date_of_birth: Date | string
+    bio: string
+    location: string
+    created_at?: Date | string
+    last_active: Date | string
+    profile_pic: string
+    matches_user1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
+  }
+
+  export type UserCreateOrConnectWithoutMatches_user2Input = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMatches_user2Input, UserUncheckedCreateWithoutMatches_user2Input>
+  }
+
+  export type UserUpsertWithoutMatches_user1Input = {
+    update: XOR<UserUpdateWithoutMatches_user1Input, UserUncheckedUpdateWithoutMatches_user1Input>
+    create: XOR<UserCreateWithoutMatches_user1Input, UserUncheckedCreateWithoutMatches_user1Input>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMatches_user1Input = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMatches_user1Input, UserUncheckedUpdateWithoutMatches_user1Input>
+  }
+
+  export type UserUpdateWithoutMatches_user1Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    bio?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_active?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile_pic?: StringFieldUpdateOperationsInput | string
+    matches_user2?: MatchesUpdateManyWithoutUser2NestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMatches_user1Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    bio?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_active?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile_pic?: StringFieldUpdateOperationsInput | string
+    matches_user2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
+  }
+
+  export type UserUpsertWithoutMatches_user2Input = {
+    update: XOR<UserUpdateWithoutMatches_user2Input, UserUncheckedUpdateWithoutMatches_user2Input>
+    create: XOR<UserCreateWithoutMatches_user2Input, UserUncheckedCreateWithoutMatches_user2Input>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMatches_user2Input = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMatches_user2Input, UserUncheckedUpdateWithoutMatches_user2Input>
+  }
+
+  export type UserUpdateWithoutMatches_user2Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    bio?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_active?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile_pic?: StringFieldUpdateOperationsInput | string
+    matches_user1?: MatchesUpdateManyWithoutUser1NestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMatches_user2Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    bio?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_active?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile_pic?: StringFieldUpdateOperationsInput | string
+    matches_user1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
+  }
+
+  export type MatchesCreateManyUser1Input = {
+    id?: string
+    user2_id: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+  }
+
+  export type MatchesCreateManyUser2Input = {
+    id?: string
+    user1_id: string
+    is_matched_at: Date | string
+    is_blocked: boolean
+    unmatched_at?: Date | string | null
+  }
+
+  export type MatchesUpdateWithoutUser1Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2?: UserUpdateOneRequiredWithoutMatches_user2NestedInput
+  }
+
+  export type MatchesUncheckedUpdateWithoutUser1Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    user2_id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MatchesUncheckedUpdateManyWithoutUser1Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    user2_id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MatchesUpdateWithoutUser2Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user1?: UserUpdateOneRequiredWithoutMatches_user1NestedInput
+  }
+
+  export type MatchesUncheckedUpdateWithoutUser2Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    user1_id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MatchesUncheckedUpdateManyWithoutUser2Input = {
+    id?: StringFieldUpdateOperationsInput | string
+    user1_id?: StringFieldUpdateOperationsInput | string
+    is_matched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_blocked?: BoolFieldUpdateOperationsInput | boolean
+    unmatched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

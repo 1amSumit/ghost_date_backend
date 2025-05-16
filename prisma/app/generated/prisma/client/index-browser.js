@@ -134,6 +134,15 @@ exports.Prisma.UserScalarFieldEnum = {
   profile_pic: 'profile_pic'
 };
 
+exports.Prisma.MatchesScalarFieldEnum = {
+  id: 'id',
+  user1_id: 'user1_id',
+  user2_id: 'user2_id',
+  is_matched_at: 'is_matched_at',
+  is_blocked: 'is_blocked',
+  unmatched_at: 'unmatched_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -144,9 +153,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Matches: 'Matches'
 };
 
 /**
