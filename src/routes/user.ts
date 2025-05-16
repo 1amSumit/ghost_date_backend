@@ -23,6 +23,13 @@ routes.post("/signup", async (req, res) => {
       username: parsedData.data.username,
       email: parsedData.data.email,
       password: parsedData.data.password,
+      gender: parsedData.data.gender,
+      bio: parsedData.data.bio,
+      location: parsedData.data.location,
+      date_of_birth: parsedData.data.dateOfBirth,
+      created_at: new Date(),
+      last_active: new Date(),
+      profile_pic: parsedData.data.profilePic,
     },
   });
 

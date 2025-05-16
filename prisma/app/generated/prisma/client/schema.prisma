@@ -15,8 +15,15 @@ datasource db {
 }
 
 model User {
-  id       String @unique @default(uuid())
-  username String
-  email    String @unique
-  password String
+  id            String   @unique @default(uuid())
+  username      String
+  email         String   @unique
+  password      String
+  gender        String
+  date_of_birth DateTime
+  bio           String
+  location      String
+  created_at    DateTime @default(now())
+  last_active   DateTime
+  profile_pic   String
 }
