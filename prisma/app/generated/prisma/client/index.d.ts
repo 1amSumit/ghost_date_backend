@@ -1005,8 +1005,20 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1015,9 +1027,11 @@ export namespace Prisma {
     email: string | null
     password: string | null
     gender: string | null
-    date_of_birth: Date | null
+    date_of_birth: string | null
     bio: string | null
     location: string | null
+    latitude: number | null
+    longitude: number | null
     created_at: Date | null
     last_active: Date | null
     profile_pic: string | null
@@ -1029,9 +1043,11 @@ export namespace Prisma {
     email: string | null
     password: string | null
     gender: string | null
-    date_of_birth: Date | null
+    date_of_birth: string | null
     bio: string | null
     location: string | null
+    latitude: number | null
+    longitude: number | null
     created_at: Date | null
     last_active: Date | null
     profile_pic: string | null
@@ -1046,12 +1062,24 @@ export namespace Prisma {
     date_of_birth: number
     bio: number
     location: number
+    latitude: number
+    longitude: number
     created_at: number
     last_active: number
     profile_pic: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    latitude?: true
+    longitude?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -1062,6 +1090,8 @@ export namespace Prisma {
     date_of_birth?: true
     bio?: true
     location?: true
+    latitude?: true
+    longitude?: true
     created_at?: true
     last_active?: true
     profile_pic?: true
@@ -1076,6 +1106,8 @@ export namespace Prisma {
     date_of_birth?: true
     bio?: true
     location?: true
+    latitude?: true
+    longitude?: true
     created_at?: true
     last_active?: true
     profile_pic?: true
@@ -1090,6 +1122,8 @@ export namespace Prisma {
     date_of_birth?: true
     bio?: true
     location?: true
+    latitude?: true
+    longitude?: true
     created_at?: true
     last_active?: true
     profile_pic?: true
@@ -1134,6 +1168,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -1164,6 +1210,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -1174,13 +1222,17 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date
+    date_of_birth: string
     bio: string
     location: string
+    latitude: number | null
+    longitude: number | null
     created_at: Date
     last_active: Date
     profile_pic: string
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -1208,6 +1260,8 @@ export namespace Prisma {
     date_of_birth?: boolean
     bio?: boolean
     location?: boolean
+    latitude?: boolean
+    longitude?: boolean
     created_at?: boolean
     last_active?: boolean
     profile_pic?: boolean
@@ -1225,6 +1279,8 @@ export namespace Prisma {
     date_of_birth?: boolean
     bio?: boolean
     location?: boolean
+    latitude?: boolean
+    longitude?: boolean
     created_at?: boolean
     last_active?: boolean
     profile_pic?: boolean
@@ -1239,6 +1295,8 @@ export namespace Prisma {
     date_of_birth?: boolean
     bio?: boolean
     location?: boolean
+    latitude?: boolean
+    longitude?: boolean
     created_at?: boolean
     last_active?: boolean
     profile_pic?: boolean
@@ -1253,12 +1311,14 @@ export namespace Prisma {
     date_of_birth?: boolean
     bio?: boolean
     location?: boolean
+    latitude?: boolean
+    longitude?: boolean
     created_at?: boolean
     last_active?: boolean
     profile_pic?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "gender" | "date_of_birth" | "bio" | "location" | "created_at" | "last_active" | "profile_pic", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "gender" | "date_of_birth" | "bio" | "location" | "latitude" | "longitude" | "created_at" | "last_active" | "profile_pic", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     matches_user1?: boolean | User$matches_user1Args<ExtArgs>
     matches_user2?: boolean | User$matches_user2Args<ExtArgs>
@@ -1279,9 +1339,11 @@ export namespace Prisma {
       email: string
       password: string
       gender: string
-      date_of_birth: Date
+      date_of_birth: string
       bio: string
       location: string
+      latitude: number | null
+      longitude: number | null
       created_at: Date
       last_active: Date
       profile_pic: string
@@ -1715,9 +1777,11 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly gender: FieldRef<"User", 'String'>
-    readonly date_of_birth: FieldRef<"User", 'DateTime'>
+    readonly date_of_birth: FieldRef<"User", 'String'>
     readonly bio: FieldRef<"User", 'String'>
     readonly location: FieldRef<"User", 'String'>
+    readonly latitude: FieldRef<"User", 'Float'>
+    readonly longitude: FieldRef<"User", 'Float'>
     readonly created_at: FieldRef<"User", 'DateTime'>
     readonly last_active: FieldRef<"User", 'DateTime'>
     readonly profile_pic: FieldRef<"User", 'String'>
@@ -3277,6 +3341,8 @@ export namespace Prisma {
     date_of_birth: 'date_of_birth',
     bio: 'bio',
     location: 'location',
+    latitude: 'latitude',
+    longitude: 'longitude',
     created_at: 'created_at',
     last_active: 'last_active',
     profile_pic: 'profile_pic'
@@ -3341,6 +3407,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3387,9 +3467,11 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     gender?: StringFilter<"User"> | string
-    date_of_birth?: DateTimeFilter<"User"> | Date | string
+    date_of_birth?: StringFilter<"User"> | string
     bio?: StringFilter<"User"> | string
     location?: StringFilter<"User"> | string
+    latitude?: FloatNullableFilter<"User"> | number | null
+    longitude?: FloatNullableFilter<"User"> | number | null
     created_at?: DateTimeFilter<"User"> | Date | string
     last_active?: DateTimeFilter<"User"> | Date | string
     profile_pic?: StringFilter<"User"> | string
@@ -3406,6 +3488,8 @@ export namespace Prisma {
     date_of_birth?: SortOrder
     bio?: SortOrder
     location?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     created_at?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
@@ -3422,9 +3506,11 @@ export namespace Prisma {
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     gender?: StringFilter<"User"> | string
-    date_of_birth?: DateTimeFilter<"User"> | Date | string
+    date_of_birth?: StringFilter<"User"> | string
     bio?: StringFilter<"User"> | string
     location?: StringFilter<"User"> | string
+    latitude?: FloatNullableFilter<"User"> | number | null
+    longitude?: FloatNullableFilter<"User"> | number | null
     created_at?: DateTimeFilter<"User"> | Date | string
     last_active?: DateTimeFilter<"User"> | Date | string
     profile_pic?: StringFilter<"User"> | string
@@ -3441,12 +3527,16 @@ export namespace Prisma {
     date_of_birth?: SortOrder
     bio?: SortOrder
     location?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     created_at?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -3458,9 +3548,11 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     gender?: StringWithAggregatesFilter<"User"> | string
-    date_of_birth?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    date_of_birth?: StringWithAggregatesFilter<"User"> | string
     bio?: StringWithAggregatesFilter<"User"> | string
     location?: StringWithAggregatesFilter<"User"> | string
+    latitude?: FloatNullableWithAggregatesFilter<"User"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"User"> | number | null
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
     last_active?: DateTimeWithAggregatesFilter<"User"> | Date | string
     profile_pic?: StringWithAggregatesFilter<"User"> | string
@@ -3535,9 +3627,11 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date | string
+    date_of_birth: string
     bio: string
     location: string
+    latitude?: number | null
+    longitude?: number | null
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
@@ -3551,9 +3645,11 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date | string
+    date_of_birth: string
     bio: string
     location: string
+    latitude?: number | null
+    longitude?: number | null
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
@@ -3567,9 +3663,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
@@ -3583,9 +3681,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
@@ -3599,9 +3699,11 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date | string
+    date_of_birth: string
     bio: string
     location: string
+    latitude?: number | null
+    longitude?: number | null
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
@@ -3613,9 +3715,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
@@ -3627,9 +3731,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
@@ -3711,6 +3817,17 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3728,6 +3845,11 @@ export namespace Prisma {
     none?: MatchesWhereInput
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type MatchesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -3741,9 +3863,16 @@ export namespace Prisma {
     date_of_birth?: SortOrder
     bio?: SortOrder
     location?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
     created_at?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -3755,6 +3884,8 @@ export namespace Prisma {
     date_of_birth?: SortOrder
     bio?: SortOrder
     location?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
     created_at?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
@@ -3769,9 +3900,16 @@ export namespace Prisma {
     date_of_birth?: SortOrder
     bio?: SortOrder
     location?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
     created_at?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -3790,6 +3928,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -3825,11 +3979,6 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type MatchesCountOrderByAggregateInput = {
@@ -3911,6 +4060,14 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -4023,6 +4180,17 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -4060,6 +4228,33 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -4112,17 +4307,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type MatchesCreateWithoutUser1Input = {
@@ -4227,9 +4411,11 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date | string
+    date_of_birth: string
     bio: string
     location: string
+    latitude?: number | null
+    longitude?: number | null
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
@@ -4242,9 +4428,11 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date | string
+    date_of_birth: string
     bio: string
     location: string
+    latitude?: number | null
+    longitude?: number | null
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
@@ -4262,9 +4450,11 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date | string
+    date_of_birth: string
     bio: string
     location: string
+    latitude?: number | null
+    longitude?: number | null
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
@@ -4277,9 +4467,11 @@ export namespace Prisma {
     email: string
     password: string
     gender: string
-    date_of_birth: Date | string
+    date_of_birth: string
     bio: string
     location: string
+    latitude?: number | null
+    longitude?: number | null
     created_at?: Date | string
     last_active: Date | string
     profile_pic: string
@@ -4308,9 +4500,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
@@ -4323,9 +4517,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
@@ -4349,9 +4545,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
@@ -4364,9 +4562,11 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string

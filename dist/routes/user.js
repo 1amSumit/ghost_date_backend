@@ -33,6 +33,15 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
             username: parsedData.data.username,
             email: parsedData.data.email,
             password: parsedData.data.password,
+            gender: parsedData.data.gender,
+            bio: parsedData.data.bio,
+            location: parsedData.data.location,
+            date_of_birth: parsedData.data.dateOfBirth,
+            created_at: new Date(),
+            last_active: new Date(),
+            profile_pic: parsedData.data.profilePic,
+            latitude: parsedData.data.latitude,
+            longitude: parsedData.data.longitude,
         },
     });
     res.status(200).json({

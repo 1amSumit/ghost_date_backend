@@ -20,9 +20,11 @@ model User {
   email         String   @unique
   password      String
   gender        String
-  date_of_birth DateTime
+  date_of_birth String
   bio           String
   location      String
+  latitude      Float?
+  longitude     Float?
   created_at    DateTime @default(now())
   last_active   DateTime
   profile_pic   String

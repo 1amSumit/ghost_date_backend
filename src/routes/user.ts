@@ -30,6 +30,8 @@ routes.post("/signup", async (req, res) => {
       created_at: new Date(),
       last_active: new Date(),
       profile_pic: parsedData.data.profilePic,
+      latitude: parsedData.data.latitude,
+      longitude: parsedData.data.longitude,
     },
   });
 

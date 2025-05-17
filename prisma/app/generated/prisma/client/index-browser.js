@@ -129,6 +129,8 @@ exports.Prisma.UserScalarFieldEnum = {
   date_of_birth: 'date_of_birth',
   bio: 'bio',
   location: 'location',
+  latitude: 'latitude',
+  longitude: 'longitude',
   created_at: 'created_at',
   last_active: 'last_active',
   profile_pic: 'profile_pic'
