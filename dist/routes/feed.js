@@ -17,7 +17,7 @@ const router = (0, express_1.Router)();
 const prismaClient = new client_1.PrismaClient();
 router.use(middleware_1.authMiddleware);
 //@ts-ignore
-router.get("/getFeed", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/getMatchedFeed", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //@ts-ignore
     const userId = req.userId;
     const getAllUser = yield prismaClient.user.findMany({

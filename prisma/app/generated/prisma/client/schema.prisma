@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "app/generated/prisma/client"
@@ -15,22 +9,20 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(uuid())
-  username      String
-  email         String   @unique
-  password      String
-  gender        String
-  date_of_birth String
-  bio           String
-  location      String
-  latitude      Float?
-  longitude     Float?
-  created_at    DateTime @default(now())
-  last_active   DateTime
-  profile_pic   String
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
 
-  matches_user1 Matches[] @relation("UserMatches1")
-  matches_user2 Matches[] @relation("UserMatches2")
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  last_seen  DateTime?
+
+  user_details UserDetail?
+  preferences  UserPreferences?
+  media        Media?
+
+  matches1 Matches[] @relation("UserMatches1")
+  matches2 Matches[] @relation("UserMatches2")
 }
 
 model Matches {
@@ -40,6 +32,55 @@ model Matches {
   is_matched_at DateTime
   is_blocked    Boolean
   unmatched_at  DateTime?
-  user1         User      @relation("UserMatches1", fields: [user1_id], references: [id])
-  user2         User      @relation("UserMatches2", fields: [user2_id], references: [id])
+
+  user1 User @relation("UserMatches1", fields: [user1_id], references: [id])
+  user2 User @relation("UserMatches2", fields: [user2_id], references: [id])
+
+  @@unique([user1_id, user2_id])
+}
+
+enum Genders {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model UserDetail {
+  id                   String    @id @default(uuid())
+  first_name           String
+  last_name            String
+  pronounce            String[]
+  gender               Genders
+  date_of_birth        String
+  bio                  String
+  location             String
+  latitude             Float?
+  longitude            Float?
+  last_active          DateTime
+  profile_pic          String
+  interested_in_gender Genders[]
+  user_id              String    @unique
+  user                 User      @relation(fields: [user_id], references: [id])
+}
+
+model UserPreferences {
+  id               String   @id @default(uuid())
+  interests        String[]
+  prefered_min_age Int?
+  prefered_max_age Int?
+  max_distance     Int?
+  show_on_feed     Boolean
+  is_ghost_mode    Boolean
+  verified         Boolean
+  user_id          String   @unique
+  user             User     @relation(fields: [user_id], references: [id])
+}
+
+model Media {
+  id          String   @id @default(uuid())
+  gallery     String[]
+  video_intro String
+  voice_intro String
+  user_id     String   @unique
+  user        User     @relation(fields: [user_id], references: [id])
 }

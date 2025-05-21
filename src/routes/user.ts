@@ -13,31 +13,50 @@ routes.post("/signup", async (req, res) => {
 
   if (!parsedData.success) {
     res.status(411).json({
-      message: "Invalid input",
+      message: "Invalid inputt",
+      erro: parsedData,
     });
     return;
   }
 
-  const newUser = await prismaClient.user.create({
-    data: {
-      username: parsedData.data.username,
-      email: parsedData.data.email,
-      password: parsedData.data.password,
-      gender: parsedData.data.gender,
-      bio: parsedData.data.bio,
-      location: parsedData.data.location,
-      date_of_birth: parsedData.data.dateOfBirth,
-      created_at: new Date(),
-      last_active: new Date(),
-      profile_pic: parsedData.data.profilePic,
-      latitude: parsedData.data.latitude,
-      longitude: parsedData.data.longitude,
-    },
-  });
+  await prismaClient.$transaction(async (tx) => {
+    const user = await tx.user.create({
+      data: {
+        email: parsedData.data.email,
+        password: parsedData.data.email,
+      },
+    });
 
-  res.status(200).json({
-    user: newUser,
-    message: "signup successfull",
+    await tx.userDetail.create({
+      data: {
+        user_id: user.id,
+        first_name: parsedData.data.firstName,
+        last_name: parsedData.data.lastName,
+        date_of_birth: parsedData.data.dateOfBirth,
+        gender: parsedData.data.gender,
+        bio: parsedData.data.bio,
+        location: parsedData.data.location,
+        latitude: parsedData.data.latitude,
+        longitude: parsedData.data.longitude,
+        pronounce: parsedData.data.pronounce,
+        interested_in_gender: parsedData.data.interestedInGender,
+        profile_pic: parsedData.data.profilePic,
+        last_active: new Date(),
+      },
+    });
+
+    await tx.userPreferences.create({
+      data: {
+        user_id: user.id,
+        interests: parsedData.data.interests,
+        prefered_min_age: parsedData.data.prefered_min_age,
+        prefered_max_age: parsedData.data.prefered_max_age,
+        max_distance: parsedData.data.max_distance,
+        is_ghost_mode: parsedData.data.is_ghost_mode,
+        show_on_feed: parsedData.data.show_on_feed,
+        verified: parsedData.data.verified,
+      },
+    });
   });
 });
 

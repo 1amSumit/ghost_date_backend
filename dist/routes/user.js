@@ -24,29 +24,22 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     const parsedData = types_1.userSingupTypes.safeParse(body);
     if (!parsedData.success) {
         res.status(411).json({
-            message: "Invalid input",
+            message: "Invalid inputt",
+            erro: parsedData,
         });
         return;
     }
-    const newUser = yield prismaClient.user.create({
-        data: {
-            username: parsedData.data.username,
-            email: parsedData.data.email,
-            password: parsedData.data.password,
-            gender: parsedData.data.gender,
-            bio: parsedData.data.bio,
-            location: parsedData.data.location,
-            date_of_birth: parsedData.data.dateOfBirth,
-            created_at: new Date(),
-            last_active: new Date(),
-            profile_pic: parsedData.data.profilePic,
-            latitude: parsedData.data.latitude,
-            longitude: parsedData.data.longitude,
-        },
-    });
-    res.status(200).json({
-        user: newUser,
-        message: "signup successfull",
+    yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield tx.user.create({
+            data: {
+                email: parsedData.data.email,
+                password: parsedData.data.email,
+            },
+        });
+        console.log(user.id);
+    }));
+    res.json({
+        message: "succ",
     });
 }));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

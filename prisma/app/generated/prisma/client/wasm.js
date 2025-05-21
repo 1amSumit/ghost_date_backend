@@ -122,18 +122,11 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  username: 'username',
   email: 'email',
   password: 'password',
-  gender: 'gender',
-  date_of_birth: 'date_of_birth',
-  bio: 'bio',
-  location: 'location',
-  latitude: 'latitude',
-  longitude: 'longitude',
   created_at: 'created_at',
-  last_active: 'last_active',
-  profile_pic: 'profile_pic'
+  updated_at: 'updated_at',
+  last_seen: 'last_seen'
 };
 
 exports.Prisma.MatchesScalarFieldEnum = {
@@ -143,6 +136,43 @@ exports.Prisma.MatchesScalarFieldEnum = {
   is_matched_at: 'is_matched_at',
   is_blocked: 'is_blocked',
   unmatched_at: 'unmatched_at'
+};
+
+exports.Prisma.UserDetailScalarFieldEnum = {
+  id: 'id',
+  first_name: 'first_name',
+  last_name: 'last_name',
+  pronounce: 'pronounce',
+  gender: 'gender',
+  date_of_birth: 'date_of_birth',
+  bio: 'bio',
+  location: 'location',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  last_active: 'last_active',
+  profile_pic: 'profile_pic',
+  interested_in_gender: 'interested_in_gender',
+  user_id: 'user_id'
+};
+
+exports.Prisma.UserPreferencesScalarFieldEnum = {
+  id: 'id',
+  interests: 'interests',
+  prefered_min_age: 'prefered_min_age',
+  prefered_max_age: 'prefered_max_age',
+  max_distance: 'max_distance',
+  show_on_feed: 'show_on_feed',
+  is_ghost_mode: 'is_ghost_mode',
+  verified: 'verified',
+  user_id: 'user_id'
+};
+
+exports.Prisma.MediaScalarFieldEnum = {
+  id: 'id',
+  gallery: 'gallery',
+  video_intro: 'video_intro',
+  voice_intro: 'voice_intro',
+  user_id: 'user_id'
 };
 
 exports.Prisma.SortOrder = {
@@ -159,11 +189,18 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.Genders = exports.$Enums.Genders = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Matches: 'Matches'
+  Matches: 'Matches',
+  UserDetail: 'UserDetail',
+  UserPreferences: 'UserPreferences',
+  Media: 'Media'
 };
 
 /**

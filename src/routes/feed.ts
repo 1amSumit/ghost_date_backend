@@ -8,7 +8,7 @@ const prismaClient = new PrismaClient();
 router.use(authMiddleware);
 
 //@ts-ignore
-router.get("/getFeed", async (req, res) => {
+router.get("/getMatchedFeed", async (req, res) => {
   //@ts-ignore
   const userId = req.userId;
   const getAllUser = await prismaClient.user.findMany({
