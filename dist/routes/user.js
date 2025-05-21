@@ -36,11 +36,36 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
                 password: parsedData.data.email,
             },
         });
-        console.log(user.id);
+        yield tx.userDetail.create({
+            data: {
+                user_id: user.id,
+                first_name: parsedData.data.firstName,
+                last_name: parsedData.data.lastName,
+                date_of_birth: parsedData.data.dateOfBirth,
+                gender: parsedData.data.gender,
+                bio: parsedData.data.bio,
+                location: parsedData.data.location,
+                latitude: parsedData.data.latitude,
+                longitude: parsedData.data.longitude,
+                pronounce: parsedData.data.pronounce,
+                interested_in_gender: parsedData.data.interestedInGender,
+                profile_pic: parsedData.data.profilePic,
+                last_active: new Date(),
+            },
+        });
+        yield tx.userPreferences.create({
+            data: {
+                user_id: user.id,
+                interests: parsedData.data.interests,
+                prefered_min_age: parsedData.data.prefered_min_age,
+                prefered_max_age: parsedData.data.prefered_max_age,
+                max_distance: parsedData.data.max_distance,
+                is_ghost_mode: parsedData.data.is_ghost_mode,
+                show_on_feed: parsedData.data.show_on_feed,
+                verified: parsedData.data.verified,
+            },
+        });
     }));
-    res.json({
-        message: "succ",
-    });
 }));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = yield req.body;

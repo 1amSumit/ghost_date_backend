@@ -58,6 +58,9 @@ routes.post("/signup", async (req, res) => {
       },
     });
   });
+  res.status(200).json({
+    message: "User created successfully",
+  });
 });
 
 routes.post("/signin", async (req, res) => {
