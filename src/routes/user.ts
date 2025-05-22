@@ -23,7 +23,7 @@ routes.post("/signup", async (req, res) => {
     const user = await tx.user.create({
       data: {
         email: parsedData.data.email,
-        password: parsedData.data.email,
+        password: parsedData.data.password,
       },
     });
 

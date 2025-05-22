@@ -33,7 +33,7 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         const user = yield tx.user.create({
             data: {
                 email: parsedData.data.email,
-                password: parsedData.data.email,
+                password: parsedData.data.password,
             },
         });
         yield tx.userDetail.create({
@@ -66,6 +66,9 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
             },
         });
     }));
+    res.status(200).json({
+        message: "User created successfully",
+    });
 }));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = yield req.body;
