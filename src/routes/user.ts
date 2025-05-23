@@ -41,6 +41,8 @@ routes.post("/signup", async (req, res) => {
         pronounce: parsedData.data.pronounce,
         interested_in_gender: parsedData.data.interestedInGender,
         profile_pic: parsedData.data.profilePic,
+        height: parsedData.data.height,
+        education: parsedData.data.education,
         last_active: new Date(),
       },
     });

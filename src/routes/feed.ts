@@ -1,4 +1,4 @@
-import { json, Router } from "express";
+import { Router } from "express";
 import { authMiddleware } from "../utils/middleware";
 import { PrismaClient } from "../../prisma/app/generated/prisma/client";
 import { redisClient } from "../utils/redisClient";

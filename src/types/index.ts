@@ -29,6 +29,8 @@ export const userSingupTypes = z.object({
   show_on_feed: z.boolean(),
   is_ghost_mode: z.boolean(),
   verified: z.boolean(),
+  education: z.string(),
+  height: z.string(),
 });
 
 export const userSinginTypes = z.object({

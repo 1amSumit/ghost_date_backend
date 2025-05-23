@@ -3578,6 +3578,8 @@ export namespace Prisma {
     gender: $Enums.Genders | null
     date_of_birth: string | null
     bio: string | null
+    height: string | null
+    education: string | null
     location: string | null
     latitude: number | null
     longitude: number | null
@@ -3593,6 +3595,8 @@ export namespace Prisma {
     gender: $Enums.Genders | null
     date_of_birth: string | null
     bio: string | null
+    height: string | null
+    education: string | null
     location: string | null
     latitude: number | null
     longitude: number | null
@@ -3609,6 +3613,8 @@ export namespace Prisma {
     gender: number
     date_of_birth: number
     bio: number
+    height: number
+    education: number
     location: number
     latitude: number
     longitude: number
@@ -3637,6 +3643,8 @@ export namespace Prisma {
     gender?: true
     date_of_birth?: true
     bio?: true
+    height?: true
+    education?: true
     location?: true
     latitude?: true
     longitude?: true
@@ -3652,6 +3660,8 @@ export namespace Prisma {
     gender?: true
     date_of_birth?: true
     bio?: true
+    height?: true
+    education?: true
     location?: true
     latitude?: true
     longitude?: true
@@ -3668,6 +3678,8 @@ export namespace Prisma {
     gender?: true
     date_of_birth?: true
     bio?: true
+    height?: true
+    education?: true
     location?: true
     latitude?: true
     longitude?: true
@@ -3772,6 +3784,8 @@ export namespace Prisma {
     gender: $Enums.Genders
     date_of_birth: string
     bio: string
+    height: string
+    education: string
     location: string
     latitude: number | null
     longitude: number | null
@@ -3808,6 +3822,8 @@ export namespace Prisma {
     gender?: boolean
     date_of_birth?: boolean
     bio?: boolean
+    height?: boolean
+    education?: boolean
     location?: boolean
     latitude?: boolean
     longitude?: boolean
@@ -3826,6 +3842,8 @@ export namespace Prisma {
     gender?: boolean
     date_of_birth?: boolean
     bio?: boolean
+    height?: boolean
+    education?: boolean
     location?: boolean
     latitude?: boolean
     longitude?: boolean
@@ -3844,6 +3862,8 @@ export namespace Prisma {
     gender?: boolean
     date_of_birth?: boolean
     bio?: boolean
+    height?: boolean
+    education?: boolean
     location?: boolean
     latitude?: boolean
     longitude?: boolean
@@ -3862,6 +3882,8 @@ export namespace Prisma {
     gender?: boolean
     date_of_birth?: boolean
     bio?: boolean
+    height?: boolean
+    education?: boolean
     location?: boolean
     latitude?: boolean
     longitude?: boolean
@@ -3871,7 +3893,7 @@ export namespace Prisma {
     user_id?: boolean
   }
 
-  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "bio" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
+  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "bio" | "height" | "education" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
   export type UserDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3895,6 +3917,8 @@ export namespace Prisma {
       gender: $Enums.Genders
       date_of_birth: string
       bio: string
+      height: string
+      education: string
       location: string
       latitude: number | null
       longitude: number | null
@@ -4333,6 +4357,8 @@ export namespace Prisma {
     readonly gender: FieldRef<"UserDetail", 'Genders'>
     readonly date_of_birth: FieldRef<"UserDetail", 'String'>
     readonly bio: FieldRef<"UserDetail", 'String'>
+    readonly height: FieldRef<"UserDetail", 'String'>
+    readonly education: FieldRef<"UserDetail", 'String'>
     readonly location: FieldRef<"UserDetail", 'String'>
     readonly latitude: FieldRef<"UserDetail", 'Float'>
     readonly longitude: FieldRef<"UserDetail", 'Float'>
@@ -7002,6 +7028,8 @@ export namespace Prisma {
     gender: 'gender',
     date_of_birth: 'date_of_birth',
     bio: 'bio',
+    height: 'height',
+    education: 'education',
     location: 'location',
     latitude: 'latitude',
     longitude: 'longitude',
@@ -7296,6 +7324,8 @@ export namespace Prisma {
     gender?: EnumGendersFilter<"UserDetail"> | $Enums.Genders
     date_of_birth?: StringFilter<"UserDetail"> | string
     bio?: StringFilter<"UserDetail"> | string
+    height?: StringFilter<"UserDetail"> | string
+    education?: StringFilter<"UserDetail"> | string
     location?: StringFilter<"UserDetail"> | string
     latitude?: FloatNullableFilter<"UserDetail"> | number | null
     longitude?: FloatNullableFilter<"UserDetail"> | number | null
@@ -7314,6 +7344,8 @@ export namespace Prisma {
     gender?: SortOrder
     date_of_birth?: SortOrder
     bio?: SortOrder
+    height?: SortOrder
+    education?: SortOrder
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
@@ -7336,6 +7368,8 @@ export namespace Prisma {
     gender?: EnumGendersFilter<"UserDetail"> | $Enums.Genders
     date_of_birth?: StringFilter<"UserDetail"> | string
     bio?: StringFilter<"UserDetail"> | string
+    height?: StringFilter<"UserDetail"> | string
+    education?: StringFilter<"UserDetail"> | string
     location?: StringFilter<"UserDetail"> | string
     latitude?: FloatNullableFilter<"UserDetail"> | number | null
     longitude?: FloatNullableFilter<"UserDetail"> | number | null
@@ -7353,6 +7387,8 @@ export namespace Prisma {
     gender?: SortOrder
     date_of_birth?: SortOrder
     bio?: SortOrder
+    height?: SortOrder
+    education?: SortOrder
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
@@ -7378,6 +7414,8 @@ export namespace Prisma {
     gender?: EnumGendersWithAggregatesFilter<"UserDetail"> | $Enums.Genders
     date_of_birth?: StringWithAggregatesFilter<"UserDetail"> | string
     bio?: StringWithAggregatesFilter<"UserDetail"> | string
+    height?: StringWithAggregatesFilter<"UserDetail"> | string
+    education?: StringWithAggregatesFilter<"UserDetail"> | string
     location?: StringWithAggregatesFilter<"UserDetail"> | string
     latitude?: FloatNullableWithAggregatesFilter<"UserDetail"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"UserDetail"> | number | null
@@ -7671,6 +7709,8 @@ export namespace Prisma {
     gender: $Enums.Genders
     date_of_birth: string
     bio: string
+    height: string
+    education: string
     location: string
     latitude?: number | null
     longitude?: number | null
@@ -7688,6 +7728,8 @@ export namespace Prisma {
     gender: $Enums.Genders
     date_of_birth: string
     bio: string
+    height: string
+    education: string
     location: string
     latitude?: number | null
     longitude?: number | null
@@ -7705,6 +7747,8 @@ export namespace Prisma {
     gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
+    height?: StringFieldUpdateOperationsInput | string
+    education?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -7722,6 +7766,8 @@ export namespace Prisma {
     gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
+    height?: StringFieldUpdateOperationsInput | string
+    education?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -7739,6 +7785,8 @@ export namespace Prisma {
     gender: $Enums.Genders
     date_of_birth: string
     bio: string
+    height: string
+    education: string
     location: string
     latitude?: number | null
     longitude?: number | null
@@ -7756,6 +7804,8 @@ export namespace Prisma {
     gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
+    height?: StringFieldUpdateOperationsInput | string
+    education?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -7772,6 +7822,8 @@ export namespace Prisma {
     gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
+    height?: StringFieldUpdateOperationsInput | string
+    education?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -8151,6 +8203,8 @@ export namespace Prisma {
     gender?: SortOrder
     date_of_birth?: SortOrder
     bio?: SortOrder
+    height?: SortOrder
+    education?: SortOrder
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
@@ -8172,6 +8226,8 @@ export namespace Prisma {
     gender?: SortOrder
     date_of_birth?: SortOrder
     bio?: SortOrder
+    height?: SortOrder
+    education?: SortOrder
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
@@ -8187,6 +8243,8 @@ export namespace Prisma {
     gender?: SortOrder
     date_of_birth?: SortOrder
     bio?: SortOrder
+    height?: SortOrder
+    education?: SortOrder
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
@@ -8827,6 +8885,8 @@ export namespace Prisma {
     gender: $Enums.Genders
     date_of_birth: string
     bio: string
+    height: string
+    education: string
     location: string
     latitude?: number | null
     longitude?: number | null
@@ -8843,6 +8903,8 @@ export namespace Prisma {
     gender: $Enums.Genders
     date_of_birth: string
     bio: string
+    height: string
+    education: string
     location: string
     latitude?: number | null
     longitude?: number | null
@@ -8973,6 +9035,8 @@ export namespace Prisma {
     gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
+    height?: StringFieldUpdateOperationsInput | string
+    education?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -8989,6 +9053,8 @@ export namespace Prisma {
     gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
+    height?: StringFieldUpdateOperationsInput | string
+    education?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null

@@ -146,6 +146,8 @@ exports.Prisma.UserDetailScalarFieldEnum = {
   gender: 'gender',
   date_of_birth: 'date_of_birth',
   bio: 'bio',
+  height: 'height',
+  education: 'education',
   location: 'location',
   latitude: 'latitude',
   longitude: 'longitude',

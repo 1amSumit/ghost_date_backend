@@ -53,6 +53,8 @@ model UserDetail {
   gender               Genders
   date_of_birth        String
   bio                  String
+  height               String
+  education            String
   location             String
   latitude             Float?
   longitude            Float?
