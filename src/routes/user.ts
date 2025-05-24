@@ -3,6 +3,9 @@ import { PrismaClient } from "../../prisma/app/generated/prisma/client";
 import { userSinginTypes, userSingupTypes } from "../types";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { redisClient } from "../utils/redisClient";
+import { generateOtp } from "../utils/genereateOtp";
+import { sendMail } from "../utils/sendEmail";
 
 const prismaClient = new PrismaClient();
 
@@ -21,16 +24,21 @@ routes.post("/signup", async (req, res) => {
   }
 
   const hashPassword = await bcrypt.hash(parsedData.data.password, 12);
+  const otp = generateOtp();
+  console.log(otp);
+  await redisClient.set(parsedData.data.email, otp);
+  const resp = await sendMail(parsedData.data.email, otp);
+  console.log(resp);
 
-  const user = await prismaClient.user.create({
-    data: {
-      email: parsedData.data.email,
-      password: parsedData.data.password,
-    },
-  });
+  // const user = await prismaClient.user.create({
+  //   data: {
+  //     email: parsedData.data.email,
+  //     password: parsedData.data.password,
+  //   },
+  // });
 
   res.status(200).json({
-    message: "User created successfully",
+    message: "otp sent successfully",
   });
 });
 

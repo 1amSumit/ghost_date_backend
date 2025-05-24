@@ -18,6 +18,9 @@ const client_1 = require("../../prisma/app/generated/prisma/client");
 const types_1 = require("../types");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const redisClient_1 = require("../utils/redisClient");
+const genereateOtp_1 = require("../utils/genereateOtp");
+const sendEmail_1 = require("../utils/sendEmail");
 const prismaClient = new client_1.PrismaClient();
 const routes = (0, express_1.Router)();
 routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -31,8 +34,11 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         return;
     }
     const hashPassword = yield bcrypt_1.default.hash(parsedData.data.password, 12);
-    console.log("hash");
-    console.log(hashPassword);
+    const otp = (0, genereateOtp_1.generateOtp)();
+    console.log(otp);
+    yield redisClient_1.redisClient.set(parsedData.data.email, otp);
+    const resp = yield (0, sendEmail_1.sendMail)(parsedData.data.email, otp);
+    console.log(resp);
     // const user = await prismaClient.user.create({
     //   data: {
     //     email: parsedData.data.email,
@@ -40,7 +46,7 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     //   },
     // });
     res.status(200).json({
-        message: "User created successfully",
+        message: "otp sent successfully",
     });
 }));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
