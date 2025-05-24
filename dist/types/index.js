@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userSinginTypes = exports.userSingupTypes = void 0;
+exports.userDetailsTypes = exports.userSinginTypes = exports.userSingupTypes = void 0;
 const zod_1 = require("zod");
 var Gender;
 (function (Gender) {
@@ -9,10 +9,16 @@ var Gender;
     Gender["OTHER"] = "OTHER";
 })(Gender || (Gender = {}));
 exports.userSingupTypes = zod_1.z.object({
-    firstName: zod_1.z.string(),
-    lastName: zod_1.z.string(),
     email: zod_1.z.string().email(),
     password: zod_1.z.string().min(6),
+});
+exports.userSinginTypes = zod_1.z.object({
+    email: zod_1.z.string(),
+    password: zod_1.z.string().min(6),
+});
+exports.userDetailsTypes = zod_1.z.object({
+    firstName: zod_1.z.string(),
+    lastName: zod_1.z.string(),
     gender: zod_1.z.enum([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
     bio: zod_1.z.string(),
     dateOfBirth: zod_1.z.string(),
@@ -29,8 +35,7 @@ exports.userSingupTypes = zod_1.z.object({
     show_on_feed: zod_1.z.boolean(),
     is_ghost_mode: zod_1.z.boolean(),
     verified: zod_1.z.boolean(),
-});
-exports.userSinginTypes = zod_1.z.object({
-    email: zod_1.z.string(),
-    password: zod_1.z.string().min(6),
+    education: zod_1.z.string(),
+    height: zod_1.z.string(),
+    howyoudie: zod_1.z.string(),
 });

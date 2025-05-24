@@ -40,7 +40,6 @@ router.get("/getMatchedFeed", (req, res) => __awaiter(void 0, void 0, void 0, fu
     const feed = [];
     for (const user of getAllUser) {
         const exists = yield redisClient_1.redisClient.get(user.id);
-        console.log(`User ${user.id} exists in cache?`, exists !== null);
         if (exists === null) {
             feed.push(user);
             yield redisClient_1.redisClient.set(user.id, JSON.stringify(user), {

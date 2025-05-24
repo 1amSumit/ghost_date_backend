@@ -7,10 +7,18 @@ enum Gender {
 }
 
 export const userSingupTypes = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
   email: z.string().email(),
   password: z.string().min(6),
+});
+
+export const userSinginTypes = z.object({
+  email: z.string(),
+  password: z.string().min(6),
+});
+
+export const userDetailsTypes = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
   gender: z.enum([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
   bio: z.string(),
   dateOfBirth: z.string(),
@@ -32,9 +40,4 @@ export const userSingupTypes = z.object({
   education: z.string(),
   height: z.string(),
   howyoudie: z.string(),
-});
-
-export const userSinginTypes = z.object({
-  email: z.string(),
-  password: z.string().min(6),
 });

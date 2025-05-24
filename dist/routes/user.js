@@ -17,6 +17,7 @@ const express_1 = require("express");
 const client_1 = require("../../prisma/app/generated/prisma/client");
 const types_1 = require("../types");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const prismaClient = new client_1.PrismaClient();
 const routes = (0, express_1.Router)();
 routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,43 +30,15 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
         return;
     }
-    yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield tx.user.create({
-            data: {
-                email: parsedData.data.email,
-                password: parsedData.data.password,
-            },
-        });
-        yield tx.userDetail.create({
-            data: {
-                user_id: user.id,
-                first_name: parsedData.data.firstName,
-                last_name: parsedData.data.lastName,
-                date_of_birth: parsedData.data.dateOfBirth,
-                gender: parsedData.data.gender,
-                bio: parsedData.data.bio,
-                location: parsedData.data.location,
-                latitude: parsedData.data.latitude,
-                longitude: parsedData.data.longitude,
-                pronounce: parsedData.data.pronounce,
-                interested_in_gender: parsedData.data.interestedInGender,
-                profile_pic: parsedData.data.profilePic,
-                last_active: new Date(),
-            },
-        });
-        yield tx.userPreferences.create({
-            data: {
-                user_id: user.id,
-                interests: parsedData.data.interests,
-                prefered_min_age: parsedData.data.prefered_min_age,
-                prefered_max_age: parsedData.data.prefered_max_age,
-                max_distance: parsedData.data.max_distance,
-                is_ghost_mode: parsedData.data.is_ghost_mode,
-                show_on_feed: parsedData.data.show_on_feed,
-                verified: parsedData.data.verified,
-            },
-        });
-    }));
+    const hashPassword = yield bcrypt_1.default.hash(parsedData.data.password, 12);
+    console.log("hash");
+    console.log(hashPassword);
+    // const user = await prismaClient.user.create({
+    //   data: {
+    //     email: parsedData.data.email,
+    //     password: parsedData.data.password,
+    //   },
+    // });
     res.status(200).json({
         message: "User created successfully",
     });
@@ -99,4 +72,38 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         user: userExists,
     });
 }));
+// routes.post("/userDetails", async (req, res) => {
+//   await tx.userDetail.create({
+//     data: {
+//       user_id: user.id,
+//       first_name: parsedData.data.firstName,
+//       last_name: parsedData.data.lastName,
+//       date_of_birth: parsedData.data.dateOfBirth,
+//       gender: parsedData.data.gender,
+//       bio: parsedData.data.bio,
+//       location: parsedData.data.location,
+//       latitude: parsedData.data.latitude,
+//       longitude: parsedData.data.longitude,
+//       pronounce: parsedData.data.pronounce,
+//       interested_in_gender: parsedData.data.interestedInGender,
+//       profile_pic: parsedData.data.profilePic,
+//       height: parsedData.data.height,
+//       education: parsedData.data.education,
+//       howyoudie: parsedData.data.howyoudie,
+//       last_active: new Date(),
+//     },
+//   });
+//   await tx.userPreferences.create({
+//     data: {
+//       user_id: user.id,
+//       interests: parsedData.data.interests,
+//       prefered_min_age: parsedData.data.prefered_min_age,
+//       prefered_max_age: parsedData.data.prefered_max_age,
+//       max_distance: parsedData.data.max_distance,
+//       is_ghost_mode: parsedData.data.is_ghost_mode,
+//       show_on_feed: parsedData.data.show_on_feed,
+//       verified: parsedData.data.verified,
+//     },
+//   });
+// });
 exports.userRoutes = routes;
