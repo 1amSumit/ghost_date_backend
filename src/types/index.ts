@@ -31,6 +31,7 @@ export const userSingupTypes = z.object({
   verified: z.boolean(),
   education: z.string(),
   height: z.string(),
+  howyoudie: z.string(),
 });
 
 export const userSinginTypes = z.object({

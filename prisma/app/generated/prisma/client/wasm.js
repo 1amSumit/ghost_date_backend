@@ -153,6 +153,7 @@ exports.Prisma.UserDetailScalarFieldEnum = {
   longitude: 'longitude',
   last_active: 'last_active',
   profile_pic: 'profile_pic',
+  howyoudie: 'howyoudie',
   interested_in_gender: 'interested_in_gender',
   user_id: 'user_id'
 };

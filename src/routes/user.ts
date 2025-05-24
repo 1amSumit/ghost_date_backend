@@ -43,6 +43,7 @@ routes.post("/signup", async (req, res) => {
         profile_pic: parsedData.data.profilePic,
         height: parsedData.data.height,
         education: parsedData.data.education,
+        howyoudie: parsedData.data.howyoudie,
         last_active: new Date(),
       },
     });

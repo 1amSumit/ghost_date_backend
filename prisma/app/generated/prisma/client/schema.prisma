@@ -60,6 +60,7 @@ model UserDetail {
   longitude            Float?
   last_active          DateTime
   profile_pic          String
+  howyoudie            String
   interested_in_gender Genders[]
   user_id              String    @unique
   user                 User      @relation(fields: [user_id], references: [id])

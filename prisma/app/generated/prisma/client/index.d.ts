@@ -3585,6 +3585,7 @@ export namespace Prisma {
     longitude: number | null
     last_active: Date | null
     profile_pic: string | null
+    howyoudie: string | null
     user_id: string | null
   }
 
@@ -3602,6 +3603,7 @@ export namespace Prisma {
     longitude: number | null
     last_active: Date | null
     profile_pic: string | null
+    howyoudie: string | null
     user_id: string | null
   }
 
@@ -3620,6 +3622,7 @@ export namespace Prisma {
     longitude: number
     last_active: number
     profile_pic: number
+    howyoudie: number
     interested_in_gender: number
     user_id: number
     _all: number
@@ -3650,6 +3653,7 @@ export namespace Prisma {
     longitude?: true
     last_active?: true
     profile_pic?: true
+    howyoudie?: true
     user_id?: true
   }
 
@@ -3667,6 +3671,7 @@ export namespace Prisma {
     longitude?: true
     last_active?: true
     profile_pic?: true
+    howyoudie?: true
     user_id?: true
   }
 
@@ -3685,6 +3690,7 @@ export namespace Prisma {
     longitude?: true
     last_active?: true
     profile_pic?: true
+    howyoudie?: true
     interested_in_gender?: true
     user_id?: true
     _all?: true
@@ -3791,6 +3797,7 @@ export namespace Prisma {
     longitude: number | null
     last_active: Date
     profile_pic: string
+    howyoudie: string
     interested_in_gender: $Enums.Genders[]
     user_id: string
     _count: UserDetailCountAggregateOutputType | null
@@ -3829,6 +3836,7 @@ export namespace Prisma {
     longitude?: boolean
     last_active?: boolean
     profile_pic?: boolean
+    howyoudie?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3849,6 +3857,7 @@ export namespace Prisma {
     longitude?: boolean
     last_active?: boolean
     profile_pic?: boolean
+    howyoudie?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3869,6 +3878,7 @@ export namespace Prisma {
     longitude?: boolean
     last_active?: boolean
     profile_pic?: boolean
+    howyoudie?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3889,11 +3899,12 @@ export namespace Prisma {
     longitude?: boolean
     last_active?: boolean
     profile_pic?: boolean
+    howyoudie?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
   }
 
-  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "bio" | "height" | "education" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
+  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "bio" | "height" | "education" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "howyoudie" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
   export type UserDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3924,6 +3935,7 @@ export namespace Prisma {
       longitude: number | null
       last_active: Date
       profile_pic: string
+      howyoudie: string
       interested_in_gender: $Enums.Genders[]
       user_id: string
     }, ExtArgs["result"]["userDetail"]>
@@ -4364,6 +4376,7 @@ export namespace Prisma {
     readonly longitude: FieldRef<"UserDetail", 'Float'>
     readonly last_active: FieldRef<"UserDetail", 'DateTime'>
     readonly profile_pic: FieldRef<"UserDetail", 'String'>
+    readonly howyoudie: FieldRef<"UserDetail", 'String'>
     readonly interested_in_gender: FieldRef<"UserDetail", 'Genders[]'>
     readonly user_id: FieldRef<"UserDetail", 'String'>
   }
@@ -7035,6 +7048,7 @@ export namespace Prisma {
     longitude: 'longitude',
     last_active: 'last_active',
     profile_pic: 'profile_pic',
+    howyoudie: 'howyoudie',
     interested_in_gender: 'interested_in_gender',
     user_id: 'user_id'
   };
@@ -7331,6 +7345,7 @@ export namespace Prisma {
     longitude?: FloatNullableFilter<"UserDetail"> | number | null
     last_active?: DateTimeFilter<"UserDetail"> | Date | string
     profile_pic?: StringFilter<"UserDetail"> | string
+    howyoudie?: StringFilter<"UserDetail"> | string
     interested_in_gender?: EnumGendersNullableListFilter<"UserDetail">
     user_id?: StringFilter<"UserDetail"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -7351,6 +7366,7 @@ export namespace Prisma {
     longitude?: SortOrderInput | SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+    howyoudie?: SortOrder
     interested_in_gender?: SortOrder
     user_id?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -7375,6 +7391,7 @@ export namespace Prisma {
     longitude?: FloatNullableFilter<"UserDetail"> | number | null
     last_active?: DateTimeFilter<"UserDetail"> | Date | string
     profile_pic?: StringFilter<"UserDetail"> | string
+    howyoudie?: StringFilter<"UserDetail"> | string
     interested_in_gender?: EnumGendersNullableListFilter<"UserDetail">
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "user_id">
@@ -7394,6 +7411,7 @@ export namespace Prisma {
     longitude?: SortOrderInput | SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+    howyoudie?: SortOrder
     interested_in_gender?: SortOrder
     user_id?: SortOrder
     _count?: UserDetailCountOrderByAggregateInput
@@ -7421,6 +7439,7 @@ export namespace Prisma {
     longitude?: FloatNullableWithAggregatesFilter<"UserDetail"> | number | null
     last_active?: DateTimeWithAggregatesFilter<"UserDetail"> | Date | string
     profile_pic?: StringWithAggregatesFilter<"UserDetail"> | string
+    howyoudie?: StringWithAggregatesFilter<"UserDetail"> | string
     interested_in_gender?: EnumGendersNullableListFilter<"UserDetail">
     user_id?: StringWithAggregatesFilter<"UserDetail"> | string
   }
@@ -7716,6 +7735,7 @@ export namespace Prisma {
     longitude?: number | null
     last_active: Date | string
     profile_pic: string
+    howyoudie: string
     interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
     user: UserCreateNestedOneWithoutUser_detailsInput
   }
@@ -7735,6 +7755,7 @@ export namespace Prisma {
     longitude?: number | null
     last_active: Date | string
     profile_pic: string
+    howyoudie: string
     interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
     user_id: string
   }
@@ -7754,6 +7775,7 @@ export namespace Prisma {
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    howyoudie?: StringFieldUpdateOperationsInput | string
     interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
     user?: UserUpdateOneRequiredWithoutUser_detailsNestedInput
   }
@@ -7773,6 +7795,7 @@ export namespace Prisma {
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    howyoudie?: StringFieldUpdateOperationsInput | string
     interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
     user_id?: StringFieldUpdateOperationsInput | string
   }
@@ -7792,6 +7815,7 @@ export namespace Prisma {
     longitude?: number | null
     last_active: Date | string
     profile_pic: string
+    howyoudie: string
     interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
     user_id: string
   }
@@ -7811,6 +7835,7 @@ export namespace Prisma {
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    howyoudie?: StringFieldUpdateOperationsInput | string
     interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
   }
 
@@ -7829,6 +7854,7 @@ export namespace Prisma {
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    howyoudie?: StringFieldUpdateOperationsInput | string
     interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
     user_id?: StringFieldUpdateOperationsInput | string
   }
@@ -8210,6 +8236,7 @@ export namespace Prisma {
     longitude?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+    howyoudie?: SortOrder
     interested_in_gender?: SortOrder
     user_id?: SortOrder
   }
@@ -8233,6 +8260,7 @@ export namespace Prisma {
     longitude?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+    howyoudie?: SortOrder
     user_id?: SortOrder
   }
 
@@ -8250,6 +8278,7 @@ export namespace Prisma {
     longitude?: SortOrder
     last_active?: SortOrder
     profile_pic?: SortOrder
+    howyoudie?: SortOrder
     user_id?: SortOrder
   }
 
@@ -8892,6 +8921,7 @@ export namespace Prisma {
     longitude?: number | null
     last_active: Date | string
     profile_pic: string
+    howyoudie: string
     interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
   }
 
@@ -8910,6 +8940,7 @@ export namespace Prisma {
     longitude?: number | null
     last_active: Date | string
     profile_pic: string
+    howyoudie: string
     interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
   }
 
@@ -9042,6 +9073,7 @@ export namespace Prisma {
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    howyoudie?: StringFieldUpdateOperationsInput | string
     interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
   }
 
@@ -9060,6 +9092,7 @@ export namespace Prisma {
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
+    howyoudie?: StringFieldUpdateOperationsInput | string
     interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
   }
 
