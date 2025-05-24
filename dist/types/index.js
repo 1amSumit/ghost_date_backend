@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userDetailsTypes = exports.userSinginTypes = exports.userSingupTypes = void 0;
+exports.userDetailsTypes = exports.userSinginTypes = exports.verifyOtpTypes = exports.userSingupTypes = void 0;
 const zod_1 = require("zod");
 var Gender;
 (function (Gender) {
@@ -10,7 +10,11 @@ var Gender;
 })(Gender || (Gender = {}));
 exports.userSingupTypes = zod_1.z.object({
     email: zod_1.z.string().email(),
+});
+exports.verifyOtpTypes = zod_1.z.object({
+    email: zod_1.z.string().email(),
     password: zod_1.z.string().min(6),
+    otp: zod_1.z.string().min(6),
 });
 exports.userSinginTypes = zod_1.z.object({
     email: zod_1.z.string(),

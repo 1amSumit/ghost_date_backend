@@ -28,26 +28,49 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     const parsedData = types_1.userSingupTypes.safeParse(body);
     if (!parsedData.success) {
         res.status(411).json({
-            message: "Invalid inputt",
+            message: "Invalid input",
             erro: parsedData,
         });
         return;
     }
-    const hashPassword = yield bcrypt_1.default.hash(parsedData.data.password, 12);
+    const exists = yield redisClient_1.redisClient.get(parsedData.data.email);
+    if (exists !== null) {
+        res.status(411).json({
+            message: "already exists",
+        });
+        return;
+    }
     const otp = (0, genereateOtp_1.generateOtp)();
-    console.log(otp);
     yield redisClient_1.redisClient.set(parsedData.data.email, otp);
-    const resp = yield (0, sendEmail_1.sendMail)(parsedData.data.email, otp);
-    console.log(resp);
+    yield (0, sendEmail_1.sendMail)(parsedData.data.email, otp);
     res.status(200).json({
         message: "otp sent successfully",
     });
 }));
 routes.post("/verify-otp", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { otp } = req.body;
-    const { email } = req.body;
-    const getOtp = yield redisClient_1.redisClient.get(email);
-    console.log(getOtp);
+    var _a;
+    const body = req.body;
+    const parsedData = types_1.verifyOtpTypes.safeParse(body);
+    const getOtp = yield redisClient_1.redisClient.get(parsedData.data.email);
+    if (getOtp !== ((_a = parsedData.data) === null || _a === void 0 ? void 0 : _a.otp)) {
+        res.status(411).json({
+            message: "incorrect otp",
+        });
+        return;
+    }
+    const hashedPassword = yield bcrypt_1.default.hash(parsedData.data.password, 16);
+    yield redisClient_1.redisClient.del(parsedData.data.email);
+    const user = yield prismaClient.user.create({
+        data: {
+            email: parsedData.data.email,
+            password: hashedPassword,
+        },
+    });
+    yield redisClient_1.redisClient.set(parsedData.data.email, user.id);
+    res.status(200).json({
+        user: user.id,
+        message: "user created successfully",
+    });
 }));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = yield req.body;

@@ -17,17 +17,20 @@ routes.post("/signup", async (req, res) => {
 
   if (!parsedData.success) {
     res.status(411).json({
-      message: "Invalid inputt",
+      message: "Invalid input",
       erro: parsedData,
     });
     return;
   }
 
   const exists = await redisClient.get(parsedData.data.email);
+
   if (exists !== null) {
-    res.status(200).json({
+    res.status(411).json({
       message: "already exists",
     });
+
+    return;
   }
 
   const otp = generateOtp();
@@ -64,6 +67,7 @@ routes.post("/verify-otp", async (req, res) => {
   await redisClient.set(parsedData.data.email, user.id);
 
   res.status(200).json({
+    user: user.id,
     message: "user created successfully",
   });
 });
