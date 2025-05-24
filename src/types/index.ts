@@ -8,7 +8,11 @@ enum Gender {
 
 export const userSingupTypes = z.object({
   email: z.string().email(),
+});
+export const verifyOtpTypes = z.object({
+  email: z.string().email(),
   password: z.string().min(6),
+  otp: z.string().min(6),
 });
 
 export const userSinginTypes = z.object({

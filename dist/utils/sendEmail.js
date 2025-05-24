@@ -16,7 +16,6 @@ exports.sendMail = sendMail;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 function sendMail(to, message) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(process.env.APP_PASSWORD);
         const transporter = nodemailer_1.default.createTransport({
             service: "gmail",
             auth: {
@@ -32,7 +31,6 @@ function sendMail(to, message) {
         };
         try {
             const res = yield transporter.sendMail(mailOptions);
-            console.log(res);
         }
         catch (err) {
             console.log(err);

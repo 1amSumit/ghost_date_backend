@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PrismaClient } from "../../prisma/app/generated/prisma/client";
-import { userSinginTypes, userSingupTypes } from "../types";
+import { userSinginTypes, userSingupTypes, verifyOtpTypes } from "../types";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { redisClient } from "../utils/redisClient";
@@ -23,22 +23,48 @@ routes.post("/signup", async (req, res) => {
     return;
   }
 
-  const hashPassword = await bcrypt.hash(parsedData.data.password, 12);
-  const otp = generateOtp();
-  console.log(otp);
-  await redisClient.set(parsedData.data.email, otp);
-  const resp = await sendMail(parsedData.data.email, otp);
-  console.log(resp);
+  const exists = await redisClient.get(parsedData.data.email);
+  if (exists !== null) {
+    res.status(200).json({
+      message: "already exists",
+    });
+  }
 
-  // const user = await prismaClient.user.create({
-  //   data: {
-  //     email: parsedData.data.email,
-  //     password: parsedData.data.password,
-  //   },
-  // });
+  const otp = generateOtp();
+
+  await redisClient.set(parsedData.data.email, otp);
+  await sendMail(parsedData.data.email, otp);
 
   res.status(200).json({
     message: "otp sent successfully",
+  });
+});
+
+routes.post("/verify-otp", async (req, res) => {
+  const body = req.body;
+  const parsedData = verifyOtpTypes.safeParse(body);
+  const getOtp = await redisClient.get(parsedData.data!.email);
+  if (getOtp !== parsedData.data?.otp) {
+    res.status(411).json({
+      message: "incorrect otp",
+    });
+    return;
+  }
+
+  const hashedPassword = await bcrypt.hash(parsedData.data.password, 16);
+  await redisClient.del(parsedData.data.email);
+
+  const user = await prismaClient.user.create({
+    data: {
+      email: parsedData.data.email,
+      password: hashedPassword,
+    },
+  });
+
+  await redisClient.set(parsedData.data.email, user.id);
+
+  res.status(200).json({
+    message: "user created successfully",
   });
 });
 

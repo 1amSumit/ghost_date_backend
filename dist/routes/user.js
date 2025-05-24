@@ -39,15 +39,15 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     yield redisClient_1.redisClient.set(parsedData.data.email, otp);
     const resp = yield (0, sendEmail_1.sendMail)(parsedData.data.email, otp);
     console.log(resp);
-    // const user = await prismaClient.user.create({
-    //   data: {
-    //     email: parsedData.data.email,
-    //     password: parsedData.data.password,
-    //   },
-    // });
     res.status(200).json({
         message: "otp sent successfully",
     });
+}));
+routes.post("/verify-otp", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { otp } = req.body;
+    const { email } = req.body;
+    const getOtp = yield redisClient_1.redisClient.get(email);
+    console.log(getOtp);
 }));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = yield req.body;
