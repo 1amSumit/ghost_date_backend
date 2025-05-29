@@ -1,11 +1,5 @@
 import { z } from "zod";
 
-enum Gender {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  OTHER = "OTHER",
-}
-
 export const userSingupTypes = z.object({
   email: z.string().email(),
 });
@@ -21,9 +15,10 @@ export const userSinginTypes = z.object({
 });
 
 export const userDetailsTypes = z.object({
+  userId: z.string(),
   firstName: z.string(),
   lastName: z.string(),
-  gender: z.enum([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
+  gender: z.string(),
   bio: z.string(),
   dateOfBirth: z.string(),
   location: z.string(),
@@ -31,10 +26,8 @@ export const userDetailsTypes = z.object({
   latitude: z.number(),
   longitude: z.number(),
   pronounce: z.array(z.string()),
-  interestedInGender: z.array(
-    z.enum([Gender.MALE, Gender.FEMALE, Gender.OTHER])
-  ),
-  interests: z.array(z.string()),
+  interestedInGender: z.string(),
+  intensions: z.array(z.string()),
   prefered_min_age: z.number(),
   prefered_max_age: z.number(),
   max_distance: z.number(),
@@ -44,4 +37,5 @@ export const userDetailsTypes = z.object({
   education: z.string(),
   height: z.string(),
   howyoudie: z.string(),
+  sexuality: z.string(),
 });

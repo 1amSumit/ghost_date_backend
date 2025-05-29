@@ -39,18 +39,12 @@ model Matches {
   @@unique([user1_id, user2_id])
 }
 
-enum Genders {
-  MALE
-  FEMALE
-  OTHER
-}
-
 model UserDetail {
-  id                   String    @id @default(uuid())
+  id                   String   @id @default(uuid())
   first_name           String
   last_name            String
   pronounce            String[]
-  gender               Genders
+  gender               String
   date_of_birth        String
   bio                  String
   height               String
@@ -61,14 +55,15 @@ model UserDetail {
   last_active          DateTime
   profile_pic          String
   howyoudie            String
-  interested_in_gender Genders[]
-  user_id              String    @unique
-  user                 User      @relation(fields: [user_id], references: [id])
+  sexuality            String
+  interested_in_gender String
+  user_id              String   @unique
+  user                 User     @relation(fields: [user_id], references: [id])
 }
 
 model UserPreferences {
   id               String   @id @default(uuid())
-  interests        String[]
+  intensions       String[]
   prefered_min_age Int?
   prefered_max_age Int?
   max_distance     Int?

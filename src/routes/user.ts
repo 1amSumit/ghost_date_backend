@@ -1,11 +1,17 @@
 import { Router } from "express";
 import { PrismaClient } from "../../prisma/app/generated/prisma/client";
-import { userSinginTypes, userSingupTypes, verifyOtpTypes } from "../types";
+import {
+  userDetailsTypes,
+  userSinginTypes,
+  userSingupTypes,
+  verifyOtpTypes,
+} from "../types";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { redisClient } from "../utils/redisClient";
 import { generateOtp } from "../utils/genereateOtp";
 import { sendMail } from "../utils/sendEmail";
+import { authMiddleware } from "../utils/middleware";
 
 const prismaClient = new PrismaClient();
 
@@ -112,41 +118,67 @@ routes.post("/signin", async (req, res) => {
   });
 });
 
-// routes.post("/userDetails", async (req, res) => {
+routes.post("/create-user", async (req, res) => {
+  const body = req.body;
+  const parsedData = userDetailsTypes.safeParse(body);
 
-//   await tx.userDetail.create({
-//     data: {
-//       user_id: user.id,
-//       first_name: parsedData.data.firstName,
-//       last_name: parsedData.data.lastName,
-//       date_of_birth: parsedData.data.dateOfBirth,
-//       gender: parsedData.data.gender,
-//       bio: parsedData.data.bio,
-//       location: parsedData.data.location,
-//       latitude: parsedData.data.latitude,
-//       longitude: parsedData.data.longitude,
-//       pronounce: parsedData.data.pronounce,
-//       interested_in_gender: parsedData.data.interestedInGender,
-//       profile_pic: parsedData.data.profilePic,
-//       height: parsedData.data.height,
-//       education: parsedData.data.education,
-//       howyoudie: parsedData.data.howyoudie,
-//       last_active: new Date(),
-//     },
-//   });
+  if (!parsedData.success) {
+    console.log(parsedData.error);
+    res.status(411).json({
+      message: "Incorrect input",
+    });
+    return;
+  }
 
-//   await tx.userPreferences.create({
-//     data: {
-//       user_id: user.id,
-//       interests: parsedData.data.interests,
-//       prefered_min_age: parsedData.data.prefered_min_age,
-//       prefered_max_age: parsedData.data.prefered_max_age,
-//       max_distance: parsedData.data.max_distance,
-//       is_ghost_mode: parsedData.data.is_ghost_mode,
-//       show_on_feed: parsedData.data.show_on_feed,
-//       verified: parsedData.data.verified,
-//     },
-//   });
-// });
+  await prismaClient.$transaction(async (tx) => {
+    await tx.userDetail.create({
+      data: {
+        user_id: parsedData.data.userId,
+        first_name: parsedData.data.firstName,
+        last_name: parsedData.data.lastName,
+        date_of_birth: parsedData.data.dateOfBirth,
+        gender: parsedData.data.gender,
+        bio: parsedData.data.bio,
+        location: parsedData.data.location,
+        latitude: parsedData.data.latitude,
+        longitude: parsedData.data.longitude,
+        pronounce: parsedData.data.pronounce,
+        interested_in_gender: parsedData.data.interestedInGender,
+        profile_pic: parsedData.data.profilePic,
+        height: parsedData.data.height,
+        education: parsedData.data.education,
+        howyoudie: parsedData.data.howyoudie,
+        sexuality: parsedData.data.sexuality,
+        last_active: new Date(),
+      },
+    });
+
+    await tx.userPreferences.create({
+      data: {
+        user_id: parsedData.data.userId,
+        intensions: parsedData.data.intensions,
+        prefered_min_age: parsedData.data.prefered_min_age,
+        prefered_max_age: parsedData.data.prefered_max_age,
+        max_distance: parsedData.data.max_distance,
+        is_ghost_mode: parsedData.data.is_ghost_mode,
+        show_on_feed: parsedData.data.show_on_feed,
+        verified: parsedData.data.verified,
+      },
+    });
+  });
+
+  const token = jwt.sign(
+    { id: parsedData.data.userId },
+    process.env.JWT_PASSWORD as string,
+    {
+      expiresIn: 10 * 60 * 60,
+    }
+  );
+
+  res.status(200).json({
+    token,
+    message: "user created successfully",
+  });
+});
 
 export const userRoutes = routes;

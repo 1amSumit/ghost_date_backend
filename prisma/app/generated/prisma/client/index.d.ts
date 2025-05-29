@@ -40,24 +40,6 @@ export type UserPreferences = $Result.DefaultSelection<Prisma.$UserPreferencesPa
 export type Media = $Result.DefaultSelection<Prisma.$MediaPayload>
 
 /**
- * Enums
- */
-export namespace $Enums {
-  export const Genders: {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  OTHER: 'OTHER'
-};
-
-export type Genders = (typeof Genders)[keyof typeof Genders]
-
-}
-
-export type Genders = $Enums.Genders
-
-export const Genders: typeof $Enums.Genders
-
-/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -3575,7 +3557,7 @@ export namespace Prisma {
     id: string | null
     first_name: string | null
     last_name: string | null
-    gender: $Enums.Genders | null
+    gender: string | null
     date_of_birth: string | null
     bio: string | null
     height: string | null
@@ -3586,6 +3568,8 @@ export namespace Prisma {
     last_active: Date | null
     profile_pic: string | null
     howyoudie: string | null
+    sexuality: string | null
+    interested_in_gender: string | null
     user_id: string | null
   }
 
@@ -3593,7 +3577,7 @@ export namespace Prisma {
     id: string | null
     first_name: string | null
     last_name: string | null
-    gender: $Enums.Genders | null
+    gender: string | null
     date_of_birth: string | null
     bio: string | null
     height: string | null
@@ -3604,6 +3588,8 @@ export namespace Prisma {
     last_active: Date | null
     profile_pic: string | null
     howyoudie: string | null
+    sexuality: string | null
+    interested_in_gender: string | null
     user_id: string | null
   }
 
@@ -3623,6 +3609,7 @@ export namespace Prisma {
     last_active: number
     profile_pic: number
     howyoudie: number
+    sexuality: number
     interested_in_gender: number
     user_id: number
     _all: number
@@ -3654,6 +3641,8 @@ export namespace Prisma {
     last_active?: true
     profile_pic?: true
     howyoudie?: true
+    sexuality?: true
+    interested_in_gender?: true
     user_id?: true
   }
 
@@ -3672,6 +3661,8 @@ export namespace Prisma {
     last_active?: true
     profile_pic?: true
     howyoudie?: true
+    sexuality?: true
+    interested_in_gender?: true
     user_id?: true
   }
 
@@ -3691,6 +3682,7 @@ export namespace Prisma {
     last_active?: true
     profile_pic?: true
     howyoudie?: true
+    sexuality?: true
     interested_in_gender?: true
     user_id?: true
     _all?: true
@@ -3787,7 +3779,7 @@ export namespace Prisma {
     first_name: string
     last_name: string
     pronounce: string[]
-    gender: $Enums.Genders
+    gender: string
     date_of_birth: string
     bio: string
     height: string
@@ -3798,7 +3790,8 @@ export namespace Prisma {
     last_active: Date
     profile_pic: string
     howyoudie: string
-    interested_in_gender: $Enums.Genders[]
+    sexuality: string
+    interested_in_gender: string
     user_id: string
     _count: UserDetailCountAggregateOutputType | null
     _avg: UserDetailAvgAggregateOutputType | null
@@ -3837,6 +3830,7 @@ export namespace Prisma {
     last_active?: boolean
     profile_pic?: boolean
     howyoudie?: boolean
+    sexuality?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3858,6 +3852,7 @@ export namespace Prisma {
     last_active?: boolean
     profile_pic?: boolean
     howyoudie?: boolean
+    sexuality?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3879,6 +3874,7 @@ export namespace Prisma {
     last_active?: boolean
     profile_pic?: boolean
     howyoudie?: boolean
+    sexuality?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3900,11 +3896,12 @@ export namespace Prisma {
     last_active?: boolean
     profile_pic?: boolean
     howyoudie?: boolean
+    sexuality?: boolean
     interested_in_gender?: boolean
     user_id?: boolean
   }
 
-  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "bio" | "height" | "education" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "howyoudie" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
+  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "bio" | "height" | "education" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "howyoudie" | "sexuality" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
   export type UserDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3925,7 +3922,7 @@ export namespace Prisma {
       first_name: string
       last_name: string
       pronounce: string[]
-      gender: $Enums.Genders
+      gender: string
       date_of_birth: string
       bio: string
       height: string
@@ -3936,7 +3933,8 @@ export namespace Prisma {
       last_active: Date
       profile_pic: string
       howyoudie: string
-      interested_in_gender: $Enums.Genders[]
+      sexuality: string
+      interested_in_gender: string
       user_id: string
     }, ExtArgs["result"]["userDetail"]>
     composites: {}
@@ -4366,7 +4364,7 @@ export namespace Prisma {
     readonly first_name: FieldRef<"UserDetail", 'String'>
     readonly last_name: FieldRef<"UserDetail", 'String'>
     readonly pronounce: FieldRef<"UserDetail", 'String[]'>
-    readonly gender: FieldRef<"UserDetail", 'Genders'>
+    readonly gender: FieldRef<"UserDetail", 'String'>
     readonly date_of_birth: FieldRef<"UserDetail", 'String'>
     readonly bio: FieldRef<"UserDetail", 'String'>
     readonly height: FieldRef<"UserDetail", 'String'>
@@ -4377,7 +4375,8 @@ export namespace Prisma {
     readonly last_active: FieldRef<"UserDetail", 'DateTime'>
     readonly profile_pic: FieldRef<"UserDetail", 'String'>
     readonly howyoudie: FieldRef<"UserDetail", 'String'>
-    readonly interested_in_gender: FieldRef<"UserDetail", 'Genders[]'>
+    readonly sexuality: FieldRef<"UserDetail", 'String'>
+    readonly interested_in_gender: FieldRef<"UserDetail", 'String'>
     readonly user_id: FieldRef<"UserDetail", 'String'>
   }
     
@@ -4841,7 +4840,7 @@ export namespace Prisma {
 
   export type UserPreferencesCountAggregateOutputType = {
     id: number
-    interests: number
+    intensions: number
     prefered_min_age: number
     prefered_max_age: number
     max_distance: number
@@ -4889,7 +4888,7 @@ export namespace Prisma {
 
   export type UserPreferencesCountAggregateInputType = {
     id?: true
-    interests?: true
+    intensions?: true
     prefered_min_age?: true
     prefered_max_age?: true
     max_distance?: true
@@ -4988,7 +4987,7 @@ export namespace Prisma {
 
   export type UserPreferencesGroupByOutputType = {
     id: string
-    interests: string[]
+    intensions: string[]
     prefered_min_age: number | null
     prefered_max_age: number | null
     max_distance: number | null
@@ -5019,7 +5018,7 @@ export namespace Prisma {
 
   export type UserPreferencesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    interests?: boolean
+    intensions?: boolean
     prefered_min_age?: boolean
     prefered_max_age?: boolean
     max_distance?: boolean
@@ -5032,7 +5031,7 @@ export namespace Prisma {
 
   export type UserPreferencesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    interests?: boolean
+    intensions?: boolean
     prefered_min_age?: boolean
     prefered_max_age?: boolean
     max_distance?: boolean
@@ -5045,7 +5044,7 @@ export namespace Prisma {
 
   export type UserPreferencesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    interests?: boolean
+    intensions?: boolean
     prefered_min_age?: boolean
     prefered_max_age?: boolean
     max_distance?: boolean
@@ -5058,7 +5057,7 @@ export namespace Prisma {
 
   export type UserPreferencesSelectScalar = {
     id?: boolean
-    interests?: boolean
+    intensions?: boolean
     prefered_min_age?: boolean
     prefered_max_age?: boolean
     max_distance?: boolean
@@ -5068,7 +5067,7 @@ export namespace Prisma {
     user_id?: boolean
   }
 
-  export type UserPreferencesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "interests" | "prefered_min_age" | "prefered_max_age" | "max_distance" | "show_on_feed" | "is_ghost_mode" | "verified" | "user_id", ExtArgs["result"]["userPreferences"]>
+  export type UserPreferencesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "intensions" | "prefered_min_age" | "prefered_max_age" | "max_distance" | "show_on_feed" | "is_ghost_mode" | "verified" | "user_id", ExtArgs["result"]["userPreferences"]>
   export type UserPreferencesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5086,7 +5085,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      interests: string[]
+      intensions: string[]
       prefered_min_age: number | null
       prefered_max_age: number | null
       max_distance: number | null
@@ -5519,7 +5518,7 @@ export namespace Prisma {
    */
   interface UserPreferencesFieldRefs {
     readonly id: FieldRef<"UserPreferences", 'String'>
-    readonly interests: FieldRef<"UserPreferences", 'String[]'>
+    readonly intensions: FieldRef<"UserPreferences", 'String[]'>
     readonly prefered_min_age: FieldRef<"UserPreferences", 'Int'>
     readonly prefered_max_age: FieldRef<"UserPreferences", 'Int'>
     readonly max_distance: FieldRef<"UserPreferences", 'Int'>
@@ -7049,6 +7048,7 @@ export namespace Prisma {
     last_active: 'last_active',
     profile_pic: 'profile_pic',
     howyoudie: 'howyoudie',
+    sexuality: 'sexuality',
     interested_in_gender: 'interested_in_gender',
     user_id: 'user_id'
   };
@@ -7058,7 +7058,7 @@ export namespace Prisma {
 
   export const UserPreferencesScalarFieldEnum: {
     id: 'id',
-    interests: 'interests',
+    intensions: 'intensions',
     prefered_min_age: 'prefered_min_age',
     prefered_max_age: 'prefered_max_age',
     max_distance: 'max_distance',
@@ -7143,20 +7143,6 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
-   * Reference to a field of type 'Genders'
-   */
-  export type EnumGendersFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Genders'>
-    
-
-
-  /**
-   * Reference to a field of type 'Genders[]'
-   */
-  export type ListEnumGendersFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Genders[]'>
     
 
 
@@ -7335,7 +7321,7 @@ export namespace Prisma {
     first_name?: StringFilter<"UserDetail"> | string
     last_name?: StringFilter<"UserDetail"> | string
     pronounce?: StringNullableListFilter<"UserDetail">
-    gender?: EnumGendersFilter<"UserDetail"> | $Enums.Genders
+    gender?: StringFilter<"UserDetail"> | string
     date_of_birth?: StringFilter<"UserDetail"> | string
     bio?: StringFilter<"UserDetail"> | string
     height?: StringFilter<"UserDetail"> | string
@@ -7346,7 +7332,8 @@ export namespace Prisma {
     last_active?: DateTimeFilter<"UserDetail"> | Date | string
     profile_pic?: StringFilter<"UserDetail"> | string
     howyoudie?: StringFilter<"UserDetail"> | string
-    interested_in_gender?: EnumGendersNullableListFilter<"UserDetail">
+    sexuality?: StringFilter<"UserDetail"> | string
+    interested_in_gender?: StringFilter<"UserDetail"> | string
     user_id?: StringFilter<"UserDetail"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -7367,6 +7354,7 @@ export namespace Prisma {
     last_active?: SortOrder
     profile_pic?: SortOrder
     howyoudie?: SortOrder
+    sexuality?: SortOrder
     interested_in_gender?: SortOrder
     user_id?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -7381,7 +7369,7 @@ export namespace Prisma {
     first_name?: StringFilter<"UserDetail"> | string
     last_name?: StringFilter<"UserDetail"> | string
     pronounce?: StringNullableListFilter<"UserDetail">
-    gender?: EnumGendersFilter<"UserDetail"> | $Enums.Genders
+    gender?: StringFilter<"UserDetail"> | string
     date_of_birth?: StringFilter<"UserDetail"> | string
     bio?: StringFilter<"UserDetail"> | string
     height?: StringFilter<"UserDetail"> | string
@@ -7392,7 +7380,8 @@ export namespace Prisma {
     last_active?: DateTimeFilter<"UserDetail"> | Date | string
     profile_pic?: StringFilter<"UserDetail"> | string
     howyoudie?: StringFilter<"UserDetail"> | string
-    interested_in_gender?: EnumGendersNullableListFilter<"UserDetail">
+    sexuality?: StringFilter<"UserDetail"> | string
+    interested_in_gender?: StringFilter<"UserDetail"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "user_id">
 
@@ -7412,6 +7401,7 @@ export namespace Prisma {
     last_active?: SortOrder
     profile_pic?: SortOrder
     howyoudie?: SortOrder
+    sexuality?: SortOrder
     interested_in_gender?: SortOrder
     user_id?: SortOrder
     _count?: UserDetailCountOrderByAggregateInput
@@ -7429,7 +7419,7 @@ export namespace Prisma {
     first_name?: StringWithAggregatesFilter<"UserDetail"> | string
     last_name?: StringWithAggregatesFilter<"UserDetail"> | string
     pronounce?: StringNullableListFilter<"UserDetail">
-    gender?: EnumGendersWithAggregatesFilter<"UserDetail"> | $Enums.Genders
+    gender?: StringWithAggregatesFilter<"UserDetail"> | string
     date_of_birth?: StringWithAggregatesFilter<"UserDetail"> | string
     bio?: StringWithAggregatesFilter<"UserDetail"> | string
     height?: StringWithAggregatesFilter<"UserDetail"> | string
@@ -7440,7 +7430,8 @@ export namespace Prisma {
     last_active?: DateTimeWithAggregatesFilter<"UserDetail"> | Date | string
     profile_pic?: StringWithAggregatesFilter<"UserDetail"> | string
     howyoudie?: StringWithAggregatesFilter<"UserDetail"> | string
-    interested_in_gender?: EnumGendersNullableListFilter<"UserDetail">
+    sexuality?: StringWithAggregatesFilter<"UserDetail"> | string
+    interested_in_gender?: StringWithAggregatesFilter<"UserDetail"> | string
     user_id?: StringWithAggregatesFilter<"UserDetail"> | string
   }
 
@@ -7449,7 +7440,7 @@ export namespace Prisma {
     OR?: UserPreferencesWhereInput[]
     NOT?: UserPreferencesWhereInput | UserPreferencesWhereInput[]
     id?: StringFilter<"UserPreferences"> | string
-    interests?: StringNullableListFilter<"UserPreferences">
+    intensions?: StringNullableListFilter<"UserPreferences">
     prefered_min_age?: IntNullableFilter<"UserPreferences"> | number | null
     prefered_max_age?: IntNullableFilter<"UserPreferences"> | number | null
     max_distance?: IntNullableFilter<"UserPreferences"> | number | null
@@ -7462,7 +7453,7 @@ export namespace Prisma {
 
   export type UserPreferencesOrderByWithRelationInput = {
     id?: SortOrder
-    interests?: SortOrder
+    intensions?: SortOrder
     prefered_min_age?: SortOrderInput | SortOrder
     prefered_max_age?: SortOrderInput | SortOrder
     max_distance?: SortOrderInput | SortOrder
@@ -7479,7 +7470,7 @@ export namespace Prisma {
     AND?: UserPreferencesWhereInput | UserPreferencesWhereInput[]
     OR?: UserPreferencesWhereInput[]
     NOT?: UserPreferencesWhereInput | UserPreferencesWhereInput[]
-    interests?: StringNullableListFilter<"UserPreferences">
+    intensions?: StringNullableListFilter<"UserPreferences">
     prefered_min_age?: IntNullableFilter<"UserPreferences"> | number | null
     prefered_max_age?: IntNullableFilter<"UserPreferences"> | number | null
     max_distance?: IntNullableFilter<"UserPreferences"> | number | null
@@ -7491,7 +7482,7 @@ export namespace Prisma {
 
   export type UserPreferencesOrderByWithAggregationInput = {
     id?: SortOrder
-    interests?: SortOrder
+    intensions?: SortOrder
     prefered_min_age?: SortOrderInput | SortOrder
     prefered_max_age?: SortOrderInput | SortOrder
     max_distance?: SortOrderInput | SortOrder
@@ -7511,7 +7502,7 @@ export namespace Prisma {
     OR?: UserPreferencesScalarWhereWithAggregatesInput[]
     NOT?: UserPreferencesScalarWhereWithAggregatesInput | UserPreferencesScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"UserPreferences"> | string
-    interests?: StringNullableListFilter<"UserPreferences">
+    intensions?: StringNullableListFilter<"UserPreferences">
     prefered_min_age?: IntNullableWithAggregatesFilter<"UserPreferences"> | number | null
     prefered_max_age?: IntNullableWithAggregatesFilter<"UserPreferences"> | number | null
     max_distance?: IntNullableWithAggregatesFilter<"UserPreferences"> | number | null
@@ -7725,7 +7716,7 @@ export namespace Prisma {
     first_name: string
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
-    gender: $Enums.Genders
+    gender: string
     date_of_birth: string
     bio: string
     height: string
@@ -7736,7 +7727,8 @@ export namespace Prisma {
     last_active: Date | string
     profile_pic: string
     howyoudie: string
-    interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
+    sexuality: string
+    interested_in_gender: string
     user: UserCreateNestedOneWithoutUser_detailsInput
   }
 
@@ -7745,7 +7737,7 @@ export namespace Prisma {
     first_name: string
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
-    gender: $Enums.Genders
+    gender: string
     date_of_birth: string
     bio: string
     height: string
@@ -7756,7 +7748,8 @@ export namespace Prisma {
     last_active: Date | string
     profile_pic: string
     howyoudie: string
-    interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
+    sexuality: string
+    interested_in_gender: string
     user_id: string
   }
 
@@ -7765,7 +7758,7 @@ export namespace Prisma {
     first_name?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
-    gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
+    gender?: StringFieldUpdateOperationsInput | string
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
@@ -7776,7 +7769,8 @@ export namespace Prisma {
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
     howyoudie?: StringFieldUpdateOperationsInput | string
-    interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
+    sexuality?: StringFieldUpdateOperationsInput | string
+    interested_in_gender?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutUser_detailsNestedInput
   }
 
@@ -7785,7 +7779,7 @@ export namespace Prisma {
     first_name?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
-    gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
+    gender?: StringFieldUpdateOperationsInput | string
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
@@ -7796,7 +7790,8 @@ export namespace Prisma {
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
     howyoudie?: StringFieldUpdateOperationsInput | string
-    interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
+    sexuality?: StringFieldUpdateOperationsInput | string
+    interested_in_gender?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
   }
 
@@ -7805,7 +7800,7 @@ export namespace Prisma {
     first_name: string
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
-    gender: $Enums.Genders
+    gender: string
     date_of_birth: string
     bio: string
     height: string
@@ -7816,7 +7811,8 @@ export namespace Prisma {
     last_active: Date | string
     profile_pic: string
     howyoudie: string
-    interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
+    sexuality: string
+    interested_in_gender: string
     user_id: string
   }
 
@@ -7825,7 +7821,7 @@ export namespace Prisma {
     first_name?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
-    gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
+    gender?: StringFieldUpdateOperationsInput | string
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
@@ -7836,7 +7832,8 @@ export namespace Prisma {
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
     howyoudie?: StringFieldUpdateOperationsInput | string
-    interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
+    sexuality?: StringFieldUpdateOperationsInput | string
+    interested_in_gender?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserDetailUncheckedUpdateManyInput = {
@@ -7844,7 +7841,7 @@ export namespace Prisma {
     first_name?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
-    gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
+    gender?: StringFieldUpdateOperationsInput | string
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
@@ -7855,13 +7852,14 @@ export namespace Prisma {
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
     howyoudie?: StringFieldUpdateOperationsInput | string
-    interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
+    sexuality?: StringFieldUpdateOperationsInput | string
+    interested_in_gender?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserPreferencesCreateInput = {
     id?: string
-    interests?: UserPreferencesCreateinterestsInput | string[]
+    intensions?: UserPreferencesCreateintensionsInput | string[]
     prefered_min_age?: number | null
     prefered_max_age?: number | null
     max_distance?: number | null
@@ -7873,7 +7871,7 @@ export namespace Prisma {
 
   export type UserPreferencesUncheckedCreateInput = {
     id?: string
-    interests?: UserPreferencesCreateinterestsInput | string[]
+    intensions?: UserPreferencesCreateintensionsInput | string[]
     prefered_min_age?: number | null
     prefered_max_age?: number | null
     max_distance?: number | null
@@ -7885,7 +7883,7 @@ export namespace Prisma {
 
   export type UserPreferencesUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interests?: UserPreferencesUpdateinterestsInput | string[]
+    intensions?: UserPreferencesUpdateintensionsInput | string[]
     prefered_min_age?: NullableIntFieldUpdateOperationsInput | number | null
     prefered_max_age?: NullableIntFieldUpdateOperationsInput | number | null
     max_distance?: NullableIntFieldUpdateOperationsInput | number | null
@@ -7897,7 +7895,7 @@ export namespace Prisma {
 
   export type UserPreferencesUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interests?: UserPreferencesUpdateinterestsInput | string[]
+    intensions?: UserPreferencesUpdateintensionsInput | string[]
     prefered_min_age?: NullableIntFieldUpdateOperationsInput | number | null
     prefered_max_age?: NullableIntFieldUpdateOperationsInput | number | null
     max_distance?: NullableIntFieldUpdateOperationsInput | number | null
@@ -7909,7 +7907,7 @@ export namespace Prisma {
 
   export type UserPreferencesCreateManyInput = {
     id?: string
-    interests?: UserPreferencesCreateinterestsInput | string[]
+    intensions?: UserPreferencesCreateintensionsInput | string[]
     prefered_min_age?: number | null
     prefered_max_age?: number | null
     max_distance?: number | null
@@ -7921,7 +7919,7 @@ export namespace Prisma {
 
   export type UserPreferencesUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interests?: UserPreferencesUpdateinterestsInput | string[]
+    intensions?: UserPreferencesUpdateintensionsInput | string[]
     prefered_min_age?: NullableIntFieldUpdateOperationsInput | number | null
     prefered_max_age?: NullableIntFieldUpdateOperationsInput | number | null
     max_distance?: NullableIntFieldUpdateOperationsInput | number | null
@@ -7932,7 +7930,7 @@ export namespace Prisma {
 
   export type UserPreferencesUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interests?: UserPreferencesUpdateinterestsInput | string[]
+    intensions?: UserPreferencesUpdateintensionsInput | string[]
     prefered_min_age?: NullableIntFieldUpdateOperationsInput | number | null
     prefered_max_age?: NullableIntFieldUpdateOperationsInput | number | null
     max_distance?: NullableIntFieldUpdateOperationsInput | number | null
@@ -8195,13 +8193,6 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type EnumGendersFilter<$PrismaModel = never> = {
-    equals?: $Enums.Genders | EnumGendersFieldRefInput<$PrismaModel>
-    in?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    not?: NestedEnumGendersFilter<$PrismaModel> | $Enums.Genders
-  }
-
   export type FloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -8211,14 +8202,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type EnumGendersNullableListFilter<$PrismaModel = never> = {
-    equals?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel> | null
-    has?: $Enums.Genders | EnumGendersFieldRefInput<$PrismaModel> | null
-    hasEvery?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    hasSome?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
   }
 
   export type UserDetailCountOrderByAggregateInput = {
@@ -8237,6 +8220,7 @@ export namespace Prisma {
     last_active?: SortOrder
     profile_pic?: SortOrder
     howyoudie?: SortOrder
+    sexuality?: SortOrder
     interested_in_gender?: SortOrder
     user_id?: SortOrder
   }
@@ -8261,6 +8245,8 @@ export namespace Prisma {
     last_active?: SortOrder
     profile_pic?: SortOrder
     howyoudie?: SortOrder
+    sexuality?: SortOrder
+    interested_in_gender?: SortOrder
     user_id?: SortOrder
   }
 
@@ -8279,22 +8265,14 @@ export namespace Prisma {
     last_active?: SortOrder
     profile_pic?: SortOrder
     howyoudie?: SortOrder
+    sexuality?: SortOrder
+    interested_in_gender?: SortOrder
     user_id?: SortOrder
   }
 
   export type UserDetailSumOrderByAggregateInput = {
     latitude?: SortOrder
     longitude?: SortOrder
-  }
-
-  export type EnumGendersWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Genders | EnumGendersFieldRefInput<$PrismaModel>
-    in?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    not?: NestedEnumGendersWithAggregatesFilter<$PrismaModel> | $Enums.Genders
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumGendersFilter<$PrismaModel>
-    _max?: NestedEnumGendersFilter<$PrismaModel>
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8326,7 +8304,7 @@ export namespace Prisma {
 
   export type UserPreferencesCountOrderByAggregateInput = {
     id?: SortOrder
-    interests?: SortOrder
+    intensions?: SortOrder
     prefered_min_age?: SortOrder
     prefered_max_age?: SortOrder
     max_distance?: SortOrder
@@ -8636,10 +8614,6 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type UserDetailCreateinterested_in_genderInput = {
-    set: $Enums.Genders[]
-  }
-
   export type UserCreateNestedOneWithoutUser_detailsInput = {
     create?: XOR<UserCreateWithoutUser_detailsInput, UserUncheckedCreateWithoutUser_detailsInput>
     connectOrCreate?: UserCreateOrConnectWithoutUser_detailsInput
@@ -8651,21 +8625,12 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type EnumGendersFieldUpdateOperationsInput = {
-    set?: $Enums.Genders
-  }
-
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type UserDetailUpdateinterested_in_genderInput = {
-    set?: $Enums.Genders[]
-    push?: $Enums.Genders | $Enums.Genders[]
   }
 
   export type UserUpdateOneRequiredWithoutUser_detailsNestedInput = {
@@ -8676,7 +8641,7 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUser_detailsInput, UserUpdateWithoutUser_detailsInput>, UserUncheckedUpdateWithoutUser_detailsInput>
   }
 
-  export type UserPreferencesCreateinterestsInput = {
+  export type UserPreferencesCreateintensionsInput = {
     set: string[]
   }
 
@@ -8686,7 +8651,7 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type UserPreferencesUpdateinterestsInput = {
+  export type UserPreferencesUpdateintensionsInput = {
     set?: string[]
     push?: string | string[]
   }
@@ -8846,13 +8811,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedEnumGendersFilter<$PrismaModel = never> = {
-    equals?: $Enums.Genders | EnumGendersFieldRefInput<$PrismaModel>
-    in?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    not?: NestedEnumGendersFilter<$PrismaModel> | $Enums.Genders
-  }
-
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -8862,16 +8820,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumGendersWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Genders | EnumGendersFieldRefInput<$PrismaModel>
-    in?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Genders[] | ListEnumGendersFieldRefInput<$PrismaModel>
-    not?: NestedEnumGendersWithAggregatesFilter<$PrismaModel> | $Enums.Genders
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumGendersFilter<$PrismaModel>
-    _max?: NestedEnumGendersFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8911,7 +8859,7 @@ export namespace Prisma {
     first_name: string
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
-    gender: $Enums.Genders
+    gender: string
     date_of_birth: string
     bio: string
     height: string
@@ -8922,7 +8870,8 @@ export namespace Prisma {
     last_active: Date | string
     profile_pic: string
     howyoudie: string
-    interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
+    sexuality: string
+    interested_in_gender: string
   }
 
   export type UserDetailUncheckedCreateWithoutUserInput = {
@@ -8930,7 +8879,7 @@ export namespace Prisma {
     first_name: string
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
-    gender: $Enums.Genders
+    gender: string
     date_of_birth: string
     bio: string
     height: string
@@ -8941,7 +8890,8 @@ export namespace Prisma {
     last_active: Date | string
     profile_pic: string
     howyoudie: string
-    interested_in_gender?: UserDetailCreateinterested_in_genderInput | $Enums.Genders[]
+    sexuality: string
+    interested_in_gender: string
   }
 
   export type UserDetailCreateOrConnectWithoutUserInput = {
@@ -8951,7 +8901,7 @@ export namespace Prisma {
 
   export type UserPreferencesCreateWithoutUserInput = {
     id?: string
-    interests?: UserPreferencesCreateinterestsInput | string[]
+    intensions?: UserPreferencesCreateintensionsInput | string[]
     prefered_min_age?: number | null
     prefered_max_age?: number | null
     max_distance?: number | null
@@ -8962,7 +8912,7 @@ export namespace Prisma {
 
   export type UserPreferencesUncheckedCreateWithoutUserInput = {
     id?: string
-    interests?: UserPreferencesCreateinterestsInput | string[]
+    intensions?: UserPreferencesCreateintensionsInput | string[]
     prefered_min_age?: number | null
     prefered_max_age?: number | null
     max_distance?: number | null
@@ -9063,7 +9013,7 @@ export namespace Prisma {
     first_name?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
-    gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
+    gender?: StringFieldUpdateOperationsInput | string
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
@@ -9074,7 +9024,8 @@ export namespace Prisma {
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
     howyoudie?: StringFieldUpdateOperationsInput | string
-    interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
+    sexuality?: StringFieldUpdateOperationsInput | string
+    interested_in_gender?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserDetailUncheckedUpdateWithoutUserInput = {
@@ -9082,7 +9033,7 @@ export namespace Prisma {
     first_name?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
-    gender?: EnumGendersFieldUpdateOperationsInput | $Enums.Genders
+    gender?: StringFieldUpdateOperationsInput | string
     date_of_birth?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
@@ -9093,7 +9044,8 @@ export namespace Prisma {
     last_active?: DateTimeFieldUpdateOperationsInput | Date | string
     profile_pic?: StringFieldUpdateOperationsInput | string
     howyoudie?: StringFieldUpdateOperationsInput | string
-    interested_in_gender?: UserDetailUpdateinterested_in_genderInput | $Enums.Genders[]
+    sexuality?: StringFieldUpdateOperationsInput | string
+    interested_in_gender?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserPreferencesUpsertWithoutUserInput = {
@@ -9109,7 +9061,7 @@ export namespace Prisma {
 
   export type UserPreferencesUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interests?: UserPreferencesUpdateinterestsInput | string[]
+    intensions?: UserPreferencesUpdateintensionsInput | string[]
     prefered_min_age?: NullableIntFieldUpdateOperationsInput | number | null
     prefered_max_age?: NullableIntFieldUpdateOperationsInput | number | null
     max_distance?: NullableIntFieldUpdateOperationsInput | number | null
@@ -9120,7 +9072,7 @@ export namespace Prisma {
 
   export type UserPreferencesUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interests?: UserPreferencesUpdateinterestsInput | string[]
+    intensions?: UserPreferencesUpdateintensionsInput | string[]
     prefered_min_age?: NullableIntFieldUpdateOperationsInput | number | null
     prefered_max_age?: NullableIntFieldUpdateOperationsInput | number | null
     max_distance?: NullableIntFieldUpdateOperationsInput | number | null

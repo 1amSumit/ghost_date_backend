@@ -18,9 +18,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        return res
-            .status(401)
-            .json({ message: "Not logged in. Please login first." });
+        res.status(401).json({ message: "Not logged in. Please login first." });
+        return;
     }
     const token = authHeader;
     try {
@@ -30,7 +29,8 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         next();
     }
     catch (error) {
-        return res.status(401).json({ message: "Invalid or expired token." });
+        res.status(401).json({ message: "Invalid or expired token." });
+        return;
     }
 });
 exports.authMiddleware = authMiddleware;

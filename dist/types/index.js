@@ -2,12 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDetailsTypes = exports.userSinginTypes = exports.verifyOtpTypes = exports.userSingupTypes = void 0;
 const zod_1 = require("zod");
-var Gender;
-(function (Gender) {
-    Gender["MALE"] = "MALE";
-    Gender["FEMALE"] = "FEMALE";
-    Gender["OTHER"] = "OTHER";
-})(Gender || (Gender = {}));
 exports.userSingupTypes = zod_1.z.object({
     email: zod_1.z.string().email(),
 });
@@ -21,9 +15,10 @@ exports.userSinginTypes = zod_1.z.object({
     password: zod_1.z.string().min(6),
 });
 exports.userDetailsTypes = zod_1.z.object({
+    userId: zod_1.z.string(),
     firstName: zod_1.z.string(),
     lastName: zod_1.z.string(),
-    gender: zod_1.z.enum([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
+    gender: zod_1.z.string(),
     bio: zod_1.z.string(),
     dateOfBirth: zod_1.z.string(),
     location: zod_1.z.string(),
@@ -31,8 +26,8 @@ exports.userDetailsTypes = zod_1.z.object({
     latitude: zod_1.z.number(),
     longitude: zod_1.z.number(),
     pronounce: zod_1.z.array(zod_1.z.string()),
-    interestedInGender: zod_1.z.array(zod_1.z.enum([Gender.MALE, Gender.FEMALE, Gender.OTHER])),
-    interests: zod_1.z.array(zod_1.z.string()),
+    interestedInGender: zod_1.z.string(),
+    intensions: zod_1.z.array(zod_1.z.string()),
     prefered_min_age: zod_1.z.number(),
     prefered_max_age: zod_1.z.number(),
     max_distance: zod_1.z.number(),
@@ -42,4 +37,5 @@ exports.userDetailsTypes = zod_1.z.object({
     education: zod_1.z.string(),
     height: zod_1.z.string(),
     howyoudie: zod_1.z.string(),
+    sexuality: zod_1.z.string(),
 });

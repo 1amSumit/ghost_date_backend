@@ -101,38 +101,57 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         user: userExists,
     });
 }));
-// routes.post("/userDetails", async (req, res) => {
-//   await tx.userDetail.create({
-//     data: {
-//       user_id: user.id,
-//       first_name: parsedData.data.firstName,
-//       last_name: parsedData.data.lastName,
-//       date_of_birth: parsedData.data.dateOfBirth,
-//       gender: parsedData.data.gender,
-//       bio: parsedData.data.bio,
-//       location: parsedData.data.location,
-//       latitude: parsedData.data.latitude,
-//       longitude: parsedData.data.longitude,
-//       pronounce: parsedData.data.pronounce,
-//       interested_in_gender: parsedData.data.interestedInGender,
-//       profile_pic: parsedData.data.profilePic,
-//       height: parsedData.data.height,
-//       education: parsedData.data.education,
-//       howyoudie: parsedData.data.howyoudie,
-//       last_active: new Date(),
-//     },
-//   });
-//   await tx.userPreferences.create({
-//     data: {
-//       user_id: user.id,
-//       interests: parsedData.data.interests,
-//       prefered_min_age: parsedData.data.prefered_min_age,
-//       prefered_max_age: parsedData.data.prefered_max_age,
-//       max_distance: parsedData.data.max_distance,
-//       is_ghost_mode: parsedData.data.is_ghost_mode,
-//       show_on_feed: parsedData.data.show_on_feed,
-//       verified: parsedData.data.verified,
-//     },
-//   });
-// });
+routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    const parsedData = types_1.userDetailsTypes.safeParse(body);
+    if (!parsedData.success) {
+        console.log(parsedData.error);
+        res.status(411).json({
+            message: "Incorrect input",
+        });
+        return;
+    }
+    yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+        yield tx.userDetail.create({
+            data: {
+                user_id: parsedData.data.userId,
+                first_name: parsedData.data.firstName,
+                last_name: parsedData.data.lastName,
+                date_of_birth: parsedData.data.dateOfBirth,
+                gender: parsedData.data.gender,
+                bio: parsedData.data.bio,
+                location: parsedData.data.location,
+                latitude: parsedData.data.latitude,
+                longitude: parsedData.data.longitude,
+                pronounce: parsedData.data.pronounce,
+                interested_in_gender: parsedData.data.interestedInGender,
+                profile_pic: parsedData.data.profilePic,
+                height: parsedData.data.height,
+                education: parsedData.data.education,
+                howyoudie: parsedData.data.howyoudie,
+                sexuality: parsedData.data.sexuality,
+                last_active: new Date(),
+            },
+        });
+        yield tx.userPreferences.create({
+            data: {
+                user_id: parsedData.data.userId,
+                intensions: parsedData.data.intensions,
+                prefered_min_age: parsedData.data.prefered_min_age,
+                prefered_max_age: parsedData.data.prefered_max_age,
+                max_distance: parsedData.data.max_distance,
+                is_ghost_mode: parsedData.data.is_ghost_mode,
+                show_on_feed: parsedData.data.show_on_feed,
+                verified: parsedData.data.verified,
+            },
+        });
+    }));
+    const token = jsonwebtoken_1.default.sign({ id: parsedData.data.userId }, process.env.JWT_PASSWORD, {
+        expiresIn: 10 * 60 * 60,
+    });
+    res.status(200).json({
+        token,
+        message: "user created successfully",
+    });
+}));
 exports.userRoutes = routes;

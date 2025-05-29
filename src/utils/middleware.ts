@@ -5,9 +5,8 @@ export const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res
-      .status(401)
-      .json({ message: "Not logged in. Please login first." });
+    res.status(401).json({ message: "Not logged in. Please login first." });
+    return;
   }
 
   const token = authHeader;
@@ -18,6 +17,7 @@ export const authMiddleware = async (req, res, next) => {
     req.userId = decoded.id;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Invalid or expired token." });
+    res.status(401).json({ message: "Invalid or expired token." });
+    return;
   }
 };

@@ -154,13 +154,14 @@ exports.Prisma.UserDetailScalarFieldEnum = {
   last_active: 'last_active',
   profile_pic: 'profile_pic',
   howyoudie: 'howyoudie',
+  sexuality: 'sexuality',
   interested_in_gender: 'interested_in_gender',
   user_id: 'user_id'
 };
 
 exports.Prisma.UserPreferencesScalarFieldEnum = {
   id: 'id',
-  interests: 'interests',
+  intensions: 'intensions',
   prefered_min_age: 'prefered_min_age',
   prefered_max_age: 'prefered_max_age',
   max_distance: 'max_distance',
@@ -192,11 +193,7 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.Genders = exports.$Enums.Genders = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  OTHER: 'OTHER'
-};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
