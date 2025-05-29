@@ -73,7 +73,7 @@ routes.post("/verify-otp", (req, res) => __awaiter(void 0, void 0, void 0, funct
     });
 }));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const body = yield req.body;
+    const body = req.body;
     const parsedData = types_1.userSinginTypes.safeParse(body);
     if (!parsedData.success) {
         res.status(411).json({
@@ -81,31 +81,37 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
         return;
     }
-    const userExists = yield prismaClient.user.findFirst({
+    // Fetch the user directly
+    const user = yield prismaClient.user.findFirst({
         where: {
             email: parsedData.data.email,
-            password: parsedData.data.password,
         },
     });
-    if (!userExists) {
+    if (!user) {
         res.status(411).json({
-            message: "User not exists. Please sign up first.",
+            message: "User does not exist. Please sign up first.",
         });
         return;
     }
-    const token = jsonwebtoken_1.default.sign({ id: userExists.id }, process.env.JWT_PASSWORD, {
-        expiresIn: 10 * 60 * 60,
+    const isPasswordCorrect = yield bcrypt_1.default.compare(parsedData.data.password, user.password);
+    if (!isPasswordCorrect) {
+        res.status(401).json({
+            message: "Incorrect password",
+        });
+        return;
+    }
+    const token = jsonwebtoken_1.default.sign({ id: user.id }, process.env.JWT_PASSWORD, {
+        expiresIn: 90 * 60 * 60,
     });
     res.status(200).json({
         token,
-        user: userExists,
+        user,
     });
 }));
 routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     const parsedData = types_1.userDetailsTypes.safeParse(body);
     if (!parsedData.success) {
-        console.log(parsedData.error);
         res.status(411).json({
             message: "Incorrect input",
         });

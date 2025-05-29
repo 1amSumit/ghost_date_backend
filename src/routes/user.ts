@@ -79,7 +79,7 @@ routes.post("/verify-otp", async (req, res) => {
 });
 
 routes.post("/signin", async (req, res) => {
-  const body = await req.body;
+  const body = req.body;
   const parsedData = userSinginTypes.safeParse(body);
 
   if (!parsedData.success) {
@@ -89,32 +89,38 @@ routes.post("/signin", async (req, res) => {
     return;
   }
 
-  const userExists = await prismaClient.user.findFirst({
+  const user = await prismaClient.user.findFirst({
     where: {
       email: parsedData.data.email,
-      password: parsedData.data.password,
     },
   });
 
-  if (!userExists) {
+  if (!user) {
     res.status(411).json({
-      message: "User not exists. Please sign up first.",
+      message: "User does not exist. Please sign up first.",
     });
-
     return;
   }
 
-  const token = jwt.sign(
-    { id: userExists.id },
-    process.env.JWT_PASSWORD as string,
-    {
-      expiresIn: 10 * 60 * 60,
-    }
+  const isPasswordCorrect = await bcrypt.compare(
+    parsedData.data.password,
+    user.password
   );
+
+  if (!isPasswordCorrect) {
+    res.status(401).json({
+      message: "Incorrect password",
+    });
+    return;
+  }
+
+  const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD as string, {
+    expiresIn: 90 * 60 * 60,
+  });
 
   res.status(200).json({
     token,
-    user: userExists,
+    user,
   });
 });
 
@@ -123,7 +129,6 @@ routes.post("/create-user", async (req, res) => {
   const parsedData = userDetailsTypes.safeParse(body);
 
   if (!parsedData.success) {
-    console.log(parsedData.error);
     res.status(411).json({
       message: "Incorrect input",
     });
