@@ -81,7 +81,6 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
         return;
     }
-    // Fetch the user directly
     const user = yield prismaClient.user.findFirst({
         where: {
             email: parsedData.data.email,
@@ -101,7 +100,7 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         return;
     }
     const token = jsonwebtoken_1.default.sign({ id: user.id }, process.env.JWT_PASSWORD, {
-        expiresIn: 90 * 60 * 60,
+        expiresIn: 90 * 24 * 60 * 60,
     });
     res.status(200).json({
         token,
@@ -153,7 +152,7 @@ routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, func
         });
     }));
     const token = jsonwebtoken_1.default.sign({ id: parsedData.data.userId }, process.env.JWT_PASSWORD, {
-        expiresIn: 10 * 60 * 60,
+        expiresIn: 90 * 24 * 60 * 60,
     });
     res.status(200).json({
         token,

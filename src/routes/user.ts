@@ -11,7 +11,6 @@ import bcrypt from "bcrypt";
 import { redisClient } from "../utils/redisClient";
 import { generateOtp } from "../utils/genereateOtp";
 import { sendMail } from "../utils/sendEmail";
-import { authMiddleware } from "../utils/middleware";
 
 const prismaClient = new PrismaClient();
 
@@ -115,7 +114,7 @@ routes.post("/signin", async (req, res) => {
   }
 
   const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD as string, {
-    expiresIn: 90 * 60 * 60,
+    expiresIn: 90 * 24 * 60 * 60,
   });
 
   res.status(200).json({
@@ -176,7 +175,7 @@ routes.post("/create-user", async (req, res) => {
     { id: parsedData.data.userId },
     process.env.JWT_PASSWORD as string,
     {
-      expiresIn: 10 * 60 * 60,
+      expiresIn: 90 * 24 * 60 * 60,
     }
   );
 

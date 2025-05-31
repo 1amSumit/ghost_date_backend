@@ -5,11 +5,15 @@
   "scripts": {
     "dev": "tsc -b && node dist/index.js"
   },
+  "prisma": {
+    "seed": "ts-node src/db/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@prisma/client": "^6.7.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
@@ -22,6 +26,7 @@
     "nodemailer": "^7.0.3",
     "prisma": "^6.7.0",
     "redis": "^5.1.0",
+    "ts-node": "^10.9.2",
     "zod": "^3.24.4"
   }
 }

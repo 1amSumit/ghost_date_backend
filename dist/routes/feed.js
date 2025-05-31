@@ -17,34 +17,39 @@ const redisClient_1 = require("../utils/redisClient");
 const router = (0, express_1.Router)();
 const prismaClient = new client_1.PrismaClient();
 router.use(middleware_1.authMiddleware);
-//@ts-ignore
-router.get("/getMatchedFeed", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //@ts-ignore
     const userId = req.userId;
+    const page = req.params.page ? parseInt(req.params.page) : 1;
+    console.log(page);
+    const usersPerPage = 10;
     const getAllUser = yield prismaClient.user.findMany({
         where: {
             id: {
                 not: userId,
             },
         },
-        include: {
+        select: {
+            id: true,
+            email: true,
             user_details: true,
             preferences: true,
         },
+        take: usersPerPage,
+        skip: (page - 1) * usersPerPage,
     });
+    console.log(getAllUser.map((u) => u.email));
     if (getAllUser.length === 0) {
-        return res.status(200).json({
+        res.status(200).json({
             message: "No match found!",
         });
+        return;
     }
     const feed = [];
     for (const user of getAllUser) {
         const exists = yield redisClient_1.redisClient.get(user.id);
         if (exists === null) {
             feed.push(user);
-            yield redisClient_1.redisClient.set(user.id, JSON.stringify(user), {
-                EX: 3600,
-            });
         }
     }
     res.status(200).json({

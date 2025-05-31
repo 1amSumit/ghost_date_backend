@@ -8,26 +8,36 @@ const prismaClient = new PrismaClient();
 
 router.use(authMiddleware);
 
-//@ts-ignore
-router.get("/getMatchedFeed", async (req, res) => {
+router.get("/getUnMatchedFeed/:page", async (req, res) => {
   //@ts-ignore
   const userId = req.userId;
+  const page = req.params.page ? parseInt(req.params.page as string) : 1;
+  console.log(page);
+  const usersPerPage = 10;
+
   const getAllUser = await prismaClient.user.findMany({
     where: {
       id: {
         not: userId,
       },
     },
-    include: {
+    select: {
+      id: true,
+      email: true,
       user_details: true,
       preferences: true,
     },
+    take: usersPerPage,
+    skip: (page - 1) * usersPerPage,
   });
 
+  console.log(getAllUser.map((u) => u.email));
+
   if (getAllUser.length === 0) {
-    return res.status(200).json({
+    res.status(200).json({
       message: "No match found!",
     });
+    return;
   }
 
   const feed: any = [];
@@ -37,9 +47,6 @@ router.get("/getMatchedFeed", async (req, res) => {
 
     if (exists === null) {
       feed.push(user);
-      await redisClient.set(user.id, JSON.stringify(user), {
-        EX: 3600,
-      });
     }
   }
 
