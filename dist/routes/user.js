@@ -21,6 +21,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const redisClient_1 = require("../utils/redisClient");
 const genereateOtp_1 = require("../utils/genereateOtp");
 const sendEmail_1 = require("../utils/sendEmail");
+const middleware_1 = require("../utils/middleware");
 const prismaClient = new client_1.PrismaClient();
 const routes = (0, express_1.Router)();
 routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -157,6 +158,14 @@ routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, func
     res.status(200).json({
         token,
         message: "user created successfully",
+    });
+}));
+routes.post("/seen-user", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { users } = req.body;
+    console.log(users);
+    users.forEach((user) => __awaiter(void 0, void 0, void 0, function* () { return yield redisClient_1.redisClient.set(user.toString(), "seen"); }));
+    res.status(200).json({
+        message: "done",
     });
 }));
 exports.userRoutes = routes;

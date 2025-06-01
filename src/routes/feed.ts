@@ -12,7 +12,7 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
   //@ts-ignore
   const userId = req.userId;
   const page = req.params.page ? parseInt(req.params.page as string) : 1;
-  console.log(page);
+
   const usersPerPage = 10;
 
   const getAllUser = await prismaClient.user.findMany({
@@ -31,7 +31,7 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
     skip: (page - 1) * usersPerPage,
   });
 
-  console.log(getAllUser.map((u) => u.email));
+  // console.log(getAllUser.map((u) => u.email));
 
   if (getAllUser.length === 0) {
     res.status(200).json({

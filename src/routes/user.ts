@@ -11,6 +11,7 @@ import bcrypt from "bcrypt";
 import { redisClient } from "../utils/redisClient";
 import { generateOtp } from "../utils/genereateOtp";
 import { sendMail } from "../utils/sendEmail";
+import { authMiddleware } from "../utils/middleware";
 
 const prismaClient = new PrismaClient();
 
@@ -182,6 +183,18 @@ routes.post("/create-user", async (req, res) => {
   res.status(200).json({
     token,
     message: "user created successfully",
+  });
+});
+
+routes.post("/seen-user", authMiddleware, async (req, res) => {
+  const { users } = req.body;
+
+  users.forEach(
+    async (user: String) => await redisClient.set(user.toString(), "seen")
+  );
+
+  res.status(200).json({
+    message: "done",
   });
 });
 

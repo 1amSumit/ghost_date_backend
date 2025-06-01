@@ -38,7 +38,7 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
         take: usersPerPage,
         skip: (page - 1) * usersPerPage,
     });
-    console.log(getAllUser.map((u) => u.email));
+    // console.log(getAllUser.map((u) => u.email));
     if (getAllUser.length === 0) {
         res.status(200).json({
             message: "No match found!",
@@ -48,6 +48,7 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
     const feed = [];
     for (const user of getAllUser) {
         const exists = yield redisClient_1.redisClient.get(user.id);
+        console.log(exists);
         if (exists === null) {
             feed.push(user);
         }
