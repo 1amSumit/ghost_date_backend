@@ -5952,23 +5952,17 @@ export namespace Prisma {
 
   export type MediaMinAggregateOutputType = {
     id: string | null
-    video_intro: string | null
-    voice_intro: string | null
     user_id: string | null
   }
 
   export type MediaMaxAggregateOutputType = {
     id: string | null
-    video_intro: string | null
-    voice_intro: string | null
     user_id: string | null
   }
 
   export type MediaCountAggregateOutputType = {
     id: number
     gallery: number
-    video_intro: number
-    voice_intro: number
     user_id: number
     _all: number
   }
@@ -5976,23 +5970,17 @@ export namespace Prisma {
 
   export type MediaMinAggregateInputType = {
     id?: true
-    video_intro?: true
-    voice_intro?: true
     user_id?: true
   }
 
   export type MediaMaxAggregateInputType = {
     id?: true
-    video_intro?: true
-    voice_intro?: true
     user_id?: true
   }
 
   export type MediaCountAggregateInputType = {
     id?: true
     gallery?: true
-    video_intro?: true
-    voice_intro?: true
     user_id?: true
     _all?: true
   }
@@ -6072,8 +6060,6 @@ export namespace Prisma {
   export type MediaGroupByOutputType = {
     id: string
     gallery: string[]
-    video_intro: string
-    voice_intro: string
     user_id: string
     _count: MediaCountAggregateOutputType | null
     _min: MediaMinAggregateOutputType | null
@@ -6097,8 +6083,6 @@ export namespace Prisma {
   export type MediaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     gallery?: boolean
-    video_intro?: boolean
-    voice_intro?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["media"]>
@@ -6106,8 +6090,6 @@ export namespace Prisma {
   export type MediaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     gallery?: boolean
-    video_intro?: boolean
-    voice_intro?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["media"]>
@@ -6115,8 +6097,6 @@ export namespace Prisma {
   export type MediaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     gallery?: boolean
-    video_intro?: boolean
-    voice_intro?: boolean
     user_id?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["media"]>
@@ -6124,12 +6104,10 @@ export namespace Prisma {
   export type MediaSelectScalar = {
     id?: boolean
     gallery?: boolean
-    video_intro?: boolean
-    voice_intro?: boolean
     user_id?: boolean
   }
 
-  export type MediaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gallery" | "video_intro" | "voice_intro" | "user_id", ExtArgs["result"]["media"]>
+  export type MediaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gallery" | "user_id", ExtArgs["result"]["media"]>
   export type MediaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6148,8 +6126,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       gallery: string[]
-      video_intro: string
-      voice_intro: string
       user_id: string
     }, ExtArgs["result"]["media"]>
     composites: {}
@@ -6577,8 +6553,6 @@ export namespace Prisma {
   interface MediaFieldRefs {
     readonly id: FieldRef<"Media", 'String'>
     readonly gallery: FieldRef<"Media", 'String[]'>
-    readonly video_intro: FieldRef<"Media", 'String'>
-    readonly voice_intro: FieldRef<"Media", 'String'>
     readonly user_id: FieldRef<"Media", 'String'>
   }
     
@@ -7074,8 +7048,6 @@ export namespace Prisma {
   export const MediaScalarFieldEnum: {
     id: 'id',
     gallery: 'gallery',
-    video_intro: 'video_intro',
-    voice_intro: 'voice_intro',
     user_id: 'user_id'
   };
 
@@ -7518,8 +7490,6 @@ export namespace Prisma {
     NOT?: MediaWhereInput | MediaWhereInput[]
     id?: StringFilter<"Media"> | string
     gallery?: StringNullableListFilter<"Media">
-    video_intro?: StringFilter<"Media"> | string
-    voice_intro?: StringFilter<"Media"> | string
     user_id?: StringFilter<"Media"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -7527,8 +7497,6 @@ export namespace Prisma {
   export type MediaOrderByWithRelationInput = {
     id?: SortOrder
     gallery?: SortOrder
-    video_intro?: SortOrder
-    voice_intro?: SortOrder
     user_id?: SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -7540,16 +7508,12 @@ export namespace Prisma {
     OR?: MediaWhereInput[]
     NOT?: MediaWhereInput | MediaWhereInput[]
     gallery?: StringNullableListFilter<"Media">
-    video_intro?: StringFilter<"Media"> | string
-    voice_intro?: StringFilter<"Media"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "user_id">
 
   export type MediaOrderByWithAggregationInput = {
     id?: SortOrder
     gallery?: SortOrder
-    video_intro?: SortOrder
-    voice_intro?: SortOrder
     user_id?: SortOrder
     _count?: MediaCountOrderByAggregateInput
     _max?: MediaMaxOrderByAggregateInput
@@ -7562,8 +7526,6 @@ export namespace Prisma {
     NOT?: MediaScalarWhereWithAggregatesInput | MediaScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Media"> | string
     gallery?: StringNullableListFilter<"Media">
-    video_intro?: StringWithAggregatesFilter<"Media"> | string
-    voice_intro?: StringWithAggregatesFilter<"Media"> | string
     user_id?: StringWithAggregatesFilter<"Media"> | string
   }
 
@@ -7943,55 +7905,41 @@ export namespace Prisma {
   export type MediaCreateInput = {
     id?: string
     gallery?: MediaCreategalleryInput | string[]
-    video_intro: string
-    voice_intro: string
     user: UserCreateNestedOneWithoutMediaInput
   }
 
   export type MediaUncheckedCreateInput = {
     id?: string
     gallery?: MediaCreategalleryInput | string[]
-    video_intro: string
-    voice_intro: string
     user_id: string
   }
 
   export type MediaUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     gallery?: MediaUpdategalleryInput | string[]
-    video_intro?: StringFieldUpdateOperationsInput | string
-    voice_intro?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutMediaNestedInput
   }
 
   export type MediaUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     gallery?: MediaUpdategalleryInput | string[]
-    video_intro?: StringFieldUpdateOperationsInput | string
-    voice_intro?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type MediaCreateManyInput = {
     id?: string
     gallery?: MediaCreategalleryInput | string[]
-    video_intro: string
-    voice_intro: string
     user_id: string
   }
 
   export type MediaUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     gallery?: MediaUpdategalleryInput | string[]
-    video_intro?: StringFieldUpdateOperationsInput | string
-    voice_intro?: StringFieldUpdateOperationsInput | string
   }
 
   export type MediaUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     gallery?: MediaUpdategalleryInput | string[]
-    video_intro?: StringFieldUpdateOperationsInput | string
-    voice_intro?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
   }
 
@@ -8367,22 +8315,16 @@ export namespace Prisma {
   export type MediaCountOrderByAggregateInput = {
     id?: SortOrder
     gallery?: SortOrder
-    video_intro?: SortOrder
-    voice_intro?: SortOrder
     user_id?: SortOrder
   }
 
   export type MediaMaxOrderByAggregateInput = {
     id?: SortOrder
-    video_intro?: SortOrder
-    voice_intro?: SortOrder
     user_id?: SortOrder
   }
 
   export type MediaMinOrderByAggregateInput = {
     id?: SortOrder
-    video_intro?: SortOrder
-    voice_intro?: SortOrder
     user_id?: SortOrder
   }
 
@@ -8929,15 +8871,11 @@ export namespace Prisma {
   export type MediaCreateWithoutUserInput = {
     id?: string
     gallery?: MediaCreategalleryInput | string[]
-    video_intro: string
-    voice_intro: string
   }
 
   export type MediaUncheckedCreateWithoutUserInput = {
     id?: string
     gallery?: MediaCreategalleryInput | string[]
-    video_intro: string
-    voice_intro: string
   }
 
   export type MediaCreateOrConnectWithoutUserInput = {
@@ -9095,15 +9033,11 @@ export namespace Prisma {
   export type MediaUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     gallery?: MediaUpdategalleryInput | string[]
-    video_intro?: StringFieldUpdateOperationsInput | string
-    voice_intro?: StringFieldUpdateOperationsInput | string
   }
 
   export type MediaUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     gallery?: MediaUpdategalleryInput | string[]
-    video_intro?: StringFieldUpdateOperationsInput | string
-    voice_intro?: StringFieldUpdateOperationsInput | string
   }
 
   export type MatchesUpsertWithWhereUniqueWithoutUser1Input = {

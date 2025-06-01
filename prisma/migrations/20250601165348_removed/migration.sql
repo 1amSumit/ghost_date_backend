@@ -1,6 +1,3 @@
--- CreateEnum
-CREATE TYPE "Genders" AS ENUM ('MALE', 'FEMALE', 'OTHER');
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -31,7 +28,7 @@ CREATE TABLE "UserDetail" (
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
     "pronounce" TEXT[],
-    "gender" "Genders" NOT NULL,
+    "gender" TEXT NOT NULL,
     "date_of_birth" TEXT NOT NULL,
     "bio" TEXT NOT NULL,
     "height" TEXT NOT NULL,
@@ -43,7 +40,7 @@ CREATE TABLE "UserDetail" (
     "profile_pic" TEXT NOT NULL,
     "howyoudie" TEXT NOT NULL,
     "sexuality" TEXT NOT NULL,
-    "interested_in_gender" "Genders" NOT NULL,
+    "interested_in_gender" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
 
     CONSTRAINT "UserDetail_pkey" PRIMARY KEY ("id")
@@ -68,8 +65,6 @@ CREATE TABLE "UserPreferences" (
 CREATE TABLE "Media" (
     "id" TEXT NOT NULL,
     "gallery" TEXT[],
-    "video_intro" TEXT NOT NULL,
-    "voice_intro" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
 
     CONSTRAINT "Media_pkey" PRIMARY KEY ("id")

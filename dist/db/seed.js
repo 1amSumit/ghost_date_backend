@@ -23,6 +23,7 @@ function generateUserData(batchSize) {
             const firstName = faker_1.faker.person.firstName();
             const lastName = faker_1.faker.person.lastName();
             const dob = faker_1.faker.date.birthdate({ min: 20, max: 30, mode: "age" });
+            const galleryImages = Array.from({ length: 3 }, () => faker_1.faker.image.urlPicsumPhotos());
             users.push({
                 email,
                 password,
@@ -58,6 +59,11 @@ function generateUserData(batchSize) {
                         verified: faker_1.faker.datatype.boolean(),
                     },
                 },
+                media: {
+                    create: {
+                        gallery: galleryImages,
+                    },
+                },
             });
         }
         return users;
@@ -73,6 +79,7 @@ function main() {
             },
         });
         yield prisma.userPreferences.deleteMany({});
+        yield prisma.media.deleteMany({});
         yield prisma.user.deleteMany({
             where: {
                 email: {

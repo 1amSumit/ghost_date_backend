@@ -174,8 +174,6 @@ exports.Prisma.UserPreferencesScalarFieldEnum = {
 exports.Prisma.MediaScalarFieldEnum = {
   id: 'id',
   gallery: 'gallery',
-  video_intro: 'video_intro',
-  voice_intro: 'voice_intro',
   user_id: 'user_id'
 };
 

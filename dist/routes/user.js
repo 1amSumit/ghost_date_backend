@@ -22,6 +22,7 @@ const redisClient_1 = require("../utils/redisClient");
 const genereateOtp_1 = require("../utils/genereateOtp");
 const sendEmail_1 = require("../utils/sendEmail");
 const middleware_1 = require("../utils/middleware");
+const minio_1 = require("../utils/minio");
 const prismaClient = new client_1.PrismaClient();
 const routes = (0, express_1.Router)();
 routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -111,12 +112,24 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
 routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     const parsedData = types_1.userDetailsTypes.safeParse(body);
+    console.log(parsedData.error);
     if (!parsedData.success) {
         res.status(411).json({
             message: "Incorrect input",
         });
         return;
     }
+    const bucketName = "ghost-dating-bucket";
+    const exists = yield minio_1.minioClient.bucketExists(bucketName);
+    if (!exists) {
+        yield minio_1.minioClient.makeBucket(bucketName, "ap-south-1");
+    }
+    const galleryUrl = [];
+    const uploadImagesToMinio = (filePath, fileName) => __awaiter(void 0, void 0, void 0, function* () {
+        yield minio_1.minioClient.fPutObject(bucketName, filePath, fileName);
+        const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
+        galleryUrl.push(publicUrl);
+    });
     yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         yield tx.userDetail.create({
             data: {
@@ -151,6 +164,12 @@ routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, func
                 verified: parsedData.data.verified,
             },
         });
+        yield tx.media.create({
+            data: {
+                user_id: parsedData.data.userId,
+                gallery: galleryUrl,
+            },
+        });
     }));
     const token = jsonwebtoken_1.default.sign({ id: parsedData.data.userId }, process.env.JWT_PASSWORD, {
         expiresIn: 90 * 24 * 60 * 60,
@@ -162,7 +181,6 @@ routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, func
 }));
 routes.post("/seen-user", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { users } = req.body;
-    console.log(users);
     users.forEach((user) => __awaiter(void 0, void 0, void 0, function* () { return yield redisClient_1.redisClient.set(user.toString(), "seen"); }));
     res.status(200).json({
         message: "done",

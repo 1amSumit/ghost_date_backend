@@ -16,6 +16,10 @@ async function generateUserData(batchSize: number) {
     const lastName = faker.person.lastName();
     const dob = faker.date.birthdate({ min: 20, max: 30, mode: "age" });
 
+    const galleryImages = Array.from({ length: 3 }, () =>
+      faker.image.urlPicsumPhotos()
+    );
+
     users.push({
       email,
       password,
@@ -53,6 +57,11 @@ async function generateUserData(batchSize: number) {
           verified: faker.datatype.boolean(),
         },
       },
+      media: {
+        create: {
+          gallery: galleryImages,
+        },
+      },
     });
   }
 
@@ -69,6 +78,8 @@ async function main() {
   });
 
   await prisma.userPreferences.deleteMany({});
+
+  await prisma.media.deleteMany({});
 
   await prisma.user.deleteMany({
     where: {

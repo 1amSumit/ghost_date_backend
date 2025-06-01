@@ -12,6 +12,10 @@ import { redisClient } from "../utils/redisClient";
 import { generateOtp } from "../utils/genereateOtp";
 import { sendMail } from "../utils/sendEmail";
 import { authMiddleware } from "../utils/middleware";
+import { minioClient } from "../utils/minio";
+import fs from "fs";
+import path from "path";
+import { string } from "zod";
 
 const prismaClient = new PrismaClient();
 
@@ -128,12 +132,29 @@ routes.post("/create-user", async (req, res) => {
   const body = req.body;
   const parsedData = userDetailsTypes.safeParse(body);
 
+  console.log(parsedData.error);
+
   if (!parsedData.success) {
     res.status(411).json({
       message: "Incorrect input",
     });
     return;
   }
+
+  const bucketName = "ghost-dating-bucket";
+
+  const exists = await minioClient.bucketExists(bucketName);
+  if (!exists) {
+    await minioClient.makeBucket(bucketName, "ap-south-1");
+  }
+
+  const galleryUrl: string[] = [];
+
+  const uploadImagesToMinio = async (filePath: string, fileName: string) => {
+    await minioClient.fPutObject(bucketName, filePath, fileName);
+    const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
+    galleryUrl.push(publicUrl);
+  };
 
   await prismaClient.$transaction(async (tx) => {
     await tx.userDetail.create({
@@ -168,6 +189,13 @@ routes.post("/create-user", async (req, res) => {
         is_ghost_mode: parsedData.data.is_ghost_mode,
         show_on_feed: parsedData.data.show_on_feed,
         verified: parsedData.data.verified,
+      },
+    });
+
+    await tx.media.create({
+      data: {
+        user_id: parsedData.data.userId,
+        gallery: galleryUrl,
       },
     });
   });

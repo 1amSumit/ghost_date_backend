@@ -38,4 +38,9 @@ exports.userDetailsTypes = zod_1.z.object({
     height: zod_1.z.string(),
     howyoudie: zod_1.z.string(),
     sexuality: zod_1.z.string(),
+    images: zod_1.z.array(zod_1.z.object({
+        id: zod_1.z.number(),
+        uri: zod_1.z.string(),
+        isRequired: zod_1.z.boolean(),
+    })),
 });

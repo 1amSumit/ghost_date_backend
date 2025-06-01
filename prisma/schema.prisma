@@ -75,10 +75,8 @@ model UserPreferences {
 }
 
 model Media {
-  id          String   @id @default(uuid())
-  gallery     String[]
-  video_intro String
-  voice_intro String
-  user_id     String   @unique
-  user        User     @relation(fields: [user_id], references: [id])
+  id      String   @id @default(uuid())
+  gallery String[]
+  user_id String   @unique
+  user    User     @relation(fields: [user_id], references: [id])
 }

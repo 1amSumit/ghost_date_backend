@@ -18,15 +18,29 @@ const router = (0, express_1.Router)();
 const prismaClient = new client_1.PrismaClient();
 router.use(middleware_1.authMiddleware);
 router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     //@ts-ignore
     const userId = req.userId;
     const page = req.params.page ? parseInt(req.params.page) : 1;
-    console.log(page);
+    const user = yield prismaClient.user.findFirst({
+        where: {
+            id: userId,
+        },
+        include: {
+            user_details: true,
+        },
+    });
+    const interestsInGender = (_a = user === null || user === void 0 ? void 0 : user.user_details) === null || _a === void 0 ? void 0 : _a.interested_in_gender;
     const usersPerPage = 10;
     const getAllUser = yield prismaClient.user.findMany({
         where: {
             id: {
                 not: userId,
+            },
+            user_details: {
+                is: {
+                    interested_in_gender: interestsInGender,
+                },
             },
         },
         select: {
@@ -38,7 +52,6 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
         take: usersPerPage,
         skip: (page - 1) * usersPerPage,
     });
-    // console.log(getAllUser.map((u) => u.email));
     if (getAllUser.length === 0) {
         res.status(200).json({
             message: "No match found!",
@@ -48,7 +61,6 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
     const feed = [];
     for (const user of getAllUser) {
         const exists = yield redisClient_1.redisClient.get(user.id);
-        console.log(exists);
         if (exists === null) {
             feed.push(user);
         }

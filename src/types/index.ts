@@ -38,4 +38,11 @@ export const userDetailsTypes = z.object({
   height: z.string(),
   howyoudie: z.string(),
   sexuality: z.string(),
+  images: z.array(
+    z.object({
+      id: z.number(),
+      uri: z.string(),
+      isRequired: z.boolean(),
+    })
+  ),
 });
