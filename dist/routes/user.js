@@ -23,6 +23,8 @@ const genereateOtp_1 = require("../utils/genereateOtp");
 const sendEmail_1 = require("../utils/sendEmail");
 const middleware_1 = require("../utils/middleware");
 const minio_1 = require("../utils/minio");
+const multer_1 = __importDefault(require("multer"));
+const upload = (0, multer_1.default)({ dest: "uploads/" });
 const prismaClient = new client_1.PrismaClient();
 const routes = (0, express_1.Router)();
 routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,9 +111,10 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         user,
     });
 }));
-routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     const parsedData = types_1.userDetailsTypes.safeParse(body);
+    const files = req.files;
     console.log(parsedData.error);
     if (!parsedData.success) {
         res.status(411).json({
@@ -119,17 +122,17 @@ routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, func
         });
         return;
     }
-    const bucketName = "ghost-dating-bucket";
-    const exists = yield minio_1.minioClient.bucketExists(bucketName);
-    if (!exists) {
-        yield minio_1.minioClient.makeBucket(bucketName, "ap-south-1");
-    }
-    const galleryUrl = [];
-    const uploadImagesToMinio = (filePath, fileName) => __awaiter(void 0, void 0, void 0, function* () {
-        yield minio_1.minioClient.fPutObject(bucketName, filePath, fileName);
+    const urls = [];
+    const bucketName = "ghostdatingbucket";
+    yield (0, minio_1.getBucket)(bucketName);
+    //@ts-ignore
+    for (const file of files) {
+        const fileName = `${Date.now()}-${file.originalname}`;
+        yield minio_1.minioClient.fPutObject(bucketName, fileName, file.path);
         const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
-        galleryUrl.push(publicUrl);
-    });
+        urls.push(publicUrl);
+    }
+    console.log(parsedData.data);
     yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         yield tx.userDetail.create({
             data: {
@@ -140,8 +143,8 @@ routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, func
                 gender: parsedData.data.gender,
                 bio: parsedData.data.bio,
                 location: parsedData.data.location,
-                latitude: parsedData.data.latitude,
-                longitude: parsedData.data.longitude,
+                latitude: Number(parsedData.data.latitude),
+                longitude: Number(parsedData.data.longitude),
                 pronounce: parsedData.data.pronounce,
                 interested_in_gender: parsedData.data.interestedInGender,
                 profile_pic: parsedData.data.profilePic,
@@ -156,18 +159,18 @@ routes.post("/create-user", (req, res) => __awaiter(void 0, void 0, void 0, func
             data: {
                 user_id: parsedData.data.userId,
                 intensions: parsedData.data.intensions,
-                prefered_min_age: parsedData.data.prefered_min_age,
-                prefered_max_age: parsedData.data.prefered_max_age,
-                max_distance: parsedData.data.max_distance,
-                is_ghost_mode: parsedData.data.is_ghost_mode,
-                show_on_feed: parsedData.data.show_on_feed,
-                verified: parsedData.data.verified,
+                prefered_min_age: Number(parsedData.data.prefered_min_age),
+                prefered_max_age: Number(parsedData.data.prefered_max_age),
+                max_distance: Number(parsedData.data.max_distance),
+                is_ghost_mode: Boolean(parsedData.data.is_ghost_mode),
+                show_on_feed: Boolean(parsedData.data.show_on_feed),
+                verified: Boolean(parsedData.data.verified),
             },
         });
         yield tx.media.create({
             data: {
                 user_id: parsedData.data.userId,
-                gallery: galleryUrl,
+                gallery: urls,
             },
         });
     }));

@@ -48,6 +48,7 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
             email: true,
             user_details: true,
             preferences: true,
+            media: true,
         },
         take: usersPerPage,
         skip: (page - 1) * usersPerPage,

@@ -12,11 +12,10 @@ import { redisClient } from "../utils/redisClient";
 import { generateOtp } from "../utils/genereateOtp";
 import { sendMail } from "../utils/sendEmail";
 import { authMiddleware } from "../utils/middleware";
-import { minioClient } from "../utils/minio";
-import fs from "fs";
-import path from "path";
-import { string } from "zod";
+import { getBucket, minioClient } from "../utils/minio";
+import multer from "multer";
 
+const upload = multer({ dest: "uploads/" });
 const prismaClient = new PrismaClient();
 
 const routes = Router();
@@ -128,11 +127,11 @@ routes.post("/signin", async (req, res) => {
   });
 });
 
-routes.post("/create-user", async (req, res) => {
+routes.post("/create-user", upload.array("images"), async (req, res) => {
   const body = req.body;
-  const parsedData = userDetailsTypes.safeParse(body);
 
-  console.log(parsedData.error);
+  const parsedData = userDetailsTypes.safeParse(body);
+  const files = req.files;
 
   if (!parsedData.success) {
     res.status(411).json({
@@ -141,20 +140,19 @@ routes.post("/create-user", async (req, res) => {
     return;
   }
 
-  const bucketName = "ghost-dating-bucket";
+  const urls: string[] = [];
 
-  const exists = await minioClient.bucketExists(bucketName);
-  if (!exists) {
-    await minioClient.makeBucket(bucketName, "ap-south-1");
-  }
+  const bucketName = "ghostdatingbucket";
 
-  const galleryUrl: string[] = [];
+  await getBucket(bucketName);
 
-  const uploadImagesToMinio = async (filePath: string, fileName: string) => {
-    await minioClient.fPutObject(bucketName, filePath, fileName);
+  //@ts-ignore
+  for (const file of files) {
+    const fileName = `${Date.now()}-${file.originalname}`;
+    await minioClient.fPutObject(bucketName, fileName, file.path);
     const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
-    galleryUrl.push(publicUrl);
-  };
+    urls.push(publicUrl);
+  }
 
   await prismaClient.$transaction(async (tx) => {
     await tx.userDetail.create({
@@ -166,8 +164,8 @@ routes.post("/create-user", async (req, res) => {
         gender: parsedData.data.gender,
         bio: parsedData.data.bio,
         location: parsedData.data.location,
-        latitude: parsedData.data.latitude,
-        longitude: parsedData.data.longitude,
+        latitude: Number(parsedData.data.latitude),
+        longitude: Number(parsedData.data.longitude),
         pronounce: parsedData.data.pronounce,
         interested_in_gender: parsedData.data.interestedInGender,
         profile_pic: parsedData.data.profilePic,
@@ -183,19 +181,19 @@ routes.post("/create-user", async (req, res) => {
       data: {
         user_id: parsedData.data.userId,
         intensions: parsedData.data.intensions,
-        prefered_min_age: parsedData.data.prefered_min_age,
-        prefered_max_age: parsedData.data.prefered_max_age,
-        max_distance: parsedData.data.max_distance,
-        is_ghost_mode: parsedData.data.is_ghost_mode,
-        show_on_feed: parsedData.data.show_on_feed,
-        verified: parsedData.data.verified,
+        prefered_min_age: Number(parsedData.data.prefered_min_age),
+        prefered_max_age: Number(parsedData.data.prefered_max_age),
+        max_distance: Number(parsedData.data.max_distance),
+        is_ghost_mode: Boolean(parsedData.data.is_ghost_mode),
+        show_on_feed: Boolean(parsedData.data.show_on_feed),
+        verified: Boolean(parsedData.data.verified),
       },
     });
 
     await tx.media.create({
       data: {
         user_id: parsedData.data.userId,
-        gallery: galleryUrl,
+        gallery: urls,
       },
     });
   });
