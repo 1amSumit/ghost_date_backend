@@ -23,7 +23,14 @@ function generateUserData(batchSize) {
             const firstName = faker_1.faker.person.firstName();
             const lastName = faker_1.faker.person.lastName();
             const dob = faker_1.faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-            const galleryImages = Array.from({ length: 3 }, () => faker_1.faker.image.urlPicsumPhotos());
+            const gender = faker_1.faker.person.sexType(); // 'male' or 'female'
+            // RandomUser API for profile pics and gallery images
+            const genderCode = gender.toLowerCase() === "male" ? "men" : "women";
+            const profilePic = `https://randomuser.me/api/portraits/${genderCode}/${faker_1.faker.number.int({ min: 1, max: 99 })}.jpg`;
+            const galleryImages = Array.from({ length: 3 }, () => `https://randomuser.me/api/portraits/${genderCode}/${faker_1.faker.number.int({
+                min: 1,
+                max: 99,
+            })}.jpg`);
             users.push({
                 email,
                 password,
@@ -33,7 +40,7 @@ function generateUserData(batchSize) {
                         first_name: firstName,
                         last_name: lastName,
                         pronounce: ["they", "them"],
-                        gender: faker_1.faker.person.sexType(),
+                        gender,
                         date_of_birth: dob.toISOString(),
                         bio: faker_1.faker.person.bio(),
                         height: `${faker_1.faker.number.int({ min: 5, max: 6 })}ft ${faker_1.faker.number.int({ min: 0, max: 11 })}in`,
@@ -42,7 +49,7 @@ function generateUserData(batchSize) {
                         latitude: parseFloat(faker_1.faker.location.latitude().toString()),
                         longitude: parseFloat(faker_1.faker.location.longitude().toString()),
                         last_active: new Date(),
-                        profile_pic: faker_1.faker.image.avatar(),
+                        profile_pic: profilePic,
                         howyoudie: faker_1.faker.lorem.sentence(),
                         sexuality: "Straight",
                         interested_in_gender: "Female",

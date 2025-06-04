@@ -21,9 +21,11 @@ model User {
   preferences  UserPreferences?
   media        Media?
 
-  liked_users Liked[]
-  matches1    Matches[] @relation("UserMatches1")
-  matches2    Matches[] @relation("UserMatches2")
+  liked_users Liked[] @relation("UserGotLiked")
+  given_likes Liked[] @relation("UserGivenLike")
+
+  matches1 Matches[] @relation("UserMatches1")
+  matches2 Matches[] @relation("UserMatches2")
 }
 
 model Matches {
@@ -83,7 +85,12 @@ model Media {
 }
 
 model Liked {
-  id      String @id @default(uuid())
-  user_id String
-  user    User   @relation(fields: [user_id], references: [id])
+  id          String @id @default(uuid())
+  user_id     String
+  liked_by_id String
+
+  user     User @relation("UserGotLiked", fields: [user_id], references: [id])
+  liked_by User @relation("UserGivenLike", fields: [liked_by_id], references: [id])
+
+  @@unique([user_id, liked_by_id])
 }

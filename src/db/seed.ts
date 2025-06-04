@@ -15,9 +15,21 @@ async function generateUserData(batchSize: number) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const dob = faker.date.birthdate({ min: 20, max: 30, mode: "age" });
+    const gender = faker.person.sexType(); // 'male' or 'female'
 
-    const galleryImages = Array.from({ length: 3 }, () =>
-      faker.image.urlPicsumPhotos()
+    // RandomUser API for profile pics and gallery images
+    const genderCode = gender.toLowerCase() === "male" ? "men" : "women";
+    const profilePic = `https://randomuser.me/api/portraits/${genderCode}/${faker.number.int(
+      { min: 1, max: 99 }
+    )}.jpg`;
+
+    const galleryImages = Array.from(
+      { length: 3 },
+      () =>
+        `https://randomuser.me/api/portraits/${genderCode}/${faker.number.int({
+          min: 1,
+          max: 99,
+        })}.jpg`
     );
 
     users.push({
@@ -29,7 +41,7 @@ async function generateUserData(batchSize: number) {
           first_name: firstName,
           last_name: lastName,
           pronounce: ["they", "them"],
-          gender: faker.person.sexType(),
+          gender,
           date_of_birth: dob.toISOString(),
           bio: faker.person.bio(),
           height: `${faker.number.int({ min: 5, max: 6 })}ft ${faker.number.int(
@@ -40,7 +52,7 @@ async function generateUserData(batchSize: number) {
           latitude: parseFloat(faker.location.latitude().toString()),
           longitude: parseFloat(faker.location.longitude().toString()),
           last_active: new Date(),
-          profile_pic: faker.image.avatar(),
+          profile_pic: profilePic,
           howyoudie: faker.lorem.sentence(),
           sexuality: "Straight",
           interested_in_gender: "Female",

@@ -13,13 +13,43 @@ const client_1 = require("../../prisma/app/generated/prisma/client");
 const prisma = new client_1.PrismaClient();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield prisma.liked.deleteMany({});
-        yield prisma.userPreferences.deleteMany({});
-        yield prisma.media.deleteMany({});
+        const user = yield prisma.user.findFirst({
+            where: {
+                email: "sj779619@gmail.com",
+            },
+        });
+        yield prisma.liked.deleteMany({
+            where: {
+                user_id: {
+                    not: user === null || user === void 0 ? void 0 : user.id,
+                },
+            },
+        });
+        yield prisma.userPreferences.deleteMany({
+            where: {
+                user_id: {
+                    not: user === null || user === void 0 ? void 0 : user.id,
+                },
+            },
+        });
+        yield prisma.media.deleteMany({
+            where: {
+                user_id: {
+                    not: user === null || user === void 0 ? void 0 : user.id,
+                },
+            },
+        });
+        yield prisma.userDetail.deleteMany({
+            where: {
+                user_id: {
+                    not: user === null || user === void 0 ? void 0 : user.id,
+                },
+            },
+        });
         yield prisma.user.deleteMany({
             where: {
-                email: {
-                    not: "sj79619@gmail.com",
+                id: {
+                    not: user === null || user === void 0 ? void 0 : user.id,
                 },
             },
         });

@@ -2,15 +2,45 @@ import { PrismaClient } from "../../prisma/app/generated/prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.liked.deleteMany({});
-  await prisma.userPreferences.deleteMany({});
+  const user = await prisma.user.findFirst({
+    where: {
+      email: "sj779619@gmail.com",
+    },
+  });
+  await prisma.liked.deleteMany({
+    where: {
+      user_id: {
+        not: user?.id,
+      },
+    },
+  });
+  await prisma.userPreferences.deleteMany({
+    where: {
+      user_id: {
+        not: user?.id,
+      },
+    },
+  });
 
-  await prisma.media.deleteMany({});
+  await prisma.media.deleteMany({
+    where: {
+      user_id: {
+        not: user?.id,
+      },
+    },
+  });
+  await prisma.userDetail.deleteMany({
+    where: {
+      user_id: {
+        not: user?.id,
+      },
+    },
+  });
 
   await prisma.user.deleteMany({
     where: {
-      email: {
-        not: "sj79619@gmail.com",
+      id: {
+        not: user?.id,
       },
     },
   });
