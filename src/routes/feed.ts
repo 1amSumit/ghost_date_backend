@@ -10,12 +10,12 @@ router.use(authMiddleware);
 
 router.get("/getUnMatchedFeed/:page", async (req, res) => {
   //@ts-ignore
-  const userId = req.userId;
+  const loggedInUser = req.userId;
   const page = req.params.page ? parseInt(req.params.page as string) : 1;
 
   const user = await prismaClient.user.findFirst({
     where: {
-      id: userId,
+      id: loggedInUser,
     },
     include: {
       user_details: true,
@@ -29,7 +29,7 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
   const getAllUser = await prismaClient.user.findMany({
     where: {
       id: {
-        not: userId,
+        not: loggedInUser,
       },
       user_details: {
         is: {
@@ -58,7 +58,7 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
   const feed: any = [];
 
   for (const user of getAllUser) {
-    const exists = await redisClient.get(user.id);
+    const exists = await redisClient.get(`seen:${loggedInUser}:${user.id}`);
 
     if (exists === null) {
       feed.push(user);

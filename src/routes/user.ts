@@ -214,10 +214,23 @@ routes.post("/create-user", upload.array("images"), async (req, res) => {
 
 routes.post("/seen-user", authMiddleware, async (req, res) => {
   const { users } = req.body;
+  //@ts-ignore
+  const loggedInUserId = req.userId;
 
-  users.forEach(
-    async (user: String) => await redisClient.set(user.toString(), "seen")
-  );
+  console.log(users);
+
+  try {
+    const pipeline = redisClient.multi();
+
+    users.forEach((user: String) =>
+      pipeline.set(`seen:${loggedInUserId}:${user}`, "seen")
+    );
+
+    await pipeline.exec();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 
   res.status(200).json({
     message: "done",

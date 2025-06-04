@@ -115,7 +115,6 @@ routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void
     const body = req.body;
     const parsedData = types_1.userDetailsTypes.safeParse(body);
     const files = req.files;
-    console.log(parsedData.error);
     if (!parsedData.success) {
         res.status(411).json({
             message: "Incorrect input",
@@ -132,7 +131,6 @@ routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void
         const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
         urls.push(publicUrl);
     }
-    console.log(parsedData.data);
     yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         yield tx.userDetail.create({
             data: {
@@ -184,6 +182,7 @@ routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void
 }));
 routes.post("/seen-user", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { users } = req.body;
+    console.log(users);
     users.forEach((user) => __awaiter(void 0, void 0, void 0, function* () { return yield redisClient_1.redisClient.set(user.toString(), "seen"); }));
     res.status(200).json({
         message: "done",
