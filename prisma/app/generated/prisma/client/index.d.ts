@@ -38,6 +38,11 @@ export type UserPreferences = $Result.DefaultSelection<Prisma.$UserPreferencesPa
  * 
  */
 export type Media = $Result.DefaultSelection<Prisma.$MediaPayload>
+/**
+ * Model Liked
+ * 
+ */
+export type Liked = $Result.DefaultSelection<Prisma.$LikedPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -213,6 +218,16 @@ export class PrismaClient<
     * ```
     */
   get media(): Prisma.MediaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.liked`: Exposes CRUD operations for the **Liked** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Likeds
+    * const likeds = await prisma.liked.findMany()
+    * ```
+    */
+  get liked(): Prisma.LikedDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -657,7 +672,8 @@ export namespace Prisma {
     Matches: 'Matches',
     UserDetail: 'UserDetail',
     UserPreferences: 'UserPreferences',
-    Media: 'Media'
+    Media: 'Media',
+    Liked: 'Liked'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -676,7 +692,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "matches" | "userDetail" | "userPreferences" | "media"
+      modelProps: "user" | "matches" | "userDetail" | "userPreferences" | "media" | "liked"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1050,6 +1066,80 @@ export namespace Prisma {
           }
         }
       }
+      Liked: {
+        payload: Prisma.$LikedPayload<ExtArgs>
+        fields: Prisma.LikedFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LikedFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LikedFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>
+          }
+          findFirst: {
+            args: Prisma.LikedFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LikedFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>
+          }
+          findMany: {
+            args: Prisma.LikedFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>[]
+          }
+          create: {
+            args: Prisma.LikedCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>
+          }
+          createMany: {
+            args: Prisma.LikedCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LikedCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>[]
+          }
+          delete: {
+            args: Prisma.LikedDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>
+          }
+          update: {
+            args: Prisma.LikedUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>
+          }
+          deleteMany: {
+            args: Prisma.LikedDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LikedUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LikedUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>[]
+          }
+          upsert: {
+            args: Prisma.LikedUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LikedPayload>
+          }
+          aggregate: {
+            args: Prisma.LikedAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLiked>
+          }
+          groupBy: {
+            args: Prisma.LikedGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LikedGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LikedCountArgs<ExtArgs>
+            result: $Utils.Optional<LikedCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1139,6 +1229,7 @@ export namespace Prisma {
     userDetail?: UserDetailOmit
     userPreferences?: UserPreferencesOmit
     media?: MediaOmit
+    liked?: LikedOmit
   }
 
   /* Types for Logging */
@@ -1233,11 +1324,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    liked_users: number
     matches1: number
     matches2: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    liked_users?: boolean | UserCountOutputTypeCountLiked_usersArgs
     matches1?: boolean | UserCountOutputTypeCountMatches1Args
     matches2?: boolean | UserCountOutputTypeCountMatches2Args
   }
@@ -1251,6 +1344,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLiked_usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LikedWhereInput
   }
 
   /**
@@ -1447,6 +1547,7 @@ export namespace Prisma {
     user_details?: boolean | User$user_detailsArgs<ExtArgs>
     preferences?: boolean | User$preferencesArgs<ExtArgs>
     media?: boolean | User$mediaArgs<ExtArgs>
+    liked_users?: boolean | User$liked_usersArgs<ExtArgs>
     matches1?: boolean | User$matches1Args<ExtArgs>
     matches2?: boolean | User$matches2Args<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1484,6 +1585,7 @@ export namespace Prisma {
     user_details?: boolean | User$user_detailsArgs<ExtArgs>
     preferences?: boolean | User$preferencesArgs<ExtArgs>
     media?: boolean | User$mediaArgs<ExtArgs>
+    liked_users?: boolean | User$liked_usersArgs<ExtArgs>
     matches1?: boolean | User$matches1Args<ExtArgs>
     matches2?: boolean | User$matches2Args<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1497,6 +1599,7 @@ export namespace Prisma {
       user_details: Prisma.$UserDetailPayload<ExtArgs> | null
       preferences: Prisma.$UserPreferencesPayload<ExtArgs> | null
       media: Prisma.$MediaPayload<ExtArgs> | null
+      liked_users: Prisma.$LikedPayload<ExtArgs>[]
       matches1: Prisma.$MatchesPayload<ExtArgs>[]
       matches2: Prisma.$MatchesPayload<ExtArgs>[]
     }
@@ -1904,6 +2007,7 @@ export namespace Prisma {
     user_details<T extends User$user_detailsArgs<ExtArgs> = {}>(args?: Subset<T, User$user_detailsArgs<ExtArgs>>): Prisma__UserDetailClient<$Result.GetResult<Prisma.$UserDetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     preferences<T extends User$preferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$preferencesArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     media<T extends User$mediaArgs<ExtArgs> = {}>(args?: Subset<T, User$mediaArgs<ExtArgs>>): Prisma__MediaClient<$Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    liked_users<T extends User$liked_usersArgs<ExtArgs> = {}>(args?: Subset<T, User$liked_usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matches1<T extends User$matches1Args<ExtArgs> = {}>(args?: Subset<T, User$matches1Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matches2<T extends User$matches2Args<ExtArgs> = {}>(args?: Subset<T, User$matches2Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2383,6 +2487,30 @@ export namespace Prisma {
      */
     include?: MediaInclude<ExtArgs> | null
     where?: MediaWhereInput
+  }
+
+  /**
+   * User.liked_users
+   */
+  export type User$liked_usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    where?: LikedWhereInput
+    orderBy?: LikedOrderByWithRelationInput | LikedOrderByWithRelationInput[]
+    cursor?: LikedWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LikedScalarFieldEnum | LikedScalarFieldEnum[]
   }
 
   /**
@@ -6969,6 +7097,1025 @@ export namespace Prisma {
 
 
   /**
+   * Model Liked
+   */
+
+  export type AggregateLiked = {
+    _count: LikedCountAggregateOutputType | null
+    _min: LikedMinAggregateOutputType | null
+    _max: LikedMaxAggregateOutputType | null
+  }
+
+  export type LikedMinAggregateOutputType = {
+    id: string | null
+    user_id: string | null
+  }
+
+  export type LikedMaxAggregateOutputType = {
+    id: string | null
+    user_id: string | null
+  }
+
+  export type LikedCountAggregateOutputType = {
+    id: number
+    user_id: number
+    _all: number
+  }
+
+
+  export type LikedMinAggregateInputType = {
+    id?: true
+    user_id?: true
+  }
+
+  export type LikedMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+  }
+
+  export type LikedCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    _all?: true
+  }
+
+  export type LikedAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Liked to aggregate.
+     */
+    where?: LikedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likeds to fetch.
+     */
+    orderBy?: LikedOrderByWithRelationInput | LikedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LikedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Likeds
+    **/
+    _count?: true | LikedCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LikedMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LikedMaxAggregateInputType
+  }
+
+  export type GetLikedAggregateType<T extends LikedAggregateArgs> = {
+        [P in keyof T & keyof AggregateLiked]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLiked[P]>
+      : GetScalarType<T[P], AggregateLiked[P]>
+  }
+
+
+
+
+  export type LikedGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LikedWhereInput
+    orderBy?: LikedOrderByWithAggregationInput | LikedOrderByWithAggregationInput[]
+    by: LikedScalarFieldEnum[] | LikedScalarFieldEnum
+    having?: LikedScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LikedCountAggregateInputType | true
+    _min?: LikedMinAggregateInputType
+    _max?: LikedMaxAggregateInputType
+  }
+
+  export type LikedGroupByOutputType = {
+    id: string
+    user_id: string
+    _count: LikedCountAggregateOutputType | null
+    _min: LikedMinAggregateOutputType | null
+    _max: LikedMaxAggregateOutputType | null
+  }
+
+  type GetLikedGroupByPayload<T extends LikedGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LikedGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LikedGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LikedGroupByOutputType[P]>
+            : GetScalarType<T[P], LikedGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LikedSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liked"]>
+
+  export type LikedSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liked"]>
+
+  export type LikedSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liked"]>
+
+  export type LikedSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+  }
+
+  export type LikedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id", ExtArgs["result"]["liked"]>
+  export type LikedInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LikedIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LikedIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LikedPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Liked"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      user_id: string
+    }, ExtArgs["result"]["liked"]>
+    composites: {}
+  }
+
+  type LikedGetPayload<S extends boolean | null | undefined | LikedDefaultArgs> = $Result.GetResult<Prisma.$LikedPayload, S>
+
+  type LikedCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LikedFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LikedCountAggregateInputType | true
+    }
+
+  export interface LikedDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Liked'], meta: { name: 'Liked' } }
+    /**
+     * Find zero or one Liked that matches the filter.
+     * @param {LikedFindUniqueArgs} args - Arguments to find a Liked
+     * @example
+     * // Get one Liked
+     * const liked = await prisma.liked.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LikedFindUniqueArgs>(args: SelectSubset<T, LikedFindUniqueArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Liked that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LikedFindUniqueOrThrowArgs} args - Arguments to find a Liked
+     * @example
+     * // Get one Liked
+     * const liked = await prisma.liked.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LikedFindUniqueOrThrowArgs>(args: SelectSubset<T, LikedFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Liked that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikedFindFirstArgs} args - Arguments to find a Liked
+     * @example
+     * // Get one Liked
+     * const liked = await prisma.liked.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LikedFindFirstArgs>(args?: SelectSubset<T, LikedFindFirstArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Liked that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikedFindFirstOrThrowArgs} args - Arguments to find a Liked
+     * @example
+     * // Get one Liked
+     * const liked = await prisma.liked.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LikedFindFirstOrThrowArgs>(args?: SelectSubset<T, LikedFindFirstOrThrowArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Likeds that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikedFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Likeds
+     * const likeds = await prisma.liked.findMany()
+     * 
+     * // Get first 10 Likeds
+     * const likeds = await prisma.liked.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const likedWithIdOnly = await prisma.liked.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LikedFindManyArgs>(args?: SelectSubset<T, LikedFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Liked.
+     * @param {LikedCreateArgs} args - Arguments to create a Liked.
+     * @example
+     * // Create one Liked
+     * const Liked = await prisma.liked.create({
+     *   data: {
+     *     // ... data to create a Liked
+     *   }
+     * })
+     * 
+     */
+    create<T extends LikedCreateArgs>(args: SelectSubset<T, LikedCreateArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Likeds.
+     * @param {LikedCreateManyArgs} args - Arguments to create many Likeds.
+     * @example
+     * // Create many Likeds
+     * const liked = await prisma.liked.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LikedCreateManyArgs>(args?: SelectSubset<T, LikedCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Likeds and returns the data saved in the database.
+     * @param {LikedCreateManyAndReturnArgs} args - Arguments to create many Likeds.
+     * @example
+     * // Create many Likeds
+     * const liked = await prisma.liked.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Likeds and only return the `id`
+     * const likedWithIdOnly = await prisma.liked.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LikedCreateManyAndReturnArgs>(args?: SelectSubset<T, LikedCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Liked.
+     * @param {LikedDeleteArgs} args - Arguments to delete one Liked.
+     * @example
+     * // Delete one Liked
+     * const Liked = await prisma.liked.delete({
+     *   where: {
+     *     // ... filter to delete one Liked
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LikedDeleteArgs>(args: SelectSubset<T, LikedDeleteArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Liked.
+     * @param {LikedUpdateArgs} args - Arguments to update one Liked.
+     * @example
+     * // Update one Liked
+     * const liked = await prisma.liked.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LikedUpdateArgs>(args: SelectSubset<T, LikedUpdateArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Likeds.
+     * @param {LikedDeleteManyArgs} args - Arguments to filter Likeds to delete.
+     * @example
+     * // Delete a few Likeds
+     * const { count } = await prisma.liked.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LikedDeleteManyArgs>(args?: SelectSubset<T, LikedDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Likeds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikedUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Likeds
+     * const liked = await prisma.liked.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LikedUpdateManyArgs>(args: SelectSubset<T, LikedUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Likeds and returns the data updated in the database.
+     * @param {LikedUpdateManyAndReturnArgs} args - Arguments to update many Likeds.
+     * @example
+     * // Update many Likeds
+     * const liked = await prisma.liked.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Likeds and only return the `id`
+     * const likedWithIdOnly = await prisma.liked.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LikedUpdateManyAndReturnArgs>(args: SelectSubset<T, LikedUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Liked.
+     * @param {LikedUpsertArgs} args - Arguments to update or create a Liked.
+     * @example
+     * // Update or create a Liked
+     * const liked = await prisma.liked.upsert({
+     *   create: {
+     *     // ... data to create a Liked
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Liked we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LikedUpsertArgs>(args: SelectSubset<T, LikedUpsertArgs<ExtArgs>>): Prisma__LikedClient<$Result.GetResult<Prisma.$LikedPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Likeds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikedCountArgs} args - Arguments to filter Likeds to count.
+     * @example
+     * // Count the number of Likeds
+     * const count = await prisma.liked.count({
+     *   where: {
+     *     // ... the filter for the Likeds we want to count
+     *   }
+     * })
+    **/
+    count<T extends LikedCountArgs>(
+      args?: Subset<T, LikedCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LikedCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Liked.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikedAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LikedAggregateArgs>(args: Subset<T, LikedAggregateArgs>): Prisma.PrismaPromise<GetLikedAggregateType<T>>
+
+    /**
+     * Group by Liked.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikedGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LikedGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LikedGroupByArgs['orderBy'] }
+        : { orderBy?: LikedGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LikedGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLikedGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Liked model
+   */
+  readonly fields: LikedFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Liked.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LikedClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Liked model
+   */
+  interface LikedFieldRefs {
+    readonly id: FieldRef<"Liked", 'String'>
+    readonly user_id: FieldRef<"Liked", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Liked findUnique
+   */
+  export type LikedFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * Filter, which Liked to fetch.
+     */
+    where: LikedWhereUniqueInput
+  }
+
+  /**
+   * Liked findUniqueOrThrow
+   */
+  export type LikedFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * Filter, which Liked to fetch.
+     */
+    where: LikedWhereUniqueInput
+  }
+
+  /**
+   * Liked findFirst
+   */
+  export type LikedFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * Filter, which Liked to fetch.
+     */
+    where?: LikedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likeds to fetch.
+     */
+    orderBy?: LikedOrderByWithRelationInput | LikedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Likeds.
+     */
+    cursor?: LikedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Likeds.
+     */
+    distinct?: LikedScalarFieldEnum | LikedScalarFieldEnum[]
+  }
+
+  /**
+   * Liked findFirstOrThrow
+   */
+  export type LikedFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * Filter, which Liked to fetch.
+     */
+    where?: LikedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likeds to fetch.
+     */
+    orderBy?: LikedOrderByWithRelationInput | LikedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Likeds.
+     */
+    cursor?: LikedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Likeds.
+     */
+    distinct?: LikedScalarFieldEnum | LikedScalarFieldEnum[]
+  }
+
+  /**
+   * Liked findMany
+   */
+  export type LikedFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * Filter, which Likeds to fetch.
+     */
+    where?: LikedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likeds to fetch.
+     */
+    orderBy?: LikedOrderByWithRelationInput | LikedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Likeds.
+     */
+    cursor?: LikedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likeds.
+     */
+    skip?: number
+    distinct?: LikedScalarFieldEnum | LikedScalarFieldEnum[]
+  }
+
+  /**
+   * Liked create
+   */
+  export type LikedCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Liked.
+     */
+    data: XOR<LikedCreateInput, LikedUncheckedCreateInput>
+  }
+
+  /**
+   * Liked createMany
+   */
+  export type LikedCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Likeds.
+     */
+    data: LikedCreateManyInput | LikedCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Liked createManyAndReturn
+   */
+  export type LikedCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * The data used to create many Likeds.
+     */
+    data: LikedCreateManyInput | LikedCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Liked update
+   */
+  export type LikedUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Liked.
+     */
+    data: XOR<LikedUpdateInput, LikedUncheckedUpdateInput>
+    /**
+     * Choose, which Liked to update.
+     */
+    where: LikedWhereUniqueInput
+  }
+
+  /**
+   * Liked updateMany
+   */
+  export type LikedUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Likeds.
+     */
+    data: XOR<LikedUpdateManyMutationInput, LikedUncheckedUpdateManyInput>
+    /**
+     * Filter which Likeds to update
+     */
+    where?: LikedWhereInput
+    /**
+     * Limit how many Likeds to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Liked updateManyAndReturn
+   */
+  export type LikedUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * The data used to update Likeds.
+     */
+    data: XOR<LikedUpdateManyMutationInput, LikedUncheckedUpdateManyInput>
+    /**
+     * Filter which Likeds to update
+     */
+    where?: LikedWhereInput
+    /**
+     * Limit how many Likeds to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Liked upsert
+   */
+  export type LikedUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Liked to update in case it exists.
+     */
+    where: LikedWhereUniqueInput
+    /**
+     * In case the Liked found by the `where` argument doesn't exist, create a new Liked with this data.
+     */
+    create: XOR<LikedCreateInput, LikedUncheckedCreateInput>
+    /**
+     * In case the Liked was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LikedUpdateInput, LikedUncheckedUpdateInput>
+  }
+
+  /**
+   * Liked delete
+   */
+  export type LikedDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+    /**
+     * Filter which Liked to delete.
+     */
+    where: LikedWhereUniqueInput
+  }
+
+  /**
+   * Liked deleteMany
+   */
+  export type LikedDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Likeds to delete
+     */
+    where?: LikedWhereInput
+    /**
+     * Limit how many Likeds to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Liked without action
+   */
+  export type LikedDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liked
+     */
+    select?: LikedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liked
+     */
+    omit?: LikedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LikedInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -7052,6 +8199,14 @@ export namespace Prisma {
   };
 
   export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
+
+
+  export const LikedScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id'
+  };
+
+  export type LikedScalarFieldEnum = (typeof LikedScalarFieldEnum)[keyof typeof LikedScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7162,6 +8317,7 @@ export namespace Prisma {
     user_details?: XOR<UserDetailNullableScalarRelationFilter, UserDetailWhereInput> | null
     preferences?: XOR<UserPreferencesNullableScalarRelationFilter, UserPreferencesWhereInput> | null
     media?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
+    liked_users?: LikedListRelationFilter
     matches1?: MatchesListRelationFilter
     matches2?: MatchesListRelationFilter
   }
@@ -7176,6 +8332,7 @@ export namespace Prisma {
     user_details?: UserDetailOrderByWithRelationInput
     preferences?: UserPreferencesOrderByWithRelationInput
     media?: MediaOrderByWithRelationInput
+    liked_users?: LikedOrderByRelationAggregateInput
     matches1?: MatchesOrderByRelationAggregateInput
     matches2?: MatchesOrderByRelationAggregateInput
   }
@@ -7193,6 +8350,7 @@ export namespace Prisma {
     user_details?: XOR<UserDetailNullableScalarRelationFilter, UserDetailWhereInput> | null
     preferences?: XOR<UserPreferencesNullableScalarRelationFilter, UserPreferencesWhereInput> | null
     media?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
+    liked_users?: LikedListRelationFilter
     matches1?: MatchesListRelationFilter
     matches2?: MatchesListRelationFilter
   }, "id" | "email">
@@ -7529,6 +8687,46 @@ export namespace Prisma {
     user_id?: StringWithAggregatesFilter<"Media"> | string
   }
 
+  export type LikedWhereInput = {
+    AND?: LikedWhereInput | LikedWhereInput[]
+    OR?: LikedWhereInput[]
+    NOT?: LikedWhereInput | LikedWhereInput[]
+    id?: StringFilter<"Liked"> | string
+    user_id?: StringFilter<"Liked"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type LikedOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type LikedWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LikedWhereInput | LikedWhereInput[]
+    OR?: LikedWhereInput[]
+    NOT?: LikedWhereInput | LikedWhereInput[]
+    user_id?: StringFilter<"Liked"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type LikedOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    _count?: LikedCountOrderByAggregateInput
+    _max?: LikedMaxOrderByAggregateInput
+    _min?: LikedMinOrderByAggregateInput
+  }
+
+  export type LikedScalarWhereWithAggregatesInput = {
+    AND?: LikedScalarWhereWithAggregatesInput | LikedScalarWhereWithAggregatesInput[]
+    OR?: LikedScalarWhereWithAggregatesInput[]
+    NOT?: LikedScalarWhereWithAggregatesInput | LikedScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Liked"> | string
+    user_id?: StringWithAggregatesFilter<"Liked"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -7539,6 +8737,7 @@ export namespace Prisma {
     user_details?: UserDetailCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesCreateNestedOneWithoutUserInput
     media?: MediaCreateNestedOneWithoutUserInput
+    liked_users?: LikedCreateNestedManyWithoutUserInput
     matches1?: MatchesCreateNestedManyWithoutUser1Input
     matches2?: MatchesCreateNestedManyWithoutUser2Input
   }
@@ -7553,6 +8752,7 @@ export namespace Prisma {
     user_details?: UserDetailUncheckedCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesUncheckedCreateNestedOneWithoutUserInput
     media?: MediaUncheckedCreateNestedOneWithoutUserInput
+    liked_users?: LikedUncheckedCreateNestedManyWithoutUserInput
     matches1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
     matches2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
   }
@@ -7567,6 +8767,7 @@ export namespace Prisma {
     user_details?: UserDetailUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUpdateOneWithoutUserNestedInput
     media?: MediaUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUpdateManyWithoutUser2NestedInput
   }
@@ -7581,6 +8782,7 @@ export namespace Prisma {
     user_details?: UserDetailUncheckedUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
     media?: MediaUncheckedUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUncheckedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
   }
@@ -7943,6 +9145,40 @@ export namespace Prisma {
     user_id?: StringFieldUpdateOperationsInput | string
   }
 
+  export type LikedCreateInput = {
+    id?: string
+    user: UserCreateNestedOneWithoutLiked_usersInput
+  }
+
+  export type LikedUncheckedCreateInput = {
+    id?: string
+    user_id: string
+  }
+
+  export type LikedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutLiked_usersNestedInput
+  }
+
+  export type LikedUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LikedCreateManyInput = {
+    id?: string
+    user_id: string
+  }
+
+  export type LikedUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LikedUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7995,6 +9231,12 @@ export namespace Prisma {
     isNot?: MediaWhereInput | null
   }
 
+  export type LikedListRelationFilter = {
+    every?: LikedWhereInput
+    some?: LikedWhereInput
+    none?: LikedWhereInput
+  }
+
   export type MatchesListRelationFilter = {
     every?: MatchesWhereInput
     some?: MatchesWhereInput
@@ -8004,6 +9246,10 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type LikedOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type MatchesOrderByRelationAggregateInput = {
@@ -8328,6 +9574,21 @@ export namespace Prisma {
     user_id?: SortOrder
   }
 
+  export type LikedCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type LikedMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type LikedMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+  }
+
   export type UserDetailCreateNestedOneWithoutUserInput = {
     create?: XOR<UserDetailCreateWithoutUserInput, UserDetailUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserDetailCreateOrConnectWithoutUserInput
@@ -8344,6 +9605,13 @@ export namespace Prisma {
     create?: XOR<MediaCreateWithoutUserInput, MediaUncheckedCreateWithoutUserInput>
     connectOrCreate?: MediaCreateOrConnectWithoutUserInput
     connect?: MediaWhereUniqueInput
+  }
+
+  export type LikedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LikedCreateWithoutUserInput, LikedUncheckedCreateWithoutUserInput> | LikedCreateWithoutUserInput[] | LikedUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikedCreateOrConnectWithoutUserInput | LikedCreateOrConnectWithoutUserInput[]
+    createMany?: LikedCreateManyUserInputEnvelope
+    connect?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
   }
 
   export type MatchesCreateNestedManyWithoutUser1Input = {
@@ -8376,6 +9644,13 @@ export namespace Prisma {
     create?: XOR<MediaCreateWithoutUserInput, MediaUncheckedCreateWithoutUserInput>
     connectOrCreate?: MediaCreateOrConnectWithoutUserInput
     connect?: MediaWhereUniqueInput
+  }
+
+  export type LikedUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LikedCreateWithoutUserInput, LikedUncheckedCreateWithoutUserInput> | LikedCreateWithoutUserInput[] | LikedUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikedCreateOrConnectWithoutUserInput | LikedCreateOrConnectWithoutUserInput[]
+    createMany?: LikedCreateManyUserInputEnvelope
+    connect?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
   }
 
   export type MatchesUncheckedCreateNestedManyWithoutUser1Input = {
@@ -8434,6 +9709,20 @@ export namespace Prisma {
     update?: XOR<XOR<MediaUpdateToOneWithWhereWithoutUserInput, MediaUpdateWithoutUserInput>, MediaUncheckedUpdateWithoutUserInput>
   }
 
+  export type LikedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LikedCreateWithoutUserInput, LikedUncheckedCreateWithoutUserInput> | LikedCreateWithoutUserInput[] | LikedUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikedCreateOrConnectWithoutUserInput | LikedCreateOrConnectWithoutUserInput[]
+    upsert?: LikedUpsertWithWhereUniqueWithoutUserInput | LikedUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LikedCreateManyUserInputEnvelope
+    set?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    disconnect?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    delete?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    connect?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    update?: LikedUpdateWithWhereUniqueWithoutUserInput | LikedUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LikedUpdateManyWithWhereWithoutUserInput | LikedUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LikedScalarWhereInput | LikedScalarWhereInput[]
+  }
+
   export type MatchesUpdateManyWithoutUser1NestedInput = {
     create?: XOR<MatchesCreateWithoutUser1Input, MatchesUncheckedCreateWithoutUser1Input> | MatchesCreateWithoutUser1Input[] | MatchesUncheckedCreateWithoutUser1Input[]
     connectOrCreate?: MatchesCreateOrConnectWithoutUser1Input | MatchesCreateOrConnectWithoutUser1Input[]
@@ -8490,6 +9779,20 @@ export namespace Prisma {
     delete?: MediaWhereInput | boolean
     connect?: MediaWhereUniqueInput
     update?: XOR<XOR<MediaUpdateToOneWithWhereWithoutUserInput, MediaUpdateWithoutUserInput>, MediaUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LikedUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LikedCreateWithoutUserInput, LikedUncheckedCreateWithoutUserInput> | LikedCreateWithoutUserInput[] | LikedUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikedCreateOrConnectWithoutUserInput | LikedCreateOrConnectWithoutUserInput[]
+    upsert?: LikedUpsertWithWhereUniqueWithoutUserInput | LikedUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LikedCreateManyUserInputEnvelope
+    set?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    disconnect?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    delete?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    connect?: LikedWhereUniqueInput | LikedWhereUniqueInput[]
+    update?: LikedUpdateWithWhereUniqueWithoutUserInput | LikedUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LikedUpdateManyWithWhereWithoutUserInput | LikedUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LikedScalarWhereInput | LikedScalarWhereInput[]
   }
 
   export type MatchesUncheckedUpdateManyWithoutUser1NestedInput = {
@@ -8635,6 +9938,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutMediaInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMediaInput, UserUpdateWithoutMediaInput>, UserUncheckedUpdateWithoutMediaInput>
+  }
+
+  export type UserCreateNestedOneWithoutLiked_usersInput = {
+    create?: XOR<UserCreateWithoutLiked_usersInput, UserUncheckedCreateWithoutLiked_usersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLiked_usersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutLiked_usersNestedInput = {
+    create?: XOR<UserCreateWithoutLiked_usersInput, UserUncheckedCreateWithoutLiked_usersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLiked_usersInput
+    upsert?: UserUpsertWithoutLiked_usersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLiked_usersInput, UserUpdateWithoutLiked_usersInput>, UserUncheckedUpdateWithoutLiked_usersInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8883,6 +10200,24 @@ export namespace Prisma {
     create: XOR<MediaCreateWithoutUserInput, MediaUncheckedCreateWithoutUserInput>
   }
 
+  export type LikedCreateWithoutUserInput = {
+    id?: string
+  }
+
+  export type LikedUncheckedCreateWithoutUserInput = {
+    id?: string
+  }
+
+  export type LikedCreateOrConnectWithoutUserInput = {
+    where: LikedWhereUniqueInput
+    create: XOR<LikedCreateWithoutUserInput, LikedUncheckedCreateWithoutUserInput>
+  }
+
+  export type LikedCreateManyUserInputEnvelope = {
+    data: LikedCreateManyUserInput | LikedCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type MatchesCreateWithoutUser1Input = {
     id?: string
     is_matched_at: Date | string
@@ -9040,6 +10375,30 @@ export namespace Prisma {
     gallery?: MediaUpdategalleryInput | string[]
   }
 
+  export type LikedUpsertWithWhereUniqueWithoutUserInput = {
+    where: LikedWhereUniqueInput
+    update: XOR<LikedUpdateWithoutUserInput, LikedUncheckedUpdateWithoutUserInput>
+    create: XOR<LikedCreateWithoutUserInput, LikedUncheckedCreateWithoutUserInput>
+  }
+
+  export type LikedUpdateWithWhereUniqueWithoutUserInput = {
+    where: LikedWhereUniqueInput
+    data: XOR<LikedUpdateWithoutUserInput, LikedUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LikedUpdateManyWithWhereWithoutUserInput = {
+    where: LikedScalarWhereInput
+    data: XOR<LikedUpdateManyMutationInput, LikedUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type LikedScalarWhereInput = {
+    AND?: LikedScalarWhereInput | LikedScalarWhereInput[]
+    OR?: LikedScalarWhereInput[]
+    NOT?: LikedScalarWhereInput | LikedScalarWhereInput[]
+    id?: StringFilter<"Liked"> | string
+    user_id?: StringFilter<"Liked"> | string
+  }
+
   export type MatchesUpsertWithWhereUniqueWithoutUser1Input = {
     where: MatchesWhereUniqueInput
     update: XOR<MatchesUpdateWithoutUser1Input, MatchesUncheckedUpdateWithoutUser1Input>
@@ -9094,6 +10453,7 @@ export namespace Prisma {
     user_details?: UserDetailCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesCreateNestedOneWithoutUserInput
     media?: MediaCreateNestedOneWithoutUserInput
+    liked_users?: LikedCreateNestedManyWithoutUserInput
     matches2?: MatchesCreateNestedManyWithoutUser2Input
   }
 
@@ -9107,6 +10467,7 @@ export namespace Prisma {
     user_details?: UserDetailUncheckedCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesUncheckedCreateNestedOneWithoutUserInput
     media?: MediaUncheckedCreateNestedOneWithoutUserInput
+    liked_users?: LikedUncheckedCreateNestedManyWithoutUserInput
     matches2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
   }
 
@@ -9125,6 +10486,7 @@ export namespace Prisma {
     user_details?: UserDetailCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesCreateNestedOneWithoutUserInput
     media?: MediaCreateNestedOneWithoutUserInput
+    liked_users?: LikedCreateNestedManyWithoutUserInput
     matches1?: MatchesCreateNestedManyWithoutUser1Input
   }
 
@@ -9138,6 +10500,7 @@ export namespace Prisma {
     user_details?: UserDetailUncheckedCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesUncheckedCreateNestedOneWithoutUserInput
     media?: MediaUncheckedCreateNestedOneWithoutUserInput
+    liked_users?: LikedUncheckedCreateNestedManyWithoutUserInput
     matches1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
   }
 
@@ -9167,6 +10530,7 @@ export namespace Prisma {
     user_details?: UserDetailUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUpdateOneWithoutUserNestedInput
     media?: MediaUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUpdateManyWithoutUserNestedInput
     matches2?: MatchesUpdateManyWithoutUser2NestedInput
   }
 
@@ -9180,6 +10544,7 @@ export namespace Prisma {
     user_details?: UserDetailUncheckedUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
     media?: MediaUncheckedUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUncheckedUpdateManyWithoutUserNestedInput
     matches2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
   }
 
@@ -9204,6 +10569,7 @@ export namespace Prisma {
     user_details?: UserDetailUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUpdateOneWithoutUserNestedInput
     media?: MediaUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUpdateManyWithoutUser1NestedInput
   }
 
@@ -9217,6 +10583,7 @@ export namespace Prisma {
     user_details?: UserDetailUncheckedUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
     media?: MediaUncheckedUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUncheckedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
   }
 
@@ -9229,6 +10596,7 @@ export namespace Prisma {
     last_seen?: Date | string | null
     preferences?: UserPreferencesCreateNestedOneWithoutUserInput
     media?: MediaCreateNestedOneWithoutUserInput
+    liked_users?: LikedCreateNestedManyWithoutUserInput
     matches1?: MatchesCreateNestedManyWithoutUser1Input
     matches2?: MatchesCreateNestedManyWithoutUser2Input
   }
@@ -9242,6 +10610,7 @@ export namespace Prisma {
     last_seen?: Date | string | null
     preferences?: UserPreferencesUncheckedCreateNestedOneWithoutUserInput
     media?: MediaUncheckedCreateNestedOneWithoutUserInput
+    liked_users?: LikedUncheckedCreateNestedManyWithoutUserInput
     matches1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
     matches2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
   }
@@ -9271,6 +10640,7 @@ export namespace Prisma {
     last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     preferences?: UserPreferencesUpdateOneWithoutUserNestedInput
     media?: MediaUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUpdateManyWithoutUser2NestedInput
   }
@@ -9284,6 +10654,7 @@ export namespace Prisma {
     last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     preferences?: UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
     media?: MediaUncheckedUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUncheckedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
   }
@@ -9297,6 +10668,7 @@ export namespace Prisma {
     last_seen?: Date | string | null
     user_details?: UserDetailCreateNestedOneWithoutUserInput
     media?: MediaCreateNestedOneWithoutUserInput
+    liked_users?: LikedCreateNestedManyWithoutUserInput
     matches1?: MatchesCreateNestedManyWithoutUser1Input
     matches2?: MatchesCreateNestedManyWithoutUser2Input
   }
@@ -9310,6 +10682,7 @@ export namespace Prisma {
     last_seen?: Date | string | null
     user_details?: UserDetailUncheckedCreateNestedOneWithoutUserInput
     media?: MediaUncheckedCreateNestedOneWithoutUserInput
+    liked_users?: LikedUncheckedCreateNestedManyWithoutUserInput
     matches1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
     matches2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
   }
@@ -9339,6 +10712,7 @@ export namespace Prisma {
     last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user_details?: UserDetailUpdateOneWithoutUserNestedInput
     media?: MediaUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUpdateManyWithoutUser2NestedInput
   }
@@ -9352,6 +10726,7 @@ export namespace Prisma {
     last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user_details?: UserDetailUncheckedUpdateOneWithoutUserNestedInput
     media?: MediaUncheckedUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUncheckedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
   }
@@ -9365,6 +10740,7 @@ export namespace Prisma {
     last_seen?: Date | string | null
     user_details?: UserDetailCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesCreateNestedOneWithoutUserInput
+    liked_users?: LikedCreateNestedManyWithoutUserInput
     matches1?: MatchesCreateNestedManyWithoutUser1Input
     matches2?: MatchesCreateNestedManyWithoutUser2Input
   }
@@ -9378,6 +10754,7 @@ export namespace Prisma {
     last_seen?: Date | string | null
     user_details?: UserDetailUncheckedCreateNestedOneWithoutUserInput
     preferences?: UserPreferencesUncheckedCreateNestedOneWithoutUserInput
+    liked_users?: LikedUncheckedCreateNestedManyWithoutUserInput
     matches1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
     matches2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
   }
@@ -9407,6 +10784,7 @@ export namespace Prisma {
     last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user_details?: UserDetailUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUpdateManyWithoutUser2NestedInput
   }
@@ -9420,8 +10798,85 @@ export namespace Prisma {
     last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user_details?: UserDetailUncheckedUpdateOneWithoutUserNestedInput
     preferences?: UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
+    liked_users?: LikedUncheckedUpdateManyWithoutUserNestedInput
     matches1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
     matches2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
+  }
+
+  export type UserCreateWithoutLiked_usersInput = {
+    id?: string
+    email: string
+    password: string
+    created_at?: Date | string
+    updated_at?: Date | string | null
+    last_seen?: Date | string | null
+    user_details?: UserDetailCreateNestedOneWithoutUserInput
+    preferences?: UserPreferencesCreateNestedOneWithoutUserInput
+    media?: MediaCreateNestedOneWithoutUserInput
+    matches1?: MatchesCreateNestedManyWithoutUser1Input
+    matches2?: MatchesCreateNestedManyWithoutUser2Input
+  }
+
+  export type UserUncheckedCreateWithoutLiked_usersInput = {
+    id?: string
+    email: string
+    password: string
+    created_at?: Date | string
+    updated_at?: Date | string | null
+    last_seen?: Date | string | null
+    user_details?: UserDetailUncheckedCreateNestedOneWithoutUserInput
+    preferences?: UserPreferencesUncheckedCreateNestedOneWithoutUserInput
+    media?: MediaUncheckedCreateNestedOneWithoutUserInput
+    matches1?: MatchesUncheckedCreateNestedManyWithoutUser1Input
+    matches2?: MatchesUncheckedCreateNestedManyWithoutUser2Input
+  }
+
+  export type UserCreateOrConnectWithoutLiked_usersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLiked_usersInput, UserUncheckedCreateWithoutLiked_usersInput>
+  }
+
+  export type UserUpsertWithoutLiked_usersInput = {
+    update: XOR<UserUpdateWithoutLiked_usersInput, UserUncheckedUpdateWithoutLiked_usersInput>
+    create: XOR<UserCreateWithoutLiked_usersInput, UserUncheckedCreateWithoutLiked_usersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLiked_usersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLiked_usersInput, UserUncheckedUpdateWithoutLiked_usersInput>
+  }
+
+  export type UserUpdateWithoutLiked_usersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user_details?: UserDetailUpdateOneWithoutUserNestedInput
+    preferences?: UserPreferencesUpdateOneWithoutUserNestedInput
+    media?: MediaUpdateOneWithoutUserNestedInput
+    matches1?: MatchesUpdateManyWithoutUser1NestedInput
+    matches2?: MatchesUpdateManyWithoutUser2NestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLiked_usersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_seen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user_details?: UserDetailUncheckedUpdateOneWithoutUserNestedInput
+    preferences?: UserPreferencesUncheckedUpdateOneWithoutUserNestedInput
+    media?: MediaUncheckedUpdateOneWithoutUserNestedInput
+    matches1?: MatchesUncheckedUpdateManyWithoutUser1NestedInput
+    matches2?: MatchesUncheckedUpdateManyWithoutUser2NestedInput
+  }
+
+  export type LikedCreateManyUserInput = {
+    id?: string
   }
 
   export type MatchesCreateManyUser1Input = {
@@ -9438,6 +10893,18 @@ export namespace Prisma {
     is_matched_at: Date | string
     is_blocked: boolean
     unmatched_at?: Date | string | null
+  }
+
+  export type LikedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LikedUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LikedUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
   }
 
   export type MatchesUpdateWithoutUser1Input = {

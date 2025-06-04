@@ -177,6 +177,11 @@ exports.Prisma.MediaScalarFieldEnum = {
   user_id: 'user_id'
 };
 
+exports.Prisma.LikedScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -198,7 +203,8 @@ exports.Prisma.ModelName = {
   Matches: 'Matches',
   UserDetail: 'UserDetail',
   UserPreferences: 'UserPreferences',
-  Media: 'Media'
+  Media: 'Media',
+  Liked: 'Liked'
 };
 
 /**

@@ -70,6 +70,14 @@ CREATE TABLE "Media" (
     CONSTRAINT "Media_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Liked" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+
+    CONSTRAINT "Liked_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -99,3 +107,6 @@ ALTER TABLE "UserPreferences" ADD CONSTRAINT "UserPreferences_user_id_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "Media" ADD CONSTRAINT "Media_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Liked" ADD CONSTRAINT "Liked_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

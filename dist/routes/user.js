@@ -182,8 +182,22 @@ routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void
 }));
 routes.post("/seen-user", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { users } = req.body;
-    console.log(users);
-    users.forEach((user) => __awaiter(void 0, void 0, void 0, function* () { return yield redisClient_1.redisClient.set(user.toString(), "seen"); }));
+    //@ts-ignore
+    const loggedInUserId = req.userId;
+    if (!loggedInUserId) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+    const redisKey = `seen:${loggedInUserId}`;
+    try {
+        const pipeline = redisClient_1.redisClient.multi();
+        users.forEach((user) => pipeline.sAdd(redisKey, user));
+        yield pipeline.exec();
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
     res.status(200).json({
         message: "done",
     });

@@ -69,29 +69,9 @@ async function generateUserData(batchSize: number) {
 }
 
 async function main() {
-  await prisma.userDetail.deleteMany({
-    where: {
-      first_name: {
-        not: "sumit",
-      },
-    },
-  });
-
-  await prisma.userPreferences.deleteMany({});
-
-  await prisma.media.deleteMany({});
-
-  await prisma.user.deleteMany({
-    where: {
-      email: {
-        not: "sj79619@gmail.com",
-      },
-    },
-  });
   for (let i = 0; i < TOTAL_USERS; i += BATCH_SIZE) {
     const batchData = await generateUserData(BATCH_SIZE);
 
-    // Insert each user with nested details and preferences
     for (const userData of batchData) {
       try {
         await prisma.user.create({

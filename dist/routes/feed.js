@@ -20,11 +20,11 @@ router.use(middleware_1.authMiddleware);
 router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     //@ts-ignore
-    const userId = req.userId;
+    const loggedInUser = req.userId;
     const page = req.params.page ? parseInt(req.params.page) : 1;
     const user = yield prismaClient.user.findFirst({
         where: {
-            id: userId,
+            id: loggedInUser,
         },
         include: {
             user_details: true,
@@ -32,10 +32,11 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
     });
     const interestsInGender = (_a = user === null || user === void 0 ? void 0 : user.user_details) === null || _a === void 0 ? void 0 : _a.interested_in_gender;
     const usersPerPage = 10;
+    const seenUsers = yield redisClient_1.redisClient.sMembers(`seen:${loggedInUser}`);
     const getAllUser = yield prismaClient.user.findMany({
         where: {
             id: {
-                not: userId,
+                notIn: [loggedInUser, ...seenUsers],
             },
             user_details: {
                 is: {
@@ -59,15 +60,8 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
         });
         return;
     }
-    const feed = [];
-    for (const user of getAllUser) {
-        const exists = yield redisClient_1.redisClient.get(user.id);
-        if (exists === null) {
-            feed.push(user);
-        }
-    }
     res.status(200).json({
-        user: feed,
+        user: getAllUser,
     });
 }));
 exports.feedRoutes = router;

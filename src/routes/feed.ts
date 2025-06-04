@@ -57,18 +57,8 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
     return;
   }
 
-  const feed: any = [];
-
-  for (const user of getAllUser) {
-    const exists = await redisClient.sIsMember(`seen:${loggedInUser}`, user.id);
-
-    if (exists === null) {
-      feed.push(user);
-    }
-  }
-
   res.status(200).json({
-    user: feed,
+    user: getAllUser,
   });
 });
 

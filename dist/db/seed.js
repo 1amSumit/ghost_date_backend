@@ -71,25 +71,8 @@ function generateUserData(batchSize) {
 }
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield prisma.userDetail.deleteMany({
-            where: {
-                first_name: {
-                    not: "sumit",
-                },
-            },
-        });
-        yield prisma.userPreferences.deleteMany({});
-        yield prisma.media.deleteMany({});
-        yield prisma.user.deleteMany({
-            where: {
-                email: {
-                    not: "sj79619@gmail.com",
-                },
-            },
-        });
         for (let i = 0; i < TOTAL_USERS; i += BATCH_SIZE) {
             const batchData = yield generateUserData(BATCH_SIZE);
-            // Insert each user with nested details and preferences
             for (const userData of batchData) {
                 try {
                     yield prisma.user.create({
