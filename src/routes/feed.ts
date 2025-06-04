@@ -26,10 +26,12 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
 
   const usersPerPage = 10;
 
+  const seenUsers = await redisClient.sMembers(`seen:${loggedInUser}`);
+
   const getAllUser = await prismaClient.user.findMany({
     where: {
       id: {
-        not: loggedInUser,
+        notIn: [loggedInUser, ...seenUsers],
       },
       user_details: {
         is: {
@@ -58,7 +60,7 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
   const feed: any = [];
 
   for (const user of getAllUser) {
-    const exists = await redisClient.get(`seen:${loggedInUser}:${user.id}`);
+    const exists = await redisClient.sIsMember(`seen:${loggedInUser}`, user.id);
 
     if (exists === null) {
       feed.push(user);
