@@ -217,14 +217,17 @@ routes.post("/seen-user", authMiddleware, async (req, res) => {
   //@ts-ignore
   const loggedInUserId = req.userId;
 
-  console.log(users);
+  if (!loggedInUserId) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
+  const redisKey = `seen:${loggedInUserId}`;
 
   try {
     const pipeline = redisClient.multi();
 
-    users.forEach((user: String) =>
-      pipeline.set(`seen:${loggedInUserId}:${user}`, "seen")
-    );
+    users.forEach((user: string) => pipeline.sAdd(redisKey, user));
 
     await pipeline.exec();
   } catch (err) {
