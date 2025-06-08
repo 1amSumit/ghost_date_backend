@@ -15,9 +15,7 @@ async function generateUserData(batchSize: number) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const dob = faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-    const gender = faker.person.sexType(); // 'male' or 'female'
-
-    // RandomUser API for profile pics and gallery images
+    const gender = faker.person.sexType();
     const genderCode = gender.toLowerCase() === "male" ? "men" : "women";
     const profilePic = `https://randomuser.me/api/portraits/${genderCode}/${faker.number.int(
       { min: 1, max: 99 }

@@ -9,7 +9,7 @@ async function main() {
   });
   await prisma.liked.deleteMany({
     where: {
-      user_id: {
+      liked_to_id: {
         not: user?.id,
       },
     },

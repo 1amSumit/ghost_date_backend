@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsc -b && node dist/index.js",
-    "delete": "ts-node src/db/deletealluser.ts"
+    "delete": "ts-node src/db/deletealluser.ts",
+    "addlike": "ts-node src/db/giveliketome.ts",
+    "deletelike": "ts-node src/db/deletelike.ts"
   },
   "prisma": {
     "seed": "ts-node src/db/seed.ts"

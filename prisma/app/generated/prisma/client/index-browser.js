@@ -179,7 +179,7 @@ exports.Prisma.MediaScalarFieldEnum = {
 
 exports.Prisma.LikedScalarFieldEnum = {
   id: 'id',
-  user_id: 'user_id',
+  liked_to_id: 'liked_to_id',
   liked_by_id: 'liked_by_id'
 };
 

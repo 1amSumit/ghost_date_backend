@@ -11,6 +11,7 @@ router.use(authMiddleware);
 router.get("/getUnMatchedFeed/:page", async (req, res) => {
   //@ts-ignore
   const loggedInUser = req.userId;
+
   const page = req.params.page ? parseInt(req.params.page as string) : 1;
 
   const user = await prismaClient.user.findFirst({

@@ -86,11 +86,11 @@ model Media {
 
 model Liked {
   id          String @id @default(uuid())
-  user_id     String
+  liked_to_id String
   liked_by_id String
 
-  user     User @relation("UserGotLiked", fields: [user_id], references: [id])
+  liked_to User @relation("UserGotLiked", fields: [liked_to_id], references: [id])
   liked_by User @relation("UserGivenLike", fields: [liked_by_id], references: [id])
 
-  @@unique([user_id, liked_by_id])
+  @@unique([liked_to_id, liked_by_id])
 }

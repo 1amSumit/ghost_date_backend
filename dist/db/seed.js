@@ -23,8 +23,7 @@ function generateUserData(batchSize) {
             const firstName = faker_1.faker.person.firstName();
             const lastName = faker_1.faker.person.lastName();
             const dob = faker_1.faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-            const gender = faker_1.faker.person.sexType(); // 'male' or 'female'
-            // RandomUser API for profile pics and gallery images
+            const gender = faker_1.faker.person.sexType();
             const genderCode = gender.toLowerCase() === "male" ? "men" : "women";
             const profilePic = `https://randomuser.me/api/portraits/${genderCode}/${faker_1.faker.number.int({ min: 1, max: 99 })}.jpg`;
             const galleryImages = Array.from({ length: 3 }, () => `https://randomuser.me/api/portraits/${genderCode}/${faker_1.faker.number.int({

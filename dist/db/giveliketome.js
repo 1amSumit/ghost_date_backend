@@ -13,46 +13,24 @@ const client_1 = require("../../prisma/app/generated/prisma/client");
 const prisma = new client_1.PrismaClient();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
+        const count = yield prisma.user.count();
+        const skip = Math.floor(Math.random() * count);
+        const randomUser = yield prisma.user.findFirst({
+            skip: skip,
+        });
         const user = yield prisma.user.findFirst({
             where: {
                 email: "sj779619@gmail.com",
             },
         });
-        yield prisma.liked.deleteMany({
-            where: {
-                liked_to_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
-        });
-        yield prisma.userPreferences.deleteMany({
-            where: {
-                user_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
-        });
-        yield prisma.media.deleteMany({
-            where: {
-                user_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
-        });
-        yield prisma.userDetail.deleteMany({
-            where: {
-                user_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
-        });
-        yield prisma.user.deleteMany({
-            where: {
-                id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
+        yield prisma.liked.create({
+            data: {
+                liked_to_id: user.id,
+                liked_by_id: randomUser.id,
             },
         });
     });
 }
-main();
+for (let i = 0; i < 50; i++) {
+    main();
+}
