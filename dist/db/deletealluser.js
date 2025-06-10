@@ -32,6 +32,7 @@ function main() {
                 },
             },
         });
+        yield prisma.liked.deleteMany({});
         yield prisma.media.deleteMany({
             where: {
                 user_id: {

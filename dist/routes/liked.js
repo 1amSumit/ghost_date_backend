@@ -53,11 +53,12 @@ router.get("/get-liked-users", (req, res) => __awaiter(void 0, void 0, void 0, f
                 liked_by: {
                     include: {
                         user_details: true,
+                        media: true,
+                        preferences: true,
                     },
                 },
             },
         });
-        console.log(getUserWhoLiked);
         res.status(200).json({
             users: getUserWhoLiked,
         });

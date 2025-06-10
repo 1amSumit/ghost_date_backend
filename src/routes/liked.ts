@@ -47,6 +47,8 @@ router.get("/get-liked-users", async (req, res) => {
         liked_by: {
           include: {
             user_details: true,
+            media: true,
+            preferences: true,
           },
         },
       },

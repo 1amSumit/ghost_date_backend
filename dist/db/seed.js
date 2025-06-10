@@ -8,12 +8,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("../../prisma/app/generated/prisma/client");
 const faker_1 = require("@faker-js/faker");
+const axios_1 = __importDefault(require("axios"));
 const prisma = new client_1.PrismaClient();
-const BATCH_SIZE = 1000;
-const TOTAL_USERS = 1000000;
+const BATCH_SIZE = 100;
+const TOTAL_USERS = 1000;
+const PEXELS_API_KEY = "Gqkza72NW9DB9BtE3V11uKeavZcSiN02oIPE3XYl2t4uVhsZGEyFvo2f";
+const PEXELS_API_URL = "https://api.pexels.com/v1/search";
+function getGenderImageUrls(gender_1) {
+    return __awaiter(this, arguments, void 0, function* (gender, count = 3) {
+        const query = gender.toLowerCase() === "male" ? "man portrait" : "woman portrait";
+        try {
+            const response = yield axios_1.default.get(PEXELS_API_URL, {
+                headers: { Authorization: PEXELS_API_KEY },
+                params: { query, per_page: count, orientation: "square" },
+            });
+            //@ts-ignore
+            return response.data.photos.map((photo) => photo.src.medium);
+        }
+        catch (error) {
+            //@ts-ignore
+            console.error("Failed to fetch images from Pexels:", error.message);
+            // Fallback placeholder image
+            return Array(count).fill("https://via.placeholder.com/400x400?text=User");
+        }
+    });
+}
 function generateUserData(batchSize) {
     return __awaiter(this, void 0, void 0, function* () {
         const users = [];
@@ -23,13 +48,10 @@ function generateUserData(batchSize) {
             const firstName = faker_1.faker.person.firstName();
             const lastName = faker_1.faker.person.lastName();
             const dob = faker_1.faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-            const gender = faker_1.faker.person.sexType();
-            const genderCode = gender.toLowerCase() === "male" ? "men" : "women";
-            const profilePic = `https://randomuser.me/api/portraits/${genderCode}/${faker_1.faker.number.int({ min: 1, max: 99 })}.jpg`;
-            const galleryImages = Array.from({ length: 3 }, () => `https://randomuser.me/api/portraits/${genderCode}/${faker_1.faker.number.int({
-                min: 1,
-                max: 99,
-            })}.jpg`);
+            const gender = faker_1.faker.person.sexType(); // "male" or "female"
+            const images = yield getGenderImageUrls(gender, 3);
+            const profilePic = images[0];
+            const galleryImages = images;
             users.push({
                 email,
                 password,
@@ -95,7 +117,7 @@ function main() {
 }
 main()
     .then(() => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Finished seeding 1 million users.");
+    console.log("Finished seeding users.");
     yield prisma.$disconnect();
 }))
     .catch((e) => __awaiter(void 0, void 0, void 0, function* () {

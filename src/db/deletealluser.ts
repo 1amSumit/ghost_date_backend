@@ -22,6 +22,8 @@ async function main() {
     },
   });
 
+  await prisma.liked.deleteMany({});
+
   await prisma.media.deleteMany({
     where: {
       user_id: {

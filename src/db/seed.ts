@@ -1,10 +1,36 @@
 import { PrismaClient } from "../../prisma/app/generated/prisma/client";
 import { faker } from "@faker-js/faker";
+import axios from "axios";
 
 const prisma = new PrismaClient();
 
-const BATCH_SIZE = 1000;
-const TOTAL_USERS = 1_000_000;
+const BATCH_SIZE = 100;
+const TOTAL_USERS = 1000;
+const PEXELS_API_KEY =
+  "Gqkza72NW9DB9BtE3V11uKeavZcSiN02oIPE3XYl2t4uVhsZGEyFvo2f";
+const PEXELS_API_URL = "https://api.pexels.com/v1/search";
+
+async function getGenderImageUrls(
+  gender: string,
+  count: number = 3
+): Promise<string[]> {
+  const query =
+    gender.toLowerCase() === "male" ? "man portrait" : "woman portrait";
+  try {
+    const response = await axios.get(PEXELS_API_URL, {
+      headers: { Authorization: PEXELS_API_KEY },
+      params: { query, per_page: count, orientation: "square" },
+    });
+
+    //@ts-ignore
+    return response.data.photos.map((photo: any) => photo.src.medium);
+  } catch (error) {
+    //@ts-ignore
+    console.error("Failed to fetch images from Pexels:", error.message);
+    // Fallback placeholder image
+    return Array(count).fill("https://via.placeholder.com/400x400?text=User");
+  }
+}
 
 async function generateUserData(batchSize: number) {
   const users = [];
@@ -15,20 +41,11 @@ async function generateUserData(batchSize: number) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const dob = faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-    const gender = faker.person.sexType();
-    const genderCode = gender.toLowerCase() === "male" ? "men" : "women";
-    const profilePic = `https://randomuser.me/api/portraits/${genderCode}/${faker.number.int(
-      { min: 1, max: 99 }
-    )}.jpg`;
+    const gender = faker.person.sexType(); // "male" or "female"
 
-    const galleryImages = Array.from(
-      { length: 3 },
-      () =>
-        `https://randomuser.me/api/portraits/${genderCode}/${faker.number.int({
-          min: 1,
-          max: 99,
-        })}.jpg`
-    );
+    const images = await getGenderImageUrls(gender, 3);
+    const profilePic = images[0];
+    const galleryImages = images;
 
     users.push({
       email,
@@ -98,7 +115,7 @@ async function main() {
 
 main()
   .then(async () => {
-    console.log("Finished seeding 1 million users.");
+    console.log("Finished seeding users.");
     await prisma.$disconnect();
   })
   .catch(async (e) => {
