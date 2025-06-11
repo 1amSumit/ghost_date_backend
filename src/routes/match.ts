@@ -13,6 +13,8 @@ router.post("/add-match", async (req, res) => {
   const loggedInUser = req.userId;
   const gotLikedBack = req.body.users;
 
+  console.log(gotLikedBack);
+
   try {
     await Promise.all(
       gotLikedBack.map((userId: string) => {
@@ -39,8 +41,54 @@ router.post("/add-match", async (req, res) => {
     );
     res.status(200).json({ message: "Matches added successfully" });
   } catch (err) {
+    console.log(err);
     res.status(411).json({
       message: "Error matching the user",
+    });
+  }
+});
+
+router.get("/get-user-match", async (req, res) => {
+  //@ts-ignore
+  const loggedInUser = req.userId;
+
+  if (!loggedInUser) {
+    res.status(404).json({
+      message: "UnAuthorized",
+    });
+  }
+
+  try {
+    const matchedUsers = await prismaClient.matches.findMany({
+      where: {
+        OR: [{ user1_id: loggedInUser }, { user2_id: loggedInUser }],
+      },
+      include: {
+        user1: {
+          include: {
+            user_details: true,
+            preferences: true,
+            media: true,
+          },
+        },
+        user2: {
+          include: {
+            user_details: true,
+            preferences: true,
+            media: true,
+          },
+        },
+      },
+    });
+
+    console.log(matchedUsers);
+    res.status(200).json({
+      matchedUsers: matchedUsers,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(411).json({
+      message: "Sever error",
     });
   }
 });

@@ -41,7 +41,7 @@ async function generateUserData(batchSize: number) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const dob = faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-    const gender = faker.person.sexType(); // "male" or "female"
+    const gender = faker.person.sexType();
 
     const images = await getGenderImageUrls(gender, 3);
     const profilePic = images[0];

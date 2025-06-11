@@ -127,90 +127,112 @@ routes.post("/signin", async (req, res) => {
   });
 });
 
-routes.post("/create-user", upload.array("images"), async (req, res) => {
-  const body = req.body;
+routes.post(
+  "/create-user",
+  upload.fields([
+    { name: "profile-pic", maxCount: 1 },
+    { name: "images", maxCount: 10 },
+  ]),
+  async (req, res) => {
+    const body = req.body;
 
-  const parsedData = userDetailsTypes.safeParse(body);
-  const files = req.files;
+    const parsedData = userDetailsTypes.safeParse(body);
+    const files = req.files;
 
-  if (!parsedData.success) {
-    res.status(411).json({
-      message: "Incorrect input",
-    });
-    return;
-  }
-
-  const urls: string[] = [];
-
-  const bucketName = "ghostdatingbucket";
-
-  await getBucket(bucketName);
-
-  //@ts-ignore
-  for (const file of files) {
-    const fileName = `${Date.now()}-${file.originalname}`;
-    await minioClient.fPutObject(bucketName, fileName, file.path);
-    const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
-    urls.push(publicUrl);
-  }
-
-  await prismaClient.$transaction(async (tx) => {
-    await tx.userDetail.create({
-      data: {
-        user_id: parsedData.data.userId,
-        first_name: parsedData.data.firstName,
-        last_name: parsedData.data.lastName,
-        date_of_birth: parsedData.data.dateOfBirth,
-        gender: parsedData.data.gender,
-        bio: parsedData.data.bio,
-        location: parsedData.data.location,
-        latitude: Number(parsedData.data.latitude),
-        longitude: Number(parsedData.data.longitude),
-        pronounce: parsedData.data.pronounce,
-        interested_in_gender: parsedData.data.interestedInGender,
-        profile_pic: parsedData.data.profilePic,
-        height: parsedData.data.height,
-        education: parsedData.data.education,
-        howyoudie: parsedData.data.howyoudie,
-        sexuality: parsedData.data.sexuality,
-        last_active: new Date(),
-      },
-    });
-
-    await tx.userPreferences.create({
-      data: {
-        user_id: parsedData.data.userId,
-        intensions: parsedData.data.intensions,
-        prefered_min_age: Number(parsedData.data.prefered_min_age),
-        prefered_max_age: Number(parsedData.data.prefered_max_age),
-        max_distance: Number(parsedData.data.max_distance),
-        is_ghost_mode: Boolean(parsedData.data.is_ghost_mode),
-        show_on_feed: Boolean(parsedData.data.show_on_feed),
-        verified: Boolean(parsedData.data.verified),
-      },
-    });
-
-    await tx.media.create({
-      data: {
-        user_id: parsedData.data.userId,
-        gallery: urls,
-      },
-    });
-  });
-
-  const token = jwt.sign(
-    { id: parsedData.data.userId },
-    process.env.JWT_PASSWORD as string,
-    {
-      expiresIn: 90 * 24 * 60 * 60,
+    if (!parsedData.success) {
+      res.status(411).json({
+        message: "Incorrect input",
+      });
+      return;
     }
-  );
 
-  res.status(200).json({
-    token,
-    message: "user created successfully",
-  });
-});
+    const urls: string[] = [];
+
+    const bucketName = "ghostdatingbucket";
+
+    await getBucket(bucketName);
+
+    //@ts-ignore
+    const imageFiles = files["images"] || [];
+    //@ts-ignore
+    for (const file of imageFiles) {
+      const fileName = `${Date.now()}-${file.originalname}`;
+      await minioClient.fPutObject(bucketName, fileName, file.path);
+      const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
+      urls.push(publicUrl);
+    }
+
+    let profilePicUrl = "";
+    //@ts-ignore
+    const profilePicFile = files["profile-pic"]?.[0];
+    if (profilePicFile) {
+      const profilePicName = `${Date.now()}-${profilePicFile.originalname}`;
+      await minioClient.fPutObject(
+        bucketName,
+        profilePicName,
+        profilePicFile.path
+      );
+      profilePicUrl = `http://localhost:9000/${bucketName}/${profilePicName}`;
+    }
+
+    await prismaClient.$transaction(async (tx) => {
+      await tx.userDetail.create({
+        data: {
+          user_id: parsedData.data.userId,
+          first_name: parsedData.data.firstName,
+          last_name: parsedData.data.lastName,
+          date_of_birth: parsedData.data.dateOfBirth,
+          gender: parsedData.data.gender,
+          bio: parsedData.data.bio,
+          location: parsedData.data.location,
+          latitude: Number(parsedData.data.latitude),
+          longitude: Number(parsedData.data.longitude),
+          pronounce: parsedData.data.pronounce,
+          interested_in_gender: parsedData.data.interestedInGender,
+          profile_pic: profilePicUrl,
+          height: parsedData.data.height,
+          education: parsedData.data.education,
+          howyoudie: parsedData.data.howyoudie,
+          sexuality: parsedData.data.sexuality,
+          last_active: new Date(),
+        },
+      });
+
+      await tx.userPreferences.create({
+        data: {
+          user_id: parsedData.data.userId,
+          intensions: parsedData.data.intensions,
+          prefered_min_age: Number(parsedData.data.prefered_min_age),
+          prefered_max_age: Number(parsedData.data.prefered_max_age),
+          max_distance: Number(parsedData.data.max_distance),
+          is_ghost_mode: Boolean(parsedData.data.is_ghost_mode),
+          show_on_feed: Boolean(parsedData.data.show_on_feed),
+          verified: Boolean(parsedData.data.verified),
+        },
+      });
+
+      await tx.media.create({
+        data: {
+          user_id: parsedData.data.userId,
+          gallery: urls,
+        },
+      });
+    });
+
+    const token = jwt.sign(
+      { id: parsedData.data.userId },
+      process.env.JWT_PASSWORD as string,
+      {
+        expiresIn: 90 * 24 * 60 * 60,
+      }
+    );
+
+    res.status(200).json({
+      token,
+      message: "user created successfully",
+    });
+  }
+);
 
 routes.post("/seen-user", authMiddleware, async (req, res) => {
   const { users } = req.body;

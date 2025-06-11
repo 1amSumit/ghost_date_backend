@@ -48,7 +48,7 @@ function generateUserData(batchSize) {
             const firstName = faker_1.faker.person.firstName();
             const lastName = faker_1.faker.person.lastName();
             const dob = faker_1.faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-            const gender = faker_1.faker.person.sexType(); // "male" or "female"
+            const gender = faker_1.faker.person.sexType();
             const images = yield getGenderImageUrls(gender, 3);
             const profilePic = images[0];
             const galleryImages = images;
