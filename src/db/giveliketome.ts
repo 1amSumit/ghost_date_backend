@@ -14,14 +14,56 @@ async function main() {
       email: "sj779619@gmail.com",
     },
   });
-  await prisma.liked.create({
-    data: {
-      liked_to_id: user!.id,
-      liked_by_id: randomUser!.id,
-    },
-  });
+
+  if (user && randomUser && user.id !== randomUser.id) {
+    await prisma.liked.create({
+      data: {
+        liked_to_id: user.id,
+        liked_by_id: randomUser.id,
+      },
+    });
+    console.log(`User ${randomUser.email} liked ${user.email}`);
+  }
 }
 
-for (let i = 0; i < 20; i++) {
-  main();
+async function abhirajLike() {
+  const abhiraj = await prisma.user.findFirst({
+    where: {
+      email: "abhirajsingh9771@gmail.com",
+    },
+  });
+
+  const user = await prisma.user.findFirst({
+    where: {
+      email: "sj779619@gmail.com",
+    },
+  });
+
+  if (abhiraj && user) {
+    await prisma.liked.create({
+      data: {
+        liked_to_id: user.id,
+        liked_by_id: abhiraj.id,
+      },
+    });
+    console.log(`Abhiraj liked ${user.email}`);
+  } else {
+    console.error("User(s) not found");
+  }
 }
+
+async function run() {
+  try {
+    for (let i = 0; i < 20; i++) {
+      await main();
+    }
+    await abhirajLike();
+  } catch (err) {
+    console.error("Error:", err);
+  } finally {
+    await prisma.$disconnect();
+    console.log("done all");
+  }
+}
+
+run();

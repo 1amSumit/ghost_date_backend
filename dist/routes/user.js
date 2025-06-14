@@ -111,7 +111,11 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         user,
     });
 }));
-routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+routes.post("/create-user", upload.fields([
+    { name: "profile-pic", maxCount: 1 },
+    { name: "images", maxCount: 10 },
+]), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const body = req.body;
     const parsedData = types_1.userDetailsTypes.safeParse(body);
     const files = req.files;
@@ -125,11 +129,21 @@ routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void
     const bucketName = "ghostdatingbucket";
     yield (0, minio_1.getBucket)(bucketName);
     //@ts-ignore
-    for (const file of files) {
+    const imageFiles = files["images"] || [];
+    //@ts-ignore
+    for (const file of imageFiles) {
         const fileName = `${Date.now()}-${file.originalname}`;
         yield minio_1.minioClient.fPutObject(bucketName, fileName, file.path);
         const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
         urls.push(publicUrl);
+    }
+    let profilePicUrl = "";
+    //@ts-ignore
+    const profilePicFile = (_a = files["profile-pic"]) === null || _a === void 0 ? void 0 : _a[0];
+    if (profilePicFile) {
+        const profilePicName = `${Date.now()}-${profilePicFile.originalname}`;
+        yield minio_1.minioClient.fPutObject(bucketName, profilePicName, profilePicFile.path);
+        profilePicUrl = `http://localhost:9000/${bucketName}/${profilePicName}`;
     }
     yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         yield tx.userDetail.create({
@@ -145,7 +159,7 @@ routes.post("/create-user", upload.array("images"), (req, res) => __awaiter(void
                 longitude: Number(parsedData.data.longitude),
                 pronounce: parsedData.data.pronounce,
                 interested_in_gender: parsedData.data.interestedInGender,
-                profile_pic: parsedData.data.profilePic,
+                profile_pic: profilePicUrl,
                 height: parsedData.data.height,
                 education: parsedData.data.education,
                 howyoudie: parsedData.data.howyoudie,

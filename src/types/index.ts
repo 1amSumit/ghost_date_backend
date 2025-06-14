@@ -22,7 +22,6 @@ export const userDetailsTypes = z.object({
   bio: z.string(),
   dateOfBirth: z.string(),
   location: z.string(),
-  profilePic: z.string(),
   latitude: z.string(),
   longitude: z.string(),
   pronounce: z.array(z.string()),

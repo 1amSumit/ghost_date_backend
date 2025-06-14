@@ -13,8 +13,6 @@ router.post("/add-match", async (req, res) => {
   const loggedInUser = req.userId;
   const gotLikedBack = req.body.users;
 
-  console.log(gotLikedBack);
-
   try {
     await Promise.all(
       gotLikedBack.map((userId: string) => {
@@ -67,23 +65,29 @@ router.get("/get-user-match", async (req, res) => {
         user1: {
           include: {
             user_details: true,
-            preferences: true,
-            media: true,
           },
         },
         user2: {
           include: {
             user_details: true,
-            preferences: true,
-            media: true,
           },
         },
       },
     });
 
-    console.log(matchedUsers);
+    const result = matchedUsers.map((match) => {
+      const matchedUser =
+        match.user1_id === loggedInUser ? match.user2 : match.user1;
+
+      return {
+        match_id: match.id,
+        matched_user_id: matchedUser.id,
+        user_details: matchedUser.user_details,
+      };
+    });
+
     res.status(200).json({
-      matchedUsers: matchedUsers,
+      matchedUsers: result,
     });
   } catch (err) {
     console.log(err);

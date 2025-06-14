@@ -22,7 +22,6 @@ exports.userDetailsTypes = zod_1.z.object({
     bio: zod_1.z.string(),
     dateOfBirth: zod_1.z.string(),
     location: zod_1.z.string(),
-    profilePic: zod_1.z.string(),
     latitude: zod_1.z.string(),
     longitude: zod_1.z.string(),
     pronounce: zod_1.z.array(zod_1.z.string()),

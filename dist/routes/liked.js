@@ -20,7 +20,6 @@ router.post("/set-liked", (req, res) => __awaiter(void 0, void 0, void 0, functi
     //@ts-ignore
     const loggedInUser = req.userId;
     const { users } = req.body;
-    console.log(users);
     try {
         users.forEach((user) => __awaiter(void 0, void 0, void 0, function* () {
             yield prismaClient.liked.create({

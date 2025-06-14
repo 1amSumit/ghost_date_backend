@@ -158,7 +158,11 @@ routes.post(
     for (const file of imageFiles) {
       const fileName = `${Date.now()}-${file.originalname}`;
       await minioClient.fPutObject(bucketName, fileName, file.path);
-      const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
+      const publicUrl = await minioClient.presignedGetObject(
+        bucketName,
+        fileName,
+        90 * 24 * 60 * 60
+      );
       urls.push(publicUrl);
     }
 
@@ -172,7 +176,11 @@ routes.post(
         profilePicName,
         profilePicFile.path
       );
-      profilePicUrl = `http://localhost:9000/${bucketName}/${profilePicName}`;
+      profilePicUrl = await minioClient.presignedGetObject(
+        bucketName,
+        profilePicName,
+        90 * 24 * 60 * 60
+      );
     }
 
     await prismaClient.$transaction(async (tx) => {

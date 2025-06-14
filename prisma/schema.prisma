@@ -26,6 +26,9 @@ model User {
 
   matches1 Matches[] @relation("UserMatches1")
   matches2 Matches[] @relation("UserMatches2")
+
+  message_from_user Message[] @relation("message_from_user")
+  message_to_user   Message[] @relation("message_to_user")
 }
 
 model Matches {
@@ -93,4 +96,17 @@ model Liked {
   liked_by User @relation("UserGivenLike", fields: [liked_by_id], references: [id])
 
   @@unique([liked_to_id, liked_by_id])
+}
+
+model Message {
+  id                String   @id @default(uuid())
+  message           String
+  message_from_user String
+  message_to_user   String
+  created_at        DateTime
+
+  from_user User @relation("message_from_user", fields: [message_from_user], references: [id])
+  to_user   User @relation("message_to_user", fields: [message_to_user], references: [id])
+
+  @@unique([message_from_user, message_to_user])
 }

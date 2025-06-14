@@ -13,7 +13,6 @@ router.post("/set-liked", async (req, res) => {
 
   const { users } = req.body;
 
-  console.log(users);
   try {
     users.forEach(async (user: string) => {
       await prismaClient.liked.create({

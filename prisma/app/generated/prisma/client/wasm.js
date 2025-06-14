@@ -183,6 +183,14 @@ exports.Prisma.LikedScalarFieldEnum = {
   liked_by_id: 'liked_by_id'
 };
 
+exports.Prisma.MessageScalarFieldEnum = {
+  id: 'id',
+  message: 'message',
+  message_from_user: 'message_from_user',
+  message_to_user: 'message_to_user',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -205,7 +213,8 @@ exports.Prisma.ModelName = {
   UserDetail: 'UserDetail',
   UserPreferences: 'UserPreferences',
   Media: 'Media',
-  Liked: 'Liked'
+  Liked: 'Liked',
+  Message: 'Message'
 };
 
 /**

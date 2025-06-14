@@ -23,14 +23,58 @@ function main() {
                 email: "sj779619@gmail.com",
             },
         });
-        yield prisma.liked.create({
-            data: {
-                liked_to_id: user.id,
-                liked_by_id: randomUser.id,
-            },
-        });
+        if (user && randomUser && user.id !== randomUser.id) {
+            yield prisma.liked.create({
+                data: {
+                    liked_to_id: user.id,
+                    liked_by_id: randomUser.id,
+                },
+            });
+            console.log(`User ${randomUser.email} liked ${user.email}`);
+        }
     });
 }
-for (let i = 0; i < 20; i++) {
-    main();
+function abhirajLike() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const abhiraj = yield prisma.user.findFirst({
+            where: {
+                email: "abhirajsingh9771@gmail.com",
+            },
+        });
+        const user = yield prisma.user.findFirst({
+            where: {
+                email: "sj779619@gmail.com",
+            },
+        });
+        if (abhiraj && user) {
+            yield prisma.liked.create({
+                data: {
+                    liked_to_id: user.id,
+                    liked_by_id: abhiraj.id,
+                },
+            });
+            console.log(`Abhiraj liked ${user.email}`);
+        }
+        else {
+            console.error("User(s) not found");
+        }
+    });
 }
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            for (let i = 0; i < 20; i++) {
+                yield main();
+            }
+            yield abhirajLike();
+        }
+        catch (err) {
+            console.error("Error:", err);
+        }
+        finally {
+            yield prisma.$disconnect();
+            console.log("done all");
+        }
+    });
+}
+run();

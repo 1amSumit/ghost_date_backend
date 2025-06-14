@@ -20,7 +20,6 @@ router.post("/add-match", (req, res) => __awaiter(void 0, void 0, void 0, functi
     //@ts-ignore
     const loggedInUser = req.userId;
     const gotLikedBack = req.body.users;
-    console.log(gotLikedBack);
     try {
         yield Promise.all(gotLikedBack.map((userId) => {
             prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
@@ -68,22 +67,25 @@ router.get("/get-user-match", (req, res) => __awaiter(void 0, void 0, void 0, fu
                 user1: {
                     include: {
                         user_details: true,
-                        preferences: true,
-                        media: true,
                     },
                 },
                 user2: {
                     include: {
                         user_details: true,
-                        preferences: true,
-                        media: true,
                     },
                 },
             },
         });
-        console.log(matchedUsers);
+        const result = matchedUsers.map((match) => {
+            const matchedUser = match.user1_id === loggedInUser ? match.user2 : match.user1;
+            return {
+                match_id: match.id,
+                matched_user_id: matchedUser.id,
+                user_details: matchedUser.user_details,
+            };
+        });
         res.status(200).json({
-            matchedUsers: matchedUsers,
+            matchedUsers: result,
         });
     }
     catch (err) {
