@@ -24,6 +24,7 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
   });
 
   const interestsInGender = user?.user_details?.interested_in_gender;
+  console.log(interestsInGender);
 
   const usersPerPage = 10;
 
@@ -36,7 +37,7 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
       },
       user_details: {
         is: {
-          interested_in_gender: interestsInGender,
+          gender: interestsInGender?.toLocaleLowerCase(),
         },
       },
     },

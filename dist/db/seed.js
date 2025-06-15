@@ -8,36 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("../../prisma/app/generated/prisma/client");
 const faker_1 = require("@faker-js/faker");
-const axios_1 = __importDefault(require("axios"));
 const prisma = new client_1.PrismaClient();
 const BATCH_SIZE = 100;
 const TOTAL_USERS = 1000;
-const PEXELS_API_KEY = "Gqkza72NW9DB9BtE3V11uKeavZcSiN02oIPE3XYl2t4uVhsZGEyFvo2f";
-const PEXELS_API_URL = "https://api.pexels.com/v1/search";
-function getGenderImageUrls(gender_1) {
-    return __awaiter(this, arguments, void 0, function* (gender, count = 3) {
-        const query = gender.toLowerCase() === "male" ? "man portrait" : "woman portrait";
-        try {
-            const response = yield axios_1.default.get(PEXELS_API_URL, {
-                headers: { Authorization: PEXELS_API_KEY },
-                params: { query, per_page: count, orientation: "square" },
-            });
-            //@ts-ignore
-            return response.data.photos.map((photo) => photo.src.medium);
-        }
-        catch (error) {
-            //@ts-ignore
-            console.error("Failed to fetch images from Pexels:", error.message);
-            // Fallback placeholder image
-            return Array(count).fill("https://via.placeholder.com/400x400?text=User");
-        }
-    });
+function getFakerImageUrl(gender) {
+    const base = "https://randomuser.me/api/portraits";
+    const id = faker_1.faker.number.int({ min: 0, max: 99 });
+    if (gender.toLowerCase() === "male") {
+        return `${base}/men/${id}.jpg`;
+    }
+    else {
+        return `${base}/women/${id}.jpg`;
+    }
 }
 function generateUserData(batchSize) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -48,10 +33,13 @@ function generateUserData(batchSize) {
             const firstName = faker_1.faker.person.firstName();
             const lastName = faker_1.faker.person.lastName();
             const dob = faker_1.faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-            const gender = faker_1.faker.person.sexType();
-            const images = yield getGenderImageUrls(gender, 3);
-            const profilePic = images[0];
-            const galleryImages = images;
+            const gender = faker_1.faker.helpers.arrayElement(["male", "female"]);
+            const profilePic = getFakerImageUrl(gender);
+            const galleryImages = [
+                getFakerImageUrl(gender),
+                getFakerImageUrl(gender),
+                getFakerImageUrl(gender),
+            ];
             users.push({
                 email,
                 password,
@@ -64,16 +52,19 @@ function generateUserData(batchSize) {
                         gender,
                         date_of_birth: dob.toISOString(),
                         bio: faker_1.faker.person.bio(),
-                        height: `${faker_1.faker.number.int({ min: 5, max: 6 })}ft ${faker_1.faker.number.int({ min: 0, max: 11 })}in`,
+                        height: `${faker_1.faker.number.int({ min: 5, max: 6 })}ft ${faker_1.faker.number.int({
+                            min: 0,
+                            max: 11,
+                        })}in`,
                         education: faker_1.faker.word.words(3),
                         location: faker_1.faker.location.city(),
-                        latitude: parseFloat(faker_1.faker.location.latitude().toString()),
-                        longitude: parseFloat(faker_1.faker.location.longitude().toString()),
+                        latitude: faker_1.faker.location.latitude(),
+                        longitude: faker_1.faker.location.longitude(),
                         last_active: new Date(),
                         profile_pic: profilePic,
                         howyoudie: faker_1.faker.lorem.sentence(),
                         sexuality: "Straight",
-                        interested_in_gender: "Female",
+                        interested_in_gender: gender === "male" ? "Female" : "Male",
                     },
                 },
                 preferences: {
@@ -103,25 +94,23 @@ function main() {
             const batchData = yield generateUserData(BATCH_SIZE);
             for (const userData of batchData) {
                 try {
-                    yield prisma.user.create({
-                        data: userData,
-                    });
+                    yield prisma.user.create({ data: userData });
                 }
-                catch (error) {
-                    console.error("Failed to insert user:", userData.email, error);
+                catch (err) {
+                    console.error("❌ Failed to insert user:", userData.email, err);
                 }
             }
-            console.log(`Inserted ${i + BATCH_SIZE} users`);
+            console.log(`✅ Inserted ${i + BATCH_SIZE} users`);
         }
     });
 }
 main()
     .then(() => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Finished seeding users.");
+    console.log("🎉 Finished seeding users.");
     yield prisma.$disconnect();
 }))
-    .catch((e) => __awaiter(void 0, void 0, void 0, function* () {
-    console.error("Error seeding users:", e);
+    .catch((err) => __awaiter(void 0, void 0, void 0, function* () {
+    console.error("❌ Error seeding users:", err);
     yield prisma.$disconnect();
     process.exit(1);
 }));

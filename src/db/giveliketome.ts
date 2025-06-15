@@ -29,15 +29,19 @@ async function main() {
 async function abhirajLike() {
   const abhiraj = await prisma.user.findFirst({
     where: {
-      email: "abhirajsingh9771@gmail.com",
+      email: "sumitjha.gcp@gmail.com",
     },
   });
+
+  console.log(abhiraj);
 
   const user = await prisma.user.findFirst({
     where: {
       email: "sj779619@gmail.com",
     },
   });
+
+  console.log(user);
 
   if (abhiraj && user) {
     await prisma.liked.create({
@@ -54,9 +58,9 @@ async function abhirajLike() {
 
 async function run() {
   try {
-    for (let i = 0; i < 20; i++) {
-      await main();
-    }
+    // for (let i = 0; i < 20; i++) {
+    //   await main();
+    // }
     await abhirajLike();
   } catch (err) {
     console.error("Error:", err);

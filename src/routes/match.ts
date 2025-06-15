@@ -13,6 +13,8 @@ router.post("/add-match", async (req, res) => {
   const loggedInUser = req.userId;
   const gotLikedBack = req.body.users;
 
+  console.log(gotLikedBack);
+
   try {
     await Promise.all(
       gotLikedBack.map((userId: string) => {

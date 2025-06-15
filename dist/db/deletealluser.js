@@ -18,13 +18,7 @@ function main() {
                 email: "sj779619@gmail.com",
             },
         });
-        yield prisma.liked.deleteMany({
-            where: {
-                liked_to_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
-        });
+        yield prisma.liked.deleteMany({});
         yield prisma.userPreferences.deleteMany({
             where: {
                 user_id: {
@@ -32,7 +26,6 @@ function main() {
                 },
             },
         });
-        yield prisma.liked.deleteMany({});
         yield prisma.media.deleteMany({
             where: {
                 user_id: {
@@ -47,6 +40,7 @@ function main() {
                 },
             },
         });
+        yield prisma.matches.deleteMany({});
         yield prisma.user.deleteMany({
             where: {
                 id: {

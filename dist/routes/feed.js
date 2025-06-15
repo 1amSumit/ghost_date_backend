@@ -31,6 +31,7 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
         },
     });
     const interestsInGender = (_a = user === null || user === void 0 ? void 0 : user.user_details) === null || _a === void 0 ? void 0 : _a.interested_in_gender;
+    console.log(interestsInGender);
     const usersPerPage = 10;
     const seenUsers = yield redisClient_1.redisClient.sMembers(`seen:${loggedInUser}`);
     const getAllUser = yield prismaClient.user.findMany({
@@ -40,7 +41,7 @@ router.get("/getUnMatchedFeed/:page", (req, res) => __awaiter(void 0, void 0, vo
             },
             user_details: {
                 is: {
-                    interested_in_gender: interestsInGender,
+                    gender: interestsInGender === null || interestsInGender === void 0 ? void 0 : interestsInGender.toLocaleLowerCase(),
                 },
             },
         },

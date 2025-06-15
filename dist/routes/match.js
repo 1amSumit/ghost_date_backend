@@ -20,6 +20,7 @@ router.post("/add-match", (req, res) => __awaiter(void 0, void 0, void 0, functi
     //@ts-ignore
     const loggedInUser = req.userId;
     const gotLikedBack = req.body.users;
+    console.log(gotLikedBack);
     try {
         yield Promise.all(gotLikedBack.map((userId) => {
             prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {

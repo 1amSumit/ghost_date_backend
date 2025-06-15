@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+    command: >
+      redis-server
+      --appendonly yes
+      --save "900 1"
+      --save "300 10"
+      --save "60 1000"
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - ghostdbb:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./minio-data:/data
+
+  kafka:
+    image: apache/kafka:4.0.0
+    ports:
+      - "9092:9092"
+
+volumes:
+  ghostdbb:

@@ -7,13 +7,7 @@ async function main() {
       email: "sj779619@gmail.com",
     },
   });
-  await prisma.liked.deleteMany({
-    where: {
-      liked_to_id: {
-        not: user?.id,
-      },
-    },
-  });
+  await prisma.liked.deleteMany({});
   await prisma.userPreferences.deleteMany({
     where: {
       user_id: {
@@ -21,8 +15,6 @@ async function main() {
       },
     },
   });
-
-  await prisma.liked.deleteMany({});
 
   await prisma.media.deleteMany({
     where: {
@@ -38,6 +30,8 @@ async function main() {
       },
     },
   });
+
+  await prisma.matches.deleteMany({});
 
   await prisma.user.deleteMany({
     where: {

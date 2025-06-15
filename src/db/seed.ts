@@ -1,39 +1,24 @@
 import { PrismaClient } from "../../prisma/app/generated/prisma/client";
 import { faker } from "@faker-js/faker";
-import axios from "axios";
 
 const prisma = new PrismaClient();
 
 const BATCH_SIZE = 100;
 const TOTAL_USERS = 1000;
-const PEXELS_API_KEY =
-  "Gqkza72NW9DB9BtE3V11uKeavZcSiN02oIPE3XYl2t4uVhsZGEyFvo2f";
-const PEXELS_API_URL = "https://api.pexels.com/v1/search";
 
-async function getGenderImageUrls(
-  gender: string,
-  count: number = 3
-): Promise<string[]> {
-  const query =
-    gender.toLowerCase() === "male" ? "man portrait" : "woman portrait";
-  try {
-    const response = await axios.get(PEXELS_API_URL, {
-      headers: { Authorization: PEXELS_API_KEY },
-      params: { query, per_page: count, orientation: "square" },
-    });
+function getFakerImageUrl(gender: string): string {
+  const base = "https://randomuser.me/api/portraits";
+  const id = faker.number.int({ min: 0, max: 99 });
 
-    //@ts-ignore
-    return response.data.photos.map((photo: any) => photo.src.medium);
-  } catch (error) {
-    //@ts-ignore
-    console.error("Failed to fetch images from Pexels:", error.message);
-    // Fallback placeholder image
-    return Array(count).fill("https://via.placeholder.com/400x400?text=User");
+  if (gender.toLowerCase() === "male") {
+    return `${base}/men/${id}.jpg`;
+  } else {
+    return `${base}/women/${id}.jpg`;
   }
 }
 
 async function generateUserData(batchSize: number) {
-  const users = [];
+  const users: any[] = [];
 
   for (let i = 0; i < batchSize; i++) {
     const email = faker.internet.email();
@@ -41,11 +26,14 @@ async function generateUserData(batchSize: number) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const dob = faker.date.birthdate({ min: 20, max: 30, mode: "age" });
-    const gender = faker.person.sexType();
+    const gender = faker.helpers.arrayElement(["male", "female"]);
 
-    const images = await getGenderImageUrls(gender, 3);
-    const profilePic = images[0];
-    const galleryImages = images;
+    const profilePic = getFakerImageUrl(gender);
+    const galleryImages = [
+      getFakerImageUrl(gender),
+      getFakerImageUrl(gender),
+      getFakerImageUrl(gender),
+    ];
 
     users.push({
       email,
@@ -60,17 +48,20 @@ async function generateUserData(batchSize: number) {
           date_of_birth: dob.toISOString(),
           bio: faker.person.bio(),
           height: `${faker.number.int({ min: 5, max: 6 })}ft ${faker.number.int(
-            { min: 0, max: 11 }
+            {
+              min: 0,
+              max: 11,
+            }
           )}in`,
           education: faker.word.words(3),
           location: faker.location.city(),
-          latitude: parseFloat(faker.location.latitude().toString()),
-          longitude: parseFloat(faker.location.longitude().toString()),
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
           last_active: new Date(),
           profile_pic: profilePic,
           howyoudie: faker.lorem.sentence(),
           sexuality: "Straight",
-          interested_in_gender: "Female",
+          interested_in_gender: gender === "male" ? "Female" : "Male",
         },
       },
       preferences: {
@@ -101,25 +92,23 @@ async function main() {
 
     for (const userData of batchData) {
       try {
-        await prisma.user.create({
-          data: userData,
-        });
-      } catch (error) {
-        console.error("Failed to insert user:", userData.email, error);
+        await prisma.user.create({ data: userData });
+      } catch (err) {
+        console.error("❌ Failed to insert user:", userData.email, err);
       }
     }
 
-    console.log(`Inserted ${i + BATCH_SIZE} users`);
+    console.log(`✅ Inserted ${i + BATCH_SIZE} users`);
   }
 }
 
 main()
   .then(async () => {
-    console.log("Finished seeding users.");
+    console.log("🎉 Finished seeding users.");
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
-    console.error("Error seeding users:", e);
+  .catch(async (err) => {
+    console.error("❌ Error seeding users:", err);
     await prisma.$disconnect();
     process.exit(1);
   });

@@ -38,14 +38,16 @@ function abhirajLike() {
     return __awaiter(this, void 0, void 0, function* () {
         const abhiraj = yield prisma.user.findFirst({
             where: {
-                email: "abhirajsingh9771@gmail.com",
+                email: "sumitjha.gcp@gmail.com",
             },
         });
+        console.log(abhiraj);
         const user = yield prisma.user.findFirst({
             where: {
                 email: "sj779619@gmail.com",
             },
         });
+        console.log(user);
         if (abhiraj && user) {
             yield prisma.liked.create({
                 data: {
@@ -63,9 +65,9 @@ function abhirajLike() {
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            for (let i = 0; i < 20; i++) {
-                yield main();
-            }
+            // for (let i = 0; i < 20; i++) {
+            //   await main();
+            // }
             yield abhirajLike();
         }
         catch (err) {

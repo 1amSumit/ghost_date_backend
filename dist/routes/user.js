@@ -45,7 +45,12 @@ routes.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         return;
     }
     const otp = (0, genereateOtp_1.generateOtp)();
-    yield redisClient_1.redisClient.set(parsedData.data.email, otp);
+    yield redisClient_1.redisClient.set(parsedData.data.email, otp, {
+        expiration: {
+            type: "EX",
+            value: 600,
+        },
+    });
     yield (0, sendEmail_1.sendMail)(parsedData.data.email, otp);
     res.status(200).json({
         message: "otp sent successfully",
@@ -133,8 +138,10 @@ routes.post("/create-user", upload.fields([
     //@ts-ignore
     for (const file of imageFiles) {
         const fileName = `${Date.now()}-${file.originalname}`;
-        yield minio_1.minioClient.fPutObject(bucketName, fileName, file.path);
-        const publicUrl = `http://localhost:9000/${bucketName}/${fileName}`;
+        yield minio_1.minioClient.fPutObject(bucketName, fileName, file.path, {
+            "Content-Type": "image/jpeg",
+        });
+        const publicUrl = `http://192.168.1.3:9000/${bucketName}/${fileName}`;
         urls.push(publicUrl);
     }
     let profilePicUrl = "";
@@ -142,8 +149,10 @@ routes.post("/create-user", upload.fields([
     const profilePicFile = (_a = files["profile-pic"]) === null || _a === void 0 ? void 0 : _a[0];
     if (profilePicFile) {
         const profilePicName = `${Date.now()}-${profilePicFile.originalname}`;
-        yield minio_1.minioClient.fPutObject(bucketName, profilePicName, profilePicFile.path);
-        profilePicUrl = `http://localhost:9000/${bucketName}/${profilePicName}`;
+        yield minio_1.minioClient.fPutObject(bucketName, profilePicName, profilePicFile.path, {
+            "Content-Type": "image/jpeg",
+        });
+        profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
     }
     yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         yield tx.userDetail.create({
@@ -152,13 +161,13 @@ routes.post("/create-user", upload.fields([
                 first_name: parsedData.data.firstName,
                 last_name: parsedData.data.lastName,
                 date_of_birth: parsedData.data.dateOfBirth,
-                gender: parsedData.data.gender,
+                gender: parsedData.data.gender.toLowerCase(),
                 bio: parsedData.data.bio,
                 location: parsedData.data.location,
                 latitude: Number(parsedData.data.latitude),
                 longitude: Number(parsedData.data.longitude),
                 pronounce: parsedData.data.pronounce,
-                interested_in_gender: parsedData.data.interestedInGender,
+                interested_in_gender: parsedData.data.interestedInGender.toLowerCase(),
                 profile_pic: profilePicUrl,
                 height: parsedData.data.height,
                 education: parsedData.data.education,

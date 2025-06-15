@@ -44,7 +44,12 @@ routes.post("/signup", async (req, res) => {
 
   const otp = generateOtp();
 
-  await redisClient.set(parsedData.data.email, otp);
+  await redisClient.set(parsedData.data.email, otp, {
+    expiration: {
+      type: "EX",
+      value: 600,
+    },
+  });
   await sendMail(parsedData.data.email, otp);
 
   res.status(200).json({
@@ -157,12 +162,10 @@ routes.post(
     //@ts-ignore
     for (const file of imageFiles) {
       const fileName = `${Date.now()}-${file.originalname}`;
-      await minioClient.fPutObject(bucketName, fileName, file.path);
-      const publicUrl = await minioClient.presignedGetObject(
-        bucketName,
-        fileName,
-        90 * 24 * 60 * 60
-      );
+      await minioClient.fPutObject(bucketName, fileName, file.path, {
+        "Content-Type": "image/jpeg",
+      });
+      const publicUrl = `http://192.168.1.3:9000/${bucketName}/${fileName}`;
       urls.push(publicUrl);
     }
 
@@ -174,13 +177,12 @@ routes.post(
       await minioClient.fPutObject(
         bucketName,
         profilePicName,
-        profilePicFile.path
+        profilePicFile.path,
+        {
+          "Content-Type": "image/jpeg",
+        }
       );
-      profilePicUrl = await minioClient.presignedGetObject(
-        bucketName,
-        profilePicName,
-        90 * 24 * 60 * 60
-      );
+      profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
     }
 
     await prismaClient.$transaction(async (tx) => {
@@ -190,13 +192,14 @@ routes.post(
           first_name: parsedData.data.firstName,
           last_name: parsedData.data.lastName,
           date_of_birth: parsedData.data.dateOfBirth,
-          gender: parsedData.data.gender,
+          gender: parsedData.data.gender.toLowerCase(),
           bio: parsedData.data.bio,
           location: parsedData.data.location,
           latitude: Number(parsedData.data.latitude),
           longitude: Number(parsedData.data.longitude),
           pronounce: parsedData.data.pronounce,
-          interested_in_gender: parsedData.data.interestedInGender,
+          interested_in_gender:
+            parsedData.data.interestedInGender.toLowerCase(),
           profile_pic: profilePicUrl,
           height: parsedData.data.height,
           education: parsedData.data.education,
