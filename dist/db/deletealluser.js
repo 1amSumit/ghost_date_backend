@@ -20,33 +20,33 @@ function main() {
         });
         yield prisma.liked.deleteMany({});
         yield prisma.userPreferences.deleteMany({
-            where: {
-                user_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
+        // where: {
+        //   user_id: {
+        //     not: user?.id,
+        //   },
+        // },
         });
         yield prisma.media.deleteMany({
-            where: {
-                user_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
+        // where: {
+        //   user_id: {
+        //     not: user?.id,
+        //   },
+        // },
         });
         yield prisma.userDetail.deleteMany({
-            where: {
-                user_id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
+        // where: {
+        //   user_id: {
+        //     not: user?.id,
+        //   },
+        // },
         });
         yield prisma.matches.deleteMany({});
         yield prisma.user.deleteMany({
-            where: {
-                id: {
-                    not: user === null || user === void 0 ? void 0 : user.id,
-                },
-            },
+        // where: {
+        //   id: {
+        //     not: user?.id,
+        //   },
+        // },
         });
     });
 }

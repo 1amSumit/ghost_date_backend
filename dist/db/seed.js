@@ -40,6 +40,12 @@ function generateUserData(batchSize) {
                 getFakerImageUrl(gender),
                 getFakerImageUrl(gender),
             ];
+            const today = new Date();
+            const age = today.getFullYear() -
+                dob.getFullYear() -
+                (today < new Date(today.getFullYear(), dob.getMonth(), dob.getDate())
+                    ? 1
+                    : 0);
             users.push({
                 email,
                 password,
@@ -51,6 +57,7 @@ function generateUserData(batchSize) {
                         pronounce: ["they", "them"],
                         gender,
                         date_of_birth: dob.toISOString(),
+                        age: age.toString(),
                         bio: faker_1.faker.person.bio(),
                         height: `${faker_1.faker.number.int({ min: 5, max: 6 })}ft ${faker_1.faker.number.int({
                             min: 0,

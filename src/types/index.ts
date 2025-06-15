@@ -16,6 +16,7 @@ export const userSinginTypes = z.object({
 
 export const userDetailsTypes = z.object({
   userId: z.string(),
+  email: z.string(),
   firstName: z.string(),
   lastName: z.string(),
   gender: z.string(),

@@ -16,7 +16,6 @@ function getFakerImageUrl(gender: string): string {
     return `${base}/women/${id}.jpg`;
   }
 }
-
 async function generateUserData(batchSize: number) {
   const users: any[] = [];
 
@@ -35,6 +34,14 @@ async function generateUserData(batchSize: number) {
       getFakerImageUrl(gender),
     ];
 
+    const today = new Date();
+    const age =
+      today.getFullYear() -
+      dob.getFullYear() -
+      (today < new Date(today.getFullYear(), dob.getMonth(), dob.getDate())
+        ? 1
+        : 0);
+
     users.push({
       email,
       password,
@@ -46,6 +53,7 @@ async function generateUserData(batchSize: number) {
           pronounce: ["they", "them"],
           gender,
           date_of_birth: dob.toISOString(),
+          age: age.toString(),
           bio: faker.person.bio(),
           height: `${faker.number.int({ min: 5, max: 6 })}ft ${faker.number.int(
             {

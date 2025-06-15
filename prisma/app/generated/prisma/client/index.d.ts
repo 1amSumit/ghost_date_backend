@@ -3888,7 +3888,8 @@ export namespace Prisma {
     first_name: string | null
     last_name: string | null
     gender: string | null
-    date_of_birth: string | null
+    date_of_birth: Date | null
+    age: string | null
     bio: string | null
     height: string | null
     education: string | null
@@ -3908,7 +3909,8 @@ export namespace Prisma {
     first_name: string | null
     last_name: string | null
     gender: string | null
-    date_of_birth: string | null
+    date_of_birth: Date | null
+    age: string | null
     bio: string | null
     height: string | null
     education: string | null
@@ -3930,6 +3932,7 @@ export namespace Prisma {
     pronounce: number
     gender: number
     date_of_birth: number
+    age: number
     bio: number
     height: number
     education: number
@@ -3962,6 +3965,7 @@ export namespace Prisma {
     last_name?: true
     gender?: true
     date_of_birth?: true
+    age?: true
     bio?: true
     height?: true
     education?: true
@@ -3982,6 +3986,7 @@ export namespace Prisma {
     last_name?: true
     gender?: true
     date_of_birth?: true
+    age?: true
     bio?: true
     height?: true
     education?: true
@@ -4003,6 +4008,7 @@ export namespace Prisma {
     pronounce?: true
     gender?: true
     date_of_birth?: true
+    age?: true
     bio?: true
     height?: true
     education?: true
@@ -4110,7 +4116,8 @@ export namespace Prisma {
     last_name: string
     pronounce: string[]
     gender: string
-    date_of_birth: string
+    date_of_birth: Date
+    age: string
     bio: string
     height: string
     education: string
@@ -4151,6 +4158,7 @@ export namespace Prisma {
     pronounce?: boolean
     gender?: boolean
     date_of_birth?: boolean
+    age?: boolean
     bio?: boolean
     height?: boolean
     education?: boolean
@@ -4173,6 +4181,7 @@ export namespace Prisma {
     pronounce?: boolean
     gender?: boolean
     date_of_birth?: boolean
+    age?: boolean
     bio?: boolean
     height?: boolean
     education?: boolean
@@ -4195,6 +4204,7 @@ export namespace Prisma {
     pronounce?: boolean
     gender?: boolean
     date_of_birth?: boolean
+    age?: boolean
     bio?: boolean
     height?: boolean
     education?: boolean
@@ -4217,6 +4227,7 @@ export namespace Prisma {
     pronounce?: boolean
     gender?: boolean
     date_of_birth?: boolean
+    age?: boolean
     bio?: boolean
     height?: boolean
     education?: boolean
@@ -4231,7 +4242,7 @@ export namespace Prisma {
     user_id?: boolean
   }
 
-  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "bio" | "height" | "education" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "howyoudie" | "sexuality" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
+  export type UserDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "first_name" | "last_name" | "pronounce" | "gender" | "date_of_birth" | "age" | "bio" | "height" | "education" | "location" | "latitude" | "longitude" | "last_active" | "profile_pic" | "howyoudie" | "sexuality" | "interested_in_gender" | "user_id", ExtArgs["result"]["userDetail"]>
   export type UserDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -4253,7 +4264,8 @@ export namespace Prisma {
       last_name: string
       pronounce: string[]
       gender: string
-      date_of_birth: string
+      date_of_birth: Date
+      age: string
       bio: string
       height: string
       education: string
@@ -4695,7 +4707,8 @@ export namespace Prisma {
     readonly last_name: FieldRef<"UserDetail", 'String'>
     readonly pronounce: FieldRef<"UserDetail", 'String[]'>
     readonly gender: FieldRef<"UserDetail", 'String'>
-    readonly date_of_birth: FieldRef<"UserDetail", 'String'>
+    readonly date_of_birth: FieldRef<"UserDetail", 'DateTime'>
+    readonly age: FieldRef<"UserDetail", 'String'>
     readonly bio: FieldRef<"UserDetail", 'String'>
     readonly height: FieldRef<"UserDetail", 'String'>
     readonly education: FieldRef<"UserDetail", 'String'>
@@ -9449,6 +9462,7 @@ export namespace Prisma {
     pronounce: 'pronounce',
     gender: 'gender',
     date_of_birth: 'date_of_birth',
+    age: 'age',
     bio: 'bio',
     height: 'height',
     education: 'education',
@@ -9762,7 +9776,8 @@ export namespace Prisma {
     last_name?: StringFilter<"UserDetail"> | string
     pronounce?: StringNullableListFilter<"UserDetail">
     gender?: StringFilter<"UserDetail"> | string
-    date_of_birth?: StringFilter<"UserDetail"> | string
+    date_of_birth?: DateTimeFilter<"UserDetail"> | Date | string
+    age?: StringFilter<"UserDetail"> | string
     bio?: StringFilter<"UserDetail"> | string
     height?: StringFilter<"UserDetail"> | string
     education?: StringFilter<"UserDetail"> | string
@@ -9785,6 +9800,7 @@ export namespace Prisma {
     pronounce?: SortOrder
     gender?: SortOrder
     date_of_birth?: SortOrder
+    age?: SortOrder
     bio?: SortOrder
     height?: SortOrder
     education?: SortOrder
@@ -9810,7 +9826,8 @@ export namespace Prisma {
     last_name?: StringFilter<"UserDetail"> | string
     pronounce?: StringNullableListFilter<"UserDetail">
     gender?: StringFilter<"UserDetail"> | string
-    date_of_birth?: StringFilter<"UserDetail"> | string
+    date_of_birth?: DateTimeFilter<"UserDetail"> | Date | string
+    age?: StringFilter<"UserDetail"> | string
     bio?: StringFilter<"UserDetail"> | string
     height?: StringFilter<"UserDetail"> | string
     education?: StringFilter<"UserDetail"> | string
@@ -9832,6 +9849,7 @@ export namespace Prisma {
     pronounce?: SortOrder
     gender?: SortOrder
     date_of_birth?: SortOrder
+    age?: SortOrder
     bio?: SortOrder
     height?: SortOrder
     education?: SortOrder
@@ -9860,7 +9878,8 @@ export namespace Prisma {
     last_name?: StringWithAggregatesFilter<"UserDetail"> | string
     pronounce?: StringNullableListFilter<"UserDetail">
     gender?: StringWithAggregatesFilter<"UserDetail"> | string
-    date_of_birth?: StringWithAggregatesFilter<"UserDetail"> | string
+    date_of_birth?: DateTimeWithAggregatesFilter<"UserDetail"> | Date | string
+    age?: StringWithAggregatesFilter<"UserDetail"> | string
     bio?: StringWithAggregatesFilter<"UserDetail"> | string
     height?: StringWithAggregatesFilter<"UserDetail"> | string
     education?: StringWithAggregatesFilter<"UserDetail"> | string
@@ -10071,7 +10090,6 @@ export namespace Prisma {
 
   export type MessageWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    message_from_user_message_to_user?: MessageMessage_from_userMessage_to_userCompoundUniqueInput
     AND?: MessageWhereInput | MessageWhereInput[]
     OR?: MessageWhereInput[]
     NOT?: MessageWhereInput | MessageWhereInput[]
@@ -10081,7 +10099,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Message"> | Date | string
     from_user?: XOR<UserScalarRelationFilter, UserWhereInput>
     to_user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "message_from_user_message_to_user">
+  }, "id">
 
   export type MessageOrderByWithAggregationInput = {
     id?: SortOrder
@@ -10271,7 +10289,8 @@ export namespace Prisma {
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
     gender: string
-    date_of_birth: string
+    date_of_birth: Date | string
+    age: string
     bio: string
     height: string
     education: string
@@ -10292,7 +10311,8 @@ export namespace Prisma {
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
     gender: string
-    date_of_birth: string
+    date_of_birth: Date | string
+    age: string
     bio: string
     height: string
     education: string
@@ -10313,7 +10333,8 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    age?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
     education?: StringFieldUpdateOperationsInput | string
@@ -10334,7 +10355,8 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    age?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
     education?: StringFieldUpdateOperationsInput | string
@@ -10355,7 +10377,8 @@ export namespace Prisma {
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
     gender: string
-    date_of_birth: string
+    date_of_birth: Date | string
+    age: string
     bio: string
     height: string
     education: string
@@ -10376,7 +10399,8 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    age?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
     education?: StringFieldUpdateOperationsInput | string
@@ -10396,7 +10420,8 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    age?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
     education?: StringFieldUpdateOperationsInput | string
@@ -10865,6 +10890,7 @@ export namespace Prisma {
     pronounce?: SortOrder
     gender?: SortOrder
     date_of_birth?: SortOrder
+    age?: SortOrder
     bio?: SortOrder
     height?: SortOrder
     education?: SortOrder
@@ -10890,6 +10916,7 @@ export namespace Prisma {
     last_name?: SortOrder
     gender?: SortOrder
     date_of_birth?: SortOrder
+    age?: SortOrder
     bio?: SortOrder
     height?: SortOrder
     education?: SortOrder
@@ -10910,6 +10937,7 @@ export namespace Prisma {
     last_name?: SortOrder
     gender?: SortOrder
     date_of_birth?: SortOrder
+    age?: SortOrder
     bio?: SortOrder
     height?: SortOrder
     education?: SortOrder
@@ -11055,11 +11083,6 @@ export namespace Prisma {
     id?: SortOrder
     liked_to_id?: SortOrder
     liked_by_id?: SortOrder
-  }
-
-  export type MessageMessage_from_userMessage_to_userCompoundUniqueInput = {
-    message_from_user: string
-    message_to_user: string
   }
 
   export type MessageCountOrderByAggregateInput = {
@@ -11784,7 +11807,8 @@ export namespace Prisma {
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
     gender: string
-    date_of_birth: string
+    date_of_birth: Date | string
+    age: string
     bio: string
     height: string
     education: string
@@ -11804,7 +11828,8 @@ export namespace Prisma {
     last_name: string
     pronounce?: UserDetailCreatepronounceInput | string[]
     gender: string
-    date_of_birth: string
+    date_of_birth: Date | string
+    age: string
     bio: string
     height: string
     education: string
@@ -12022,7 +12047,8 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    age?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
     education?: StringFieldUpdateOperationsInput | string
@@ -12042,7 +12068,8 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     pronounce?: UserDetailUpdatepronounceInput | string[]
     gender?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    age?: StringFieldUpdateOperationsInput | string
     bio?: StringFieldUpdateOperationsInput | string
     height?: StringFieldUpdateOperationsInput | string
     education?: StringFieldUpdateOperationsInput | string

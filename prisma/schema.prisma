@@ -51,7 +51,8 @@ model UserDetail {
   last_name            String
   pronounce            String[]
   gender               String
-  date_of_birth        String
+  date_of_birth        DateTime
+  age                  String
   bio                  String
   height               String
   education            String
@@ -107,6 +108,4 @@ model Message {
 
   from_user User @relation("message_from_user", fields: [message_from_user], references: [id])
   to_user   User @relation("message_to_user", fields: [message_to_user], references: [id])
-
-  @@unique([message_from_user, message_to_user])
 }

@@ -16,6 +16,7 @@ exports.userSinginTypes = zod_1.z.object({
 });
 exports.userDetailsTypes = zod_1.z.object({
     userId: zod_1.z.string(),
+    email: zod_1.z.string(),
     firstName: zod_1.z.string(),
     lastName: zod_1.z.string(),
     gender: zod_1.z.string(),

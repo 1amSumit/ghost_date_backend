@@ -129,6 +129,7 @@ routes.post("/signin", async (req, res) => {
   res.status(200).json({
     token,
     user,
+    userId: user.id,
   });
 });
 
@@ -151,97 +152,110 @@ routes.post(
       return;
     }
 
-    const urls: string[] = [];
+    try {
+      const dateOfUser = parsedData.data.dateOfBirth;
+      const [day, month, year] = dateOfUser.split("/");
+      const dateOfBirth = new Date(`${year}-${month}-${day}`);
+      const age = new Date().getFullYear() - +year;
 
-    const bucketName = "ghostdatingbucket";
+      const urls: string[] = [];
 
-    await getBucket(bucketName);
+      const bucketName = "ghostdatingbucket";
 
-    //@ts-ignore
-    const imageFiles = files["images"] || [];
-    //@ts-ignore
-    for (const file of imageFiles) {
-      const fileName = `${Date.now()}-${file.originalname}`;
-      await minioClient.fPutObject(bucketName, fileName, file.path, {
-        "Content-Type": "image/jpeg",
-      });
-      const publicUrl = `http://192.168.1.3:9000/${bucketName}/${fileName}`;
-      urls.push(publicUrl);
-    }
+      await getBucket(bucketName);
 
-    let profilePicUrl = "";
-    //@ts-ignore
-    const profilePicFile = files["profile-pic"]?.[0];
-    if (profilePicFile) {
-      const profilePicName = `${Date.now()}-${profilePicFile.originalname}`;
-      await minioClient.fPutObject(
-        bucketName,
-        profilePicName,
-        profilePicFile.path,
-        {
+      //@ts-ignore
+      const imageFiles = files["images"] || [];
+      //@ts-ignore
+      for (const file of imageFiles) {
+        const fileName = `${Date.now()}-${file.originalname}`;
+        await minioClient.fPutObject(bucketName, fileName, file.path, {
           "Content-Type": "image/jpeg",
+        });
+        const publicUrl = `http://192.168.1.3:9000/${bucketName}/${fileName}`;
+        urls.push(publicUrl);
+      }
+
+      let profilePicUrl = "";
+      //@ts-ignore
+      const profilePicFile = files["profile-pic"]?.[0];
+      if (profilePicFile) {
+        const profilePicName = `${Date.now()}-${profilePicFile.originalname}`;
+        await minioClient.fPutObject(
+          bucketName,
+          profilePicName,
+          profilePicFile.path,
+          {
+            "Content-Type": "image/jpeg",
+          }
+        );
+        profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
+      }
+
+      await prismaClient.$transaction(async (tx) => {
+        await tx.userDetail.create({
+          data: {
+            user_id: parsedData.data.userId,
+            first_name: parsedData.data.firstName,
+            last_name: parsedData.data.lastName,
+            date_of_birth: dateOfBirth,
+            age: age.toString(),
+            gender: parsedData.data.gender.toLowerCase(),
+            bio: parsedData.data.bio,
+            location: parsedData.data.location,
+            latitude: Number(parsedData.data.latitude),
+            longitude: Number(parsedData.data.longitude),
+            pronounce: parsedData.data.pronounce,
+            interested_in_gender:
+              parsedData.data.interestedInGender.toLowerCase(),
+            profile_pic: profilePicUrl,
+            height: parsedData.data.height,
+            education: parsedData.data.education,
+            howyoudie: parsedData.data.howyoudie,
+            sexuality: parsedData.data.sexuality,
+            last_active: new Date(),
+          },
+        });
+
+        await tx.userPreferences.create({
+          data: {
+            user_id: parsedData.data.userId,
+            intensions: parsedData.data.intensions,
+            prefered_min_age: Number(parsedData.data.prefered_min_age),
+            prefered_max_age: Number(parsedData.data.prefered_max_age),
+            max_distance: Number(parsedData.data.max_distance),
+            is_ghost_mode: Boolean(parsedData.data.is_ghost_mode),
+            show_on_feed: Boolean(parsedData.data.show_on_feed),
+            verified: Boolean(parsedData.data.verified),
+          },
+        });
+
+        await tx.media.create({
+          data: {
+            user_id: parsedData.data.userId,
+            gallery: urls,
+          },
+        });
+      });
+
+      const token = jwt.sign(
+        { id: parsedData.data.userId },
+        process.env.JWT_PASSWORD as string,
+        {
+          expiresIn: 90 * 24 * 60 * 60,
         }
       );
-      profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
+
+      res.status(200).json({
+        token,
+        message: "user created successfully",
+      });
+    } catch (err) {
+      redisClient.del(parsedData.data.email);
+      res.status(500).json({
+        message: "user creation failed",
+      });
     }
-
-    await prismaClient.$transaction(async (tx) => {
-      await tx.userDetail.create({
-        data: {
-          user_id: parsedData.data.userId,
-          first_name: parsedData.data.firstName,
-          last_name: parsedData.data.lastName,
-          date_of_birth: parsedData.data.dateOfBirth,
-          gender: parsedData.data.gender.toLowerCase(),
-          bio: parsedData.data.bio,
-          location: parsedData.data.location,
-          latitude: Number(parsedData.data.latitude),
-          longitude: Number(parsedData.data.longitude),
-          pronounce: parsedData.data.pronounce,
-          interested_in_gender:
-            parsedData.data.interestedInGender.toLowerCase(),
-          profile_pic: profilePicUrl,
-          height: parsedData.data.height,
-          education: parsedData.data.education,
-          howyoudie: parsedData.data.howyoudie,
-          sexuality: parsedData.data.sexuality,
-          last_active: new Date(),
-        },
-      });
-
-      await tx.userPreferences.create({
-        data: {
-          user_id: parsedData.data.userId,
-          intensions: parsedData.data.intensions,
-          prefered_min_age: Number(parsedData.data.prefered_min_age),
-          prefered_max_age: Number(parsedData.data.prefered_max_age),
-          max_distance: Number(parsedData.data.max_distance),
-          is_ghost_mode: Boolean(parsedData.data.is_ghost_mode),
-          show_on_feed: Boolean(parsedData.data.show_on_feed),
-          verified: Boolean(parsedData.data.verified),
-        },
-      });
-
-      await tx.media.create({
-        data: {
-          user_id: parsedData.data.userId,
-          gallery: urls,
-        },
-      });
-    });
-
-    const token = jwt.sign(
-      { id: parsedData.data.userId },
-      process.env.JWT_PASSWORD as string,
-      {
-        expiresIn: 90 * 24 * 60 * 60,
-      }
-    );
-
-    res.status(200).json({
-      token,
-      message: "user created successfully",
-    });
   }
 );
 

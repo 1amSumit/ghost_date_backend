@@ -145,6 +145,7 @@ exports.Prisma.UserDetailScalarFieldEnum = {
   pronounce: 'pronounce',
   gender: 'gender',
   date_of_birth: 'date_of_birth',
+  age: 'age',
   bio: 'bio',
   height: 'height',
   education: 'education',
