@@ -54,5 +54,4 @@ export const updateUserTypes = z.object({
   show_on_feed: z.string(),
   is_ghost_mode: z.string(),
   howyoudie: z.string(),
-  profilePicture: z.string(),
 });

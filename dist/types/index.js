@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userDetailsTypes = exports.userSinginTypes = exports.verifyOtpTypes = exports.userSingupTypes = void 0;
+exports.updateUserTypes = exports.userDetailsTypes = exports.userSinginTypes = exports.verifyOtpTypes = exports.userSingupTypes = void 0;
 const zod_1 = require("zod");
 exports.userSingupTypes = zod_1.z.object({
     email: zod_1.z.string().email(),
@@ -38,4 +38,19 @@ exports.userDetailsTypes = zod_1.z.object({
     height: zod_1.z.string(),
     howyoudie: zod_1.z.string(),
     sexuality: zod_1.z.string(),
+});
+exports.updateUserTypes = zod_1.z.object({
+    firstName: zod_1.z.string(),
+    lastName: zod_1.z.string(),
+    gender: zod_1.z.string(),
+    bio: zod_1.z.string(),
+    location: zod_1.z.string(),
+    latitude: zod_1.z.string(),
+    longitude: zod_1.z.string(),
+    prefered_min_age: zod_1.z.string(),
+    prefered_max_age: zod_1.z.string(),
+    max_distance: zod_1.z.string(),
+    show_on_feed: zod_1.z.string(),
+    is_ghost_mode: zod_1.z.string(),
+    howyoudie: zod_1.z.string(),
 });

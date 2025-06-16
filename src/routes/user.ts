@@ -293,24 +293,46 @@ routes.post("/seen-user", authMiddleware, async (req, res) => {
   });
 });
 
-routes.put("/update-user", authMiddleware, async (req, res) => {
+routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
   //@ts-ignore
   const loggedInUser = req.userId;
 
-  const body = req.body;
-  const parsedData = updateUserTypes.safeParse(body);
-  if (!parsedData.success) {
-    res.status(411).json({
-      message: "Invalid Input",
-    });
-  }
+  const files = req.files;
+
+  console.log(loggedInUser);
+
+  console.log(files);
+
+  const data = req.body;
 
   const userDetailData: any = {};
   const preferencesData: any = {};
-  const data = parsedData.data;
 
   if (!data) {
-    return;
+    res.status(400).json({ message: "No data provided" });
+  }
+
+  console.log(data);
+
+  let profileFile;
+
+  //@ts-ignore
+  if (files && files.length > 0) {
+    //@ts-ignore
+    profileFile = files["image"]?.[0];
+  }
+
+  const bucketName = "ghostdatingbucket";
+
+  await getBucket(bucketName);
+
+  let profilePicUrl = "";
+  if (profileFile) {
+    const profilePicName = `${Date.now()}-${profileFile.originalname}`;
+    await minioClient.fPutObject(bucketName, profilePicName, profileFile.path, {
+      "Content-Type": "image/jpeg",
+    });
+    profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
   }
 
   if (data.firstName !== undefined) userDetailData.first_name = data.firstName;
@@ -323,6 +345,8 @@ routes.put("/update-user", authMiddleware, async (req, res) => {
   if (data.longitude !== undefined)
     userDetailData.longitude = Number(data.longitude);
   if (data.gender !== undefined) userDetailData.gender = data.gender;
+  //@ts-ignore
+  if (files["image"] !== undefined) userDetailData.profile_pic = profilePicUrl;
 
   if (data.max_distance !== undefined)
     preferencesData.max_distance = Number(data.max_distance);
@@ -355,9 +379,8 @@ routes.put("/update-user", authMiddleware, async (req, res) => {
         });
       }
     });
-
+    console.log("done updation");
     res.status(200).json({ message: "User updated successfully" });
-    return;
   } catch (err) {
     console.error("Error updating user:", err);
     res.status(500).json({ message: "Internal server error" });

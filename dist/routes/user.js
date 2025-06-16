@@ -244,4 +244,91 @@ routes.post("/seen-user", middleware_1.authMiddleware, (req, res) => __awaiter(v
         message: "done",
     });
 }));
+routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    //@ts-ignore
+    const loggedInUser = req.userId;
+    const files = req.files;
+    console.log(loggedInUser);
+    console.log(files);
+    const data = req.body;
+    const userDetailData = {};
+    const preferencesData = {};
+    if (!data) {
+        res.status(400).json({ message: "No data provided" });
+    }
+    console.log(data);
+    let profileFile;
+    //@ts-ignore
+    if (files && files.length > 0) {
+        //@ts-ignore
+        profileFile = (_a = files["image"]) === null || _a === void 0 ? void 0 : _a[0];
+    }
+    const bucketName = "ghostdatingbucket";
+    yield (0, minio_1.getBucket)(bucketName);
+    let profilePicUrl = "";
+    if (profileFile) {
+        const profilePicName = `${Date.now()}-${profileFile.originalname}`;
+        yield minio_1.minioClient.fPutObject(bucketName, profilePicName, profileFile.path, {
+            "Content-Type": "image/jpeg",
+        });
+        profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
+    }
+    if (data.firstName !== undefined)
+        userDetailData.first_name = data.firstName;
+    if (data.lastName !== undefined)
+        userDetailData.last_name = data.lastName;
+    if (data.bio !== undefined)
+        userDetailData.bio = data.bio;
+    if (data.howyoudie !== undefined)
+        userDetailData.howyoudie = data.howyoudie;
+    if (data.location !== undefined)
+        userDetailData.location = data.location;
+    if (data.latitude !== undefined)
+        userDetailData.latitude = Number(data.latitude);
+    if (data.longitude !== undefined)
+        userDetailData.longitude = Number(data.longitude);
+    if (data.gender !== undefined)
+        userDetailData.gender = data.gender;
+    //@ts-ignore
+    if (files["image"] !== undefined)
+        userDetailData.profile_pic = profilePicUrl;
+    if (data.max_distance !== undefined)
+        preferencesData.max_distance = Number(data.max_distance);
+    if (data.prefered_min_age !== undefined)
+        preferencesData.prefered_min_age = Number(data.prefered_min_age);
+    if (data.prefered_max_age !== undefined)
+        preferencesData.prefered_max_age = Number(data.prefered_max_age);
+    if (data.show_on_feed !== undefined)
+        preferencesData.show_on_feed = Boolean(data.show_on_feed);
+    if (data.is_ghost_mode !== undefined)
+        preferencesData.is_ghost_mode = Boolean(data.is_ghost_mode);
+    try {
+        yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+            if (Object.keys(userDetailData).length > 0) {
+                yield tx.userDetail.update({
+                    where: {
+                        user_id: loggedInUser,
+                    },
+                    data: userDetailData,
+                });
+            }
+            if (Object.keys(preferencesData).length > 0) {
+                yield tx.userPreferences.update({
+                    where: {
+                        user_id: loggedInUser,
+                    },
+                    data: preferencesData,
+                });
+            }
+        }));
+        console.log("done updation");
+        res.status(200).json({ message: "User updated successfully" });
+    }
+    catch (err) {
+        console.error("Error updating user:", err);
+        res.status(500).json({ message: "Internal server error" });
+        return;
+    }
+}));
 exports.userRoutes = routes;
