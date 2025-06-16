@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { PrismaClient } from "../../prisma/app/generated/prisma/client";
 import {
+  updateUserTypes,
   userDetailsTypes,
   userSinginTypes,
   userSingupTypes,
@@ -100,6 +101,11 @@ routes.post("/signin", async (req, res) => {
   const user = await prismaClient.user.findFirst({
     where: {
       email: parsedData.data.email,
+    },
+    include: {
+      user_details: true,
+      preferences: true,
+      media: true,
     },
   });
 
@@ -285,6 +291,78 @@ routes.post("/seen-user", authMiddleware, async (req, res) => {
   res.status(200).json({
     message: "done",
   });
+});
+
+routes.put("/update-user", authMiddleware, async (req, res) => {
+  //@ts-ignore
+  const loggedInUser = req.userId;
+
+  const body = req.body;
+  const parsedData = updateUserTypes.safeParse(body);
+  if (!parsedData.success) {
+    res.status(411).json({
+      message: "Invalid Input",
+    });
+  }
+
+  const userDetailData: any = {};
+  const preferencesData: any = {};
+  const data = parsedData.data;
+
+  if (!data) {
+    return;
+  }
+
+  if (data.firstName !== undefined) userDetailData.first_name = data.firstName;
+  if (data.lastName !== undefined) userDetailData.last_name = data.lastName;
+  if (data.bio !== undefined) userDetailData.bio = data.bio;
+  if (data.howyoudie !== undefined) userDetailData.howyoudie = data.howyoudie;
+  if (data.location !== undefined) userDetailData.location = data.location;
+  if (data.latitude !== undefined)
+    userDetailData.latitude = Number(data.latitude);
+  if (data.longitude !== undefined)
+    userDetailData.longitude = Number(data.longitude);
+  if (data.gender !== undefined) userDetailData.gender = data.gender;
+
+  if (data.max_distance !== undefined)
+    preferencesData.max_distance = Number(data.max_distance);
+  if (data.prefered_min_age !== undefined)
+    preferencesData.prefered_min_age = Number(data.prefered_min_age);
+  if (data.prefered_max_age !== undefined)
+    preferencesData.prefered_max_age = Number(data.prefered_max_age);
+  if (data.show_on_feed !== undefined)
+    preferencesData.show_on_feed = Boolean(data.show_on_feed);
+  if (data.is_ghost_mode !== undefined)
+    preferencesData.is_ghost_mode = Boolean(data.is_ghost_mode);
+
+  try {
+    await prismaClient.$transaction(async (tx) => {
+      if (Object.keys(userDetailData).length > 0) {
+        await tx.userDetail.update({
+          where: {
+            user_id: loggedInUser,
+          },
+          data: userDetailData,
+        });
+      }
+
+      if (Object.keys(preferencesData).length > 0) {
+        await tx.userPreferences.update({
+          where: {
+            user_id: loggedInUser,
+          },
+          data: preferencesData,
+        });
+      }
+    });
+
+    res.status(200).json({ message: "User updated successfully" });
+    return;
+  } catch (err) {
+    console.error("Error updating user:", err);
+    res.status(500).json({ message: "Internal server error" });
+    return;
+  }
 });
 
 export const userRoutes = routes;

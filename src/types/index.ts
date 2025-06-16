@@ -39,3 +39,20 @@ export const userDetailsTypes = z.object({
   howyoudie: z.string(),
   sexuality: z.string(),
 });
+
+export const updateUserTypes = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  gender: z.string(),
+  bio: z.string(),
+  location: z.string(),
+  latitude: z.string(),
+  longitude: z.string(),
+  prefered_min_age: z.string(),
+  prefered_max_age: z.string(),
+  max_distance: z.string(),
+  show_on_feed: z.string(),
+  is_ghost_mode: z.string(),
+  howyoudie: z.string(),
+  profilePicture: z.string(),
+});

@@ -94,6 +94,11 @@ routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         where: {
             email: parsedData.data.email,
         },
+        include: {
+            user_details: true,
+            preferences: true,
+            media: true,
+        },
     });
     if (!user) {
         res.status(411).json({

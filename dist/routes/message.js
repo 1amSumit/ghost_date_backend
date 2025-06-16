@@ -16,9 +16,10 @@ const middleware_1 = require("../utils/middleware");
 const prismaClient = new client_1.PrismaClient();
 const router = (0, express_1.Router)();
 router.use(middleware_1.authMiddleware);
-router.get("/get-users-message/:to_user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/get-users-message/:to_user/:page", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { to_user } = req.params;
-    console.log(to_user);
+    const page = req.params.page ? parseInt(req.params.page) : 1;
+    const messagePerPage = 10;
     //@ts-ignore
     const from_user = req.userId;
     try {
@@ -37,10 +38,11 @@ router.get("/get-users-message/:to_user", (req, res) => __awaiter(void 0, void 0
                 id: true,
             },
             orderBy: {
-                created_at: "asc",
+                created_at: "desc",
             },
+            take: messagePerPage,
+            skip: (page - 1) * messagePerPage,
         });
-        console.log(messages);
         res.status(200).json({
             messages,
         });
