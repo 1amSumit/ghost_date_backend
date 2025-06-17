@@ -245,11 +245,9 @@ routes.post("/seen-user", middleware_1.authMiddleware, (req, res) => __awaiter(v
     });
 }));
 routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     //@ts-ignore
     const loggedInUser = req.userId;
     const files = req.files;
-    console.log(loggedInUser);
     console.log(files);
     const data = req.body;
     const userDetailData = {};
@@ -262,7 +260,7 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
     //@ts-ignore
     if (files && files.length > 0) {
         //@ts-ignore
-        profileFile = (_a = files["image"]) === null || _a === void 0 ? void 0 : _a[0];
+        profileFile = files.find((file) => file.fieldname === "image");
     }
     const bucketName = "ghostdatingbucket";
     yield (0, minio_1.getBucket)(bucketName);
@@ -274,6 +272,7 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
         });
         profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
     }
+    console.log("profilePicUrl", profilePicUrl);
     if (data.firstName !== undefined)
         userDetailData.first_name = data.firstName;
     if (data.lastName !== undefined)
@@ -291,8 +290,10 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
     if (data.gender !== undefined)
         userDetailData.gender = data.gender;
     //@ts-ignore
-    if (files["image"] !== undefined)
+    if ((files === null || files === void 0 ? void 0 : files.length) > 0) {
+        console.log("hallo buia");
         userDetailData.profile_pic = profilePicUrl;
+    }
     if (data.max_distance !== undefined)
         preferencesData.max_distance = Number(data.max_distance);
     if (data.prefered_min_age !== undefined)
@@ -329,6 +330,31 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
         console.error("Error updating user:", err);
         res.status(500).json({ message: "Internal server error" });
         return;
+    }
+}));
+routes.get("/getLoggedInUser", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //@ts-ignore
+    const loggedInUserId = req.userId;
+    try {
+        const user = yield prismaClient.user.findFirst({
+            where: {
+                id: loggedInUserId,
+            },
+            include: {
+                user_details: true,
+                preferences: true,
+            },
+        });
+        res.status(200).json({
+            user,
+            message: "Succesfully get the user",
+        });
+    }
+    catch (Err) {
+        console.log(Err);
+        res.status(404).json({
+            message: "Unauthorized",
+        });
     }
 }));
 exports.userRoutes = routes;

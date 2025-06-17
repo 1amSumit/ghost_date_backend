@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { PrismaClient } from "../../prisma/app/generated/prisma/client";
 import {
-  updateUserTypes,
   userDetailsTypes,
   userSinginTypes,
   userSingupTypes,
@@ -299,8 +298,6 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
 
   const files = req.files;
 
-  console.log(loggedInUser);
-
   console.log(files);
 
   const data = req.body;
@@ -319,7 +316,7 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
   //@ts-ignore
   if (files && files.length > 0) {
     //@ts-ignore
-    profileFile = files["image"]?.[0];
+    profileFile = files.find((file) => file.fieldname === "image");
   }
 
   const bucketName = "ghostdatingbucket";
@@ -335,6 +332,8 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
     profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
   }
 
+  console.log("profilePicUrl", profilePicUrl);
+
   if (data.firstName !== undefined) userDetailData.first_name = data.firstName;
   if (data.lastName !== undefined) userDetailData.last_name = data.lastName;
   if (data.bio !== undefined) userDetailData.bio = data.bio;
@@ -346,7 +345,9 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
     userDetailData.longitude = Number(data.longitude);
   if (data.gender !== undefined) userDetailData.gender = data.gender;
   //@ts-ignore
-  if (files["image"] !== undefined) userDetailData.profile_pic = profilePicUrl;
+  if (files?.length > 0) {
+    userDetailData.profile_pic = profilePicUrl;
+  }
 
   if (data.max_distance !== undefined)
     preferencesData.max_distance = Number(data.max_distance);
@@ -379,12 +380,39 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
         });
       }
     });
+
     console.log("done updation");
     res.status(200).json({ message: "User updated successfully" });
   } catch (err) {
     console.error("Error updating user:", err);
     res.status(500).json({ message: "Internal server error" });
     return;
+  }
+});
+
+routes.get("/getLoggedInUser", authMiddleware, async (req, res) => {
+  //@ts-ignore
+  const loggedInUserId = req.userId;
+
+  try {
+    const user = await prismaClient.user.findFirst({
+      where: {
+        id: loggedInUserId,
+      },
+      include: {
+        user_details: true,
+        preferences: true,
+      },
+    });
+    res.status(200).json({
+      user,
+      message: "Succesfully get the user",
+    });
+  } catch (Err) {
+    console.log(Err);
+    res.status(404).json({
+      message: "Unauthorized",
+    });
   }
 });
 
