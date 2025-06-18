@@ -81,6 +81,20 @@ routes.post("/verify-otp", (req, res) => __awaiter(void 0, void 0, void 0, funct
         message: "user created successfully",
     });
 }));
+routes.post("/resend-otp", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    const generateNewOtp = (0, genereateOtp_1.generateOtp)();
+    yield redisClient_1.redisClient.set(email, generateNewOtp, {
+        expiration: {
+            type: "EX",
+            value: 600,
+        },
+    });
+    yield (0, sendEmail_1.sendMail)(email, generateNewOtp);
+    res.status(200).json({
+        message: "otp sent successfully",
+    });
+}));
 routes.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     const parsedData = types_1.userSinginTypes.safeParse(body);
@@ -207,11 +221,21 @@ routes.post("/create-user", upload.fields([
                 },
             });
         }));
+        const user = yield prismaClient.user.findFirst({
+            where: {
+                id: parsedData.data.userId,
+            },
+            include: {
+                user_details: true,
+                preferences: true,
+            },
+        });
         const token = jsonwebtoken_1.default.sign({ id: parsedData.data.userId }, process.env.JWT_PASSWORD, {
             expiresIn: 90 * 24 * 60 * 60,
         });
         res.status(200).json({
             token,
+            user,
             message: "user created successfully",
         });
     }
@@ -248,14 +272,12 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
     //@ts-ignore
     const loggedInUser = req.userId;
     const files = req.files;
-    console.log(files);
     const data = req.body;
     const userDetailData = {};
     const preferencesData = {};
     if (!data) {
         res.status(400).json({ message: "No data provided" });
     }
-    console.log(data);
     let profileFile;
     //@ts-ignore
     if (files && files.length > 0) {
@@ -272,7 +294,6 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
         });
         profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
     }
-    console.log("profilePicUrl", profilePicUrl);
     if (data.firstName !== undefined)
         userDetailData.first_name = data.firstName;
     if (data.lastName !== undefined)
@@ -291,7 +312,6 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
         userDetailData.gender = data.gender;
     //@ts-ignore
     if ((files === null || files === void 0 ? void 0 : files.length) > 0) {
-        console.log("hallo buia");
         userDetailData.profile_pic = profilePicUrl;
     }
     if (data.max_distance !== undefined)
@@ -323,7 +343,6 @@ routes.put("/update-user", upload.any(), middleware_1.authMiddleware, (req, res)
                 });
             }
         }));
-        console.log("done updation");
         res.status(200).json({ message: "User updated successfully" });
     }
     catch (err) {

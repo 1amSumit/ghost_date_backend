@@ -24,7 +24,6 @@ router.get("/getUnMatchedFeed/:page", async (req, res) => {
   });
 
   const interestsInGender = user?.user_details?.interested_in_gender;
-  console.log(interestsInGender);
 
   const usersPerPage = 10;
 

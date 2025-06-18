@@ -86,6 +86,23 @@ routes.post("/verify-otp", async (req, res) => {
   });
 });
 
+routes.post("/resend-otp", async (req, res) => {
+  const { email } = req.body;
+  const generateNewOtp = generateOtp();
+
+  await redisClient.set(email, generateNewOtp, {
+    expiration: {
+      type: "EX",
+      value: 600,
+    },
+  });
+  await sendMail(email, generateNewOtp);
+
+  res.status(200).json({
+    message: "otp sent successfully",
+  });
+});
+
 routes.post("/signin", async (req, res) => {
   const body = req.body;
   const parsedData = userSinginTypes.safeParse(body);
@@ -243,6 +260,16 @@ routes.post(
         });
       });
 
+      const user = await prismaClient.user.findFirst({
+        where: {
+          id: parsedData.data.userId,
+        },
+        include: {
+          user_details: true,
+          preferences: true,
+        },
+      });
+
       const token = jwt.sign(
         { id: parsedData.data.userId },
         process.env.JWT_PASSWORD as string,
@@ -253,6 +280,7 @@ routes.post(
 
       res.status(200).json({
         token,
+        user,
         message: "user created successfully",
       });
     } catch (err) {
@@ -298,8 +326,6 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
 
   const files = req.files;
 
-  console.log(files);
-
   const data = req.body;
 
   const userDetailData: any = {};
@@ -308,8 +334,6 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
   if (!data) {
     res.status(400).json({ message: "No data provided" });
   }
-
-  console.log(data);
 
   let profileFile;
 
@@ -331,8 +355,6 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
     });
     profilePicUrl = `http://192.168.1.3:9000/${bucketName}/${profilePicName}`;
   }
-
-  console.log("profilePicUrl", profilePicUrl);
 
   if (data.firstName !== undefined) userDetailData.first_name = data.firstName;
   if (data.lastName !== undefined) userDetailData.last_name = data.lastName;
@@ -381,7 +403,6 @@ routes.put("/update-user", upload.any(), authMiddleware, async (req, res) => {
       }
     });
 
-    console.log("done updation");
     res.status(200).json({ message: "User updated successfully" });
   } catch (err) {
     console.error("Error updating user:", err);

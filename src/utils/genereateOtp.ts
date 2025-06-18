@@ -1,3 +1,6 @@
+import { randomInt } from "crypto";
+
 export function generateOtp() {
-  return Math.floor(100000 + Math.random() * 90000).toString();
+  const otp = randomInt(100000, 1000000);
+  return otp.toString();
 }
