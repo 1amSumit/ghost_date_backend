@@ -294,6 +294,7 @@ routes.post(
 
 routes.post("/seen-user", authMiddleware, async (req, res) => {
   const { users } = req.body;
+
   //@ts-ignore
   const loggedInUserId = req.userId;
 
